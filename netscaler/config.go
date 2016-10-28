@@ -104,6 +104,26 @@ func (c *NitroClient) DeleteResource(resourceName string, resourceType string) e
 	return nil
 }
 
+func (c *NitroClient) UnbindResource(boundToResourceName string, boundToResourceType string, boundResourceName string, boundResourceType string, bindingFilterName string) error {
+
+	if c.ResourceExists(boundToResourceName, boundToResourceType) == false {
+		log.Println(fmt.Sprintf("Unbind: BoundTo Resource %s of type %s does not exist", boundToResourceType, boundToResourceName))
+		return nil
+	}
+
+	if c.ResourceExists(boundResourceName, boundResourceType) == false {
+		log.Println("Unbind: Bound Resource %s of type %s does not exist", boundResourceType, boundResourceName)
+		return nil
+	}
+
+	_, err := c.unbindResource(boundToResourceType, boundToResourceName, boundResourceType, boundResourceName, bindingFilterName)
+	if err != nil {
+		return fmt.Errorf("Failed to unbind  %s:%s from %s:%s, err=%s", boundResourceType, boundResourceName, boundToResourceType, boundToResourceName, err)
+	}
+
+	return nil
+}
+
 func (c *NitroClient) ResourceExists(resourceName string, resourceType string) bool {
 	_, err := c.listResource(resourceType, resourceName)
 	if err != nil {

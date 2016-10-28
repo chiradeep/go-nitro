@@ -54,5 +54,8 @@ func main() {
 
 	client.BindResource("sample_lb", "lbvserver", "service_1", "service", &binding)
 
+	client.UnbindResource("sample_lb", "lbvserver", "service_1", "service", "servicename")
+
 	client.DeleteResource("sample_lb", "lbvserver")
+	client.DeleteResource("service_1", "service")
 }
