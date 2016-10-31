@@ -24,11 +24,11 @@ import (
 )
 
 func (c *NitroClient) BindResource(bindToResourceType string, bindToResourceName string, bindingResourceName string, bindingResourceType string, bindingStruct interface{}) error {
-	if c.ResourceExists(bindToResourceName, bindToResourceType) == false {
+	if c.ResourceExists(bindToResourceType, bindToResourceName) == false {
 		return fmt.Errorf("BindTo Resource %s of type %s does not exist", bindToResourceType, bindToResourceName)
 	}
 
-	if c.ResourceExists(bindingResourceName, bindingResourceType) == false {
+	if c.ResourceExists(bindingResourceType, bindingResourceName) == false {
 		return fmt.Errorf("Binding Resource %s of type %s does not exist", bindingResourceType, bindingResourceName)
 	}
 	binding_name := bindToResourceType + "_" + bindingResourceType + "_binding"
@@ -48,7 +48,7 @@ func (c *NitroClient) BindResource(bindToResourceType string, bindToResourceName
 
 func (c *NitroClient) AddResource(resourceType string, name string, resourceStruct interface{}) (string, error) {
 
-	if c.ResourceExists(name, resourceType) == false {
+	if c.ResourceExists(resourceType, name) == false {
 
 		nsResource := make(map[string]interface{})
 		nsResource[resourceType] = resourceStruct
@@ -70,7 +70,7 @@ func (c *NitroClient) AddResource(resourceType string, name string, resourceStru
 
 func (c *NitroClient) UpdateResource(resourceType string, name string, resourceStruct interface{}) (string, error) {
 
-	if c.ResourceExists(name, resourceType) == true {
+	if c.ResourceExists(resourceType, name) == true {
 		nsResource := make(map[string]interface{})
 		nsResource[resourceType] = resourceStruct
 		resourceJson, err := json.Marshal(nsResource)
@@ -106,12 +106,12 @@ func (c *NitroClient) DeleteResource(resourceType string, resourceName string) e
 
 func (c *NitroClient) UnbindResource(boundToResourceType string, boundToResourceName string, boundResourceType string, boundResourceName string, bindingFilterName string) error {
 
-	if c.ResourceExists(boundToResourceName, boundToResourceType) == false {
+	if c.ResourceExists(boundToResourceType, boundToResourceName) == false {
 		log.Println(fmt.Sprintf("Unbind: BoundTo Resource %s of type %s does not exist", boundToResourceType, boundToResourceName))
 		return nil
 	}
 
-	if c.ResourceExists(boundResourceName, boundResourceType) == false {
+	if c.ResourceExists(boundResourceType, boundResourceName) == false {
 		log.Println("Unbind: Bound Resource %s of type %s does not exist", boundResourceType, boundResourceName)
 		return nil
 	}
@@ -124,7 +124,7 @@ func (c *NitroClient) UnbindResource(boundToResourceType string, boundToResource
 	return nil
 }
 
-func (c *NitroClient) ResourceExists(resourceName string, resourceType string) bool {
+func (c *NitroClient) ResourceExists(resourceType string, resourceName string) bool {
 	_, err := c.listResource(resourceType, resourceName)
 	if err != nil {
 		log.Printf("No %s %s found", resourceType, resourceName)
@@ -134,7 +134,7 @@ func (c *NitroClient) ResourceExists(resourceName string, resourceType string) b
 	return true
 }
 
-func (c *NitroClient) FindResource(resourceName string, resourceType string) (map[string]interface{}, error) {
+func (c *NitroClient) FindResource(resourceType string, resourceName string) (map[string]interface{}, error) {
 	var data map[string]interface{}
 	result, err := c.listResource(resourceType, resourceName)
 	if err != nil {
