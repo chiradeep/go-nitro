@@ -154,7 +154,7 @@ func (c *NitroClient) FindResource(resourceType string, resourceName string) (ma
 	return resource.(map[string]interface{}), nil
 }
 
-func (c *NitroClient) ResourceBindingExists(resourceName string, resourceType string, boundResourceType string, boundResourceFilterName string, boundResourceFilterValue string) bool {
+func (c *NitroClient) ResourceBindingExists(resourceType string, resourceName string, boundResourceType string, boundResourceFilterName string, boundResourceFilterValue string) bool {
 	result, err := c.listBoundResources(resourceName, resourceType, boundResourceType, boundResourceFilterName, boundResourceFilterValue)
 	if err != nil {
 		log.Printf("No %s %s to %s %s binding found", resourceType, resourceName, boundResourceType, boundResourceFilterValue)
