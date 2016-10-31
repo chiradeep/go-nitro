@@ -50,7 +50,7 @@ func main() {
 		Name:     "sample_lb",
 		Lbmethod: "LEASTCONNECTION",
 	}
-	client.UpdateResource("sample_lb", netscaler.Lbvserver.Name(), &lb1)
+	client.UpdateResource(netscaler.Lbvserver.Name(), "sample_lb", &lb1)
 
 	service1 := basic.Service{
 		Name:        "sample_svc_1",
@@ -70,6 +70,6 @@ func main() {
 
 	client.UnbindResource("sample_lb", "lbvserver", "sample_svc_1", "service", "servicename")
 
-	client.DeleteResource("sample_lb", "lbvserver")
-	client.DeleteResource("sample_svc_1", "service")
+	client.DeleteResource(netscaler.Lbvserver.Name(), "sample_lb")
+	client.DeleteResource(netscaler.Service.Name(), "sample_svc_1")
 }

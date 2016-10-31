@@ -68,7 +68,7 @@ func (c *NitroClient) AddResource(resourceType string, name string, resourceStru
 	return name, nil
 }
 
-func (c *NitroClient) UpdateResource(name string, resourceType string, resourceStruct interface{}) (string, error) {
+func (c *NitroClient) UpdateResource(resourceType string, name string, resourceStruct interface{}) (string, error) {
 
 	if c.ResourceExists(name, resourceType) == true {
 		nsResource := make(map[string]interface{})
@@ -88,7 +88,7 @@ func (c *NitroClient) UpdateResource(name string, resourceType string, resourceS
 	return name, nil
 }
 
-func (c *NitroClient) DeleteResource(resourceName string, resourceType string) error {
+func (c *NitroClient) DeleteResource(resourceType string, resourceName string) error {
 
 	_, err := c.listResource(resourceType, resourceName)
 	if err == nil { // resource exists
@@ -104,7 +104,7 @@ func (c *NitroClient) DeleteResource(resourceName string, resourceType string) e
 	return nil
 }
 
-func (c *NitroClient) UnbindResource(boundToResourceName string, boundToResourceType string, boundResourceName string, boundResourceType string, bindingFilterName string) error {
+func (c *NitroClient) UnbindResource(boundToResourceType string, boundToResourceName string, boundResourceType string, boundResourceName string, bindingFilterName string) error {
 
 	if c.ResourceExists(boundToResourceName, boundToResourceType) == false {
 		log.Println(fmt.Sprintf("Unbind: BoundTo Resource %s of type %s does not exist", boundToResourceType, boundToResourceName))
