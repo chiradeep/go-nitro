@@ -23,7 +23,7 @@ import (
 	"log"
 )
 
-func (c *NitroClient) BindResource(bindToResourceType string, bindToResourceName string, bindingResourceName string, bindingResourceType string, bindingStruct interface{}) error {
+func (c *NitroClient) BindResource(bindToResourceType string, bindToResourceName string, bindingResourceType string, bindingResourceName string, bindingStruct interface{}) error {
 	if c.ResourceExists(bindToResourceType, bindToResourceName) == false {
 		return fmt.Errorf("BindTo Resource %s of type %s does not exist", bindToResourceType, bindToResourceName)
 	}

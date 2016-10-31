@@ -66,9 +66,9 @@ func main() {
 		Servicename: "sample_svc_1",
 	}
 
-	client.BindResource("lbvserver", "sample_lb", "service", "sample_svc_1", &binding)
+	client.BindResource(netscaler.Lbvserver.Name(), "sample_lb", netscaler.Service.Name(), "sample_svc_1", &binding)
 
-	client.UnbindResource("sample_lb", "lbvserver", "sample_svc_1", "service", "servicename")
+	client.UnbindResource(netscaler.Lbvserver.Name(), "sample_lb", netscaler.Service.Name(), "sample_svc_1", "servicename")
 
 	client.DeleteResource(netscaler.Lbvserver.Name(), "sample_lb")
 	client.DeleteResource(netscaler.Service.Name(), "sample_svc_1")
