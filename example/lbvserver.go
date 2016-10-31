@@ -22,20 +22,11 @@ import (
 	"log"
 )
 
-func configEnums() {
-	log.Println(netscaler.Lbvserver)
-	log.Println(netscaler.Lbvserver.Name())
-	log.Println(netscaler.Lbvserver.Ordinal())
-}
-
 func main() {
-	configEnums()
-	client := netscaler.NewNitroClient("http://127.0.0.1:32776", "nsroot", "nsroot")
-	/*client, err := netscaler.NewNitroClientFromEnv("http://127.0.0.1:32774")
+	client, err := netscaler.NewNitroClientFromEnv()
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
 	}
-	*/
 	log.Printf("Client is %+v\n", *client)
 	lb1 := lb.Lbvserver{
 		Name:        "sample_lb",

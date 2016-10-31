@@ -22,12 +22,15 @@ import (
 	"strings"
 )
 
+//NitroClient has methods to configure the NetScaler
+//It abstracts the REST operations of the NITRO API
 type NitroClient struct {
 	url      string
 	username string
 	password string
 }
 
+//NewNitroClient returns a usable NitroClient. Does not check validity of supplied parameters
 func NewNitroClient(url string, username string, password string) *NitroClient {
 	c := new(NitroClient)
 	c.url = strings.Trim(url, " /") + "/nitro/v1/config/"
@@ -36,6 +39,9 @@ func NewNitroClient(url string, username string, password string) *NitroClient {
 	return c
 }
 
+//NewNitroClientFromEnv returns a usable NitroClient. Parameters url, username and password can be passed in
+//as the first three positional parameters. Otherwise, it tries to read these values from
+//environment variable NS_URL, NS_LOGIN and NS_PASSWORD
 func NewNitroClientFromEnv(args ...string) (*NitroClient, error) {
 	url := os.Getenv("NS_URL")
 	argslen := len(args)

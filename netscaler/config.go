@@ -18,11 +18,11 @@ package netscaler
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 )
 
+//BindResource binds the 'bindingResourceName' to the 'bindToResourceName'.
 func (c *NitroClient) BindResource(bindToResourceType string, bindToResourceName string, bindingResourceType string, bindingResourceName string, bindingStruct interface{}) error {
 	if c.ResourceExists(bindToResourceType, bindToResourceName) == false {
 		return fmt.Errorf("BindTo Resource %s of type %s does not exist", bindToResourceType, bindToResourceName)
@@ -31,13 +31,13 @@ func (c *NitroClient) BindResource(bindToResourceType string, bindToResourceName
 	if c.ResourceExists(bindingResourceType, bindingResourceName) == false {
 		return fmt.Errorf("Binding Resource %s of type %s does not exist", bindingResourceType, bindingResourceName)
 	}
-	binding_name := bindToResourceType + "_" + bindingResourceType + "_binding"
+	bindingName := bindToResourceType + "_" + bindingResourceType + "_binding"
 	nsBinding := make(map[string]interface{})
-	nsBinding[binding_name] = bindingStruct
+	nsBinding[bindingName] = bindingStruct
 
-	resourceJson, err := json.Marshal(nsBinding)
+	resourceJSON, err := json.Marshal(nsBinding)
 
-	body, err := c.createResource(binding_name, resourceJson)
+	body, err := c.createResource(bindingName, resourceJSON)
 	if err != nil {
 		log.Fatal("Failed to bind resource %s to resource %s, err=%s", bindToResourceName, bindingResourceName, err)
 		return err
@@ -46,6 +46,7 @@ func (c *NitroClient) BindResource(bindToResourceType string, bindToResourceName
 	return nil
 }
 
+//AddResource adds a resource of supplied type and name
 func (c *NitroClient) AddResource(resourceType string, name string, resourceStruct interface{}) (string, error) {
 
 	if c.ResourceExists(resourceType, name) == false {
@@ -53,11 +54,11 @@ func (c *NitroClient) AddResource(resourceType string, name string, resourceStru
 		nsResource := make(map[string]interface{})
 		nsResource[resourceType] = resourceStruct
 
-		resourceJson, err := json.Marshal(nsResource)
+		resourceJSON, err := json.Marshal(nsResource)
 
-		log.Println("Resourcejson is " + string(resourceJson))
+		log.Println("Resourcejson is " + string(resourceJSON))
 
-		body, err := c.createResource(resourceType, resourceJson)
+		body, err := c.createResource(resourceType, resourceJSON)
 		if err != nil {
 			log.Fatal("Failed to create resource of type %s, name=%s, err=%s", resourceType, name, err)
 			return "", err
@@ -68,16 +69,17 @@ func (c *NitroClient) AddResource(resourceType string, name string, resourceStru
 	return name, nil
 }
 
+//UpdateResource updates a resource of supplied type and name
 func (c *NitroClient) UpdateResource(resourceType string, name string, resourceStruct interface{}) (string, error) {
 
 	if c.ResourceExists(resourceType, name) == true {
 		nsResource := make(map[string]interface{})
 		nsResource[resourceType] = resourceStruct
-		resourceJson, err := json.Marshal(nsResource)
+		resourceJSON, err := json.Marshal(nsResource)
 
-		log.Println("Resourcejson is " + string(resourceJson))
+		log.Println("Resourcejson is " + string(resourceJSON))
 
-		body, err := c.updateResource(resourceType, name, resourceJson)
+		body, err := c.updateResource(resourceType, name, resourceJSON)
 		if err != nil {
 			log.Fatal(fmt.Sprintf("Failed to update resource of type %s, name=%s err=%s", resourceType, name, err))
 			return "", err
@@ -88,6 +90,7 @@ func (c *NitroClient) UpdateResource(resourceType string, name string, resourceS
 	return name, nil
 }
 
+//DeleteResource deletes a resource of supplied type and name
 func (c *NitroClient) DeleteResource(resourceType string, resourceName string) error {
 
 	_, err := c.listResource(resourceType, resourceName)
@@ -104,6 +107,7 @@ func (c *NitroClient) DeleteResource(resourceType string, resourceName string) e
 	return nil
 }
 
+//UnbindResource unbinds 'boundResourceName' from 'boundToResource'
 func (c *NitroClient) UnbindResource(boundToResourceType string, boundToResourceName string, boundResourceType string, boundResourceName string, bindingFilterName string) error {
 
 	if c.ResourceExists(boundToResourceType, boundToResourceName) == false {
@@ -124,6 +128,7 @@ func (c *NitroClient) UnbindResource(boundToResourceType string, boundToResource
 	return nil
 }
 
+//ResourceExists returns true if supplied resource name and type exists
 func (c *NitroClient) ResourceExists(resourceType string, resourceName string) bool {
 	_, err := c.listResource(resourceType, resourceName)
 	if err != nil {
@@ -134,26 +139,28 @@ func (c *NitroClient) ResourceExists(resourceType string, resourceName string) b
 	return true
 }
 
+//FindResource returns the config of the supplied resource name and type if it exists
 func (c *NitroClient) FindResource(resourceType string, resourceName string) (map[string]interface{}, error) {
 	var data map[string]interface{}
 	result, err := c.listResource(resourceType, resourceName)
 	if err != nil {
 		log.Printf("No %s %s found", resourceType, resourceName)
-		return data, errors.New(fmt.Sprintf("No resource %s of type %s found", resourceName, resourceType))
+		return data, fmt.Errorf("No resource %s of type %s found", resourceName, resourceType)
 	}
 	if err = json.Unmarshal(result, &data); err != nil {
 		log.Println("Failed to unmarshal Netscaler Response!")
-		return data, errors.New(fmt.Sprintf("Failed to unmarshal Netscaler Response:resource %s of type %s", resourceName, resourceType))
+		return data, fmt.Errorf("Failed to unmarshal Netscaler Response:resource %s of type %s", resourceName, resourceType)
 	}
 	if data[resourceType] == nil {
 		log.Printf("No %s %s found", resourceType, resourceName)
-		return data, errors.New(fmt.Sprintf("No resource %s of type %s found", resourceName, resourceType))
+		return data, fmt.Errorf("No resource %s of type %s found", resourceName, resourceType)
 	}
 	resource := data[resourceType].([]interface{})[0] //only one resource obviously
 
 	return resource.(map[string]interface{}), nil
 }
 
+//ResourceBindingExists returns true if the supplied binding exists
 func (c *NitroClient) ResourceBindingExists(resourceType string, resourceName string, boundResourceType string, boundResourceFilterName string, boundResourceFilterValue string) bool {
 	result, err := c.listBoundResources(resourceName, resourceType, boundResourceType, boundResourceFilterName, boundResourceFilterValue)
 	if err != nil {

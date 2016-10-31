@@ -26,7 +26,7 @@ import (
 	"strings"
 )
 
-func (c *NitroClient) createHttpRequest(method string, url string, buff *bytes.Buffer) (*http.Request, error) {
+func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.Buffer) (*http.Request, error) {
 	req, err := http.NewRequest(method, url, buff)
 	if err != nil {
 		log.Fatal(err)
@@ -39,7 +39,7 @@ func (c *NitroClient) createHttpRequest(method string, url string, buff *bytes.B
 	return req, nil
 }
 
-func (c *NitroClient) createResource(resourceType string, resourceJson []byte) ([]byte, error) {
+func (c *NitroClient) createResource(resourceType string, resourceJSON []byte) ([]byte, error) {
 	log.Println("Creating resource of type ", resourceType)
 
 	url := c.url + resourceType
@@ -49,7 +49,7 @@ func (c *NitroClient) createResource(resourceType string, resourceJson []byte) (
 		method = "POST"
 	}
 
-	req, err := c.createHttpRequest(method, url, bytes.NewBuffer(resourceJson))
+	req, err := c.createHTTPRequest(method, url, bytes.NewBuffer(resourceJSON))
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -59,34 +59,33 @@ func (c *NitroClient) createResource(resourceType string, resourceJson []byte) (
 	if err != nil {
 		log.Fatal(err)
 		return []byte{}, err
-	} else {
-		log.Println("response Status:", resp.Status)
+	}
+	log.Println("response Status:", resp.Status)
 
-		switch resp.Status {
-		case "201 Created", "200 OK", "409 Conflict":
-			body, _ := ioutil.ReadAll(resp.Body)
-			return body, nil
+	switch resp.Status {
+	case "201 Created", "200 OK", "409 Conflict":
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, nil
 
-		case "207 Multi Status":
-			//TODO
-			body, _ := ioutil.ReadAll(resp.Body)
-			return body, err
-		case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
-			"404 Not Found", "405 Method Not Allowed", "406 Not Acceptable",
-			"503 Service Unavailable", "599 Netscaler specific error":
-			//TODO
-			body, _ := ioutil.ReadAll(resp.Body)
-			log.Println("error = " + string(body))
-			return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
-		default:
-			body, err := ioutil.ReadAll(resp.Body)
-			return body, err
+	case "207 Multi Status":
+		//TODO
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, err
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
+		"404 Not Found", "405 Method Not Allowed", "406 Not Acceptable",
+		"503 Service Unavailable", "599 Netscaler specific error":
+		//TODO
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		return body, err
 
-		}
 	}
 }
 
-func (c *NitroClient) updateResource(resourceType string, resourceName string, resourceJson []byte) ([]byte, error) {
+func (c *NitroClient) updateResource(resourceType string, resourceName string, resourceJSON []byte) ([]byte, error) {
 	log.Println("Updating resource of type ", resourceType)
 
 	url := c.url + resourceType + "/" + resourceName
@@ -96,7 +95,7 @@ func (c *NitroClient) updateResource(resourceType string, resourceName string, r
 		method = "POST"
 	}
 
-	req, err := c.createHttpRequest(method, url, bytes.NewBuffer(resourceJson))
+	req, err := c.createHTTPRequest(method, url, bytes.NewBuffer(resourceJSON))
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -106,30 +105,29 @@ func (c *NitroClient) updateResource(resourceType string, resourceName string, r
 	if err != nil {
 		log.Fatal(err)
 		return []byte{}, err
-	} else {
-		log.Println("response Status:", resp.Status)
+	}
+	log.Println("response Status:", resp.Status)
 
-		switch resp.Status {
-		case "201 Created", "200 OK", "409 Conflict":
-			body, _ := ioutil.ReadAll(resp.Body)
-			return body, nil
+	switch resp.Status {
+	case "201 Created", "200 OK", "409 Conflict":
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, nil
 
-		case "207 Multi Status":
-			//TODO
-			body, _ := ioutil.ReadAll(resp.Body)
-			return body, err
-		case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
-			"404 Not Found", "405 Method Not Allowed", "406 Not Acceptable",
-			"503 Service Unavailable", "599 Netscaler specific error":
-			//TODO
-			body, _ := ioutil.ReadAll(resp.Body)
-			log.Println("error = " + string(body))
-			return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
-		default:
-			body, err := ioutil.ReadAll(resp.Body)
-			return body, err
+	case "207 Multi Status":
+		//TODO
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, err
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
+		"404 Not Found", "405 Method Not Allowed", "406 Not Acceptable",
+		"503 Service Unavailable", "599 Netscaler specific error":
+		//TODO
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		return body, err
 
-		}
 	}
 }
 
@@ -137,7 +135,7 @@ func (c *NitroClient) deleteResource(resourceType string, resourceName string) (
 	log.Println("Deleting resource of type ", resourceType)
 	url := c.url + resourceType + "/" + resourceName
 
-	req, err := c.createHttpRequest("DELETE", url, bytes.NewBuffer([]byte{}))
+	req, err := c.createHTTPRequest("DELETE", url, bytes.NewBuffer([]byte{}))
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -147,27 +145,26 @@ func (c *NitroClient) deleteResource(resourceType string, resourceName string) (
 	if err != nil {
 		log.Fatal(err)
 		return []byte{}, err
-	} else {
+	}
 
-		log.Println("response Status:", resp.Status)
+	log.Println("response Status:", resp.Status)
 
-		switch resp.Status {
-		case "200 OK", "404 Not Found":
-			body, _ := ioutil.ReadAll(resp.Body)
-			return body, nil
+	switch resp.Status {
+	case "200 OK", "404 Not Found":
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, nil
 
-		case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
-			"405 Method Not Allowed", "406 Not Acceptable",
-			"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
-			//TODO
-			body, _ := ioutil.ReadAll(resp.Body)
-			log.Println("error = " + string(body))
-			return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
-		default:
-			body, err := ioutil.ReadAll(resp.Body)
-			return body, err
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
+		"405 Method Not Allowed", "406 Not Acceptable",
+		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
+		//TODO
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		return body, err
 
-		}
 	}
 }
 
@@ -177,7 +174,7 @@ func (c *NitroClient) unbindResource(resourceType string, resourceName string, b
 
 	url := c.url + "/" + bindingName + "/" + resourceName + "?args=" + bindingFilterName + ":" + boundResource
 
-	req, err := c.createHttpRequest("DELETE", url, bytes.NewBuffer([]byte{}))
+	req, err := c.createHTTPRequest("DELETE", url, bytes.NewBuffer([]byte{}))
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -187,27 +184,26 @@ func (c *NitroClient) unbindResource(resourceType string, resourceName string, b
 	if err != nil {
 		log.Fatal(err)
 		return []byte{}, err
-	} else {
-		log.Println("response Status:", resp.Status)
+	}
+	log.Println("response Status:", resp.Status)
 
-		switch resp.Status {
-		case "200 OK", "404 Not Found":
-			body, _ := ioutil.ReadAll(resp.Body)
-			return body, nil
+	switch resp.Status {
+	case "200 OK", "404 Not Found":
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, nil
 
-		case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
-			"405 Method Not Allowed", "406 Not Acceptable",
-			"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
-			//TODO
-			body, _ := ioutil.ReadAll(resp.Body)
-			log.Println("error = " + string(body))
-			return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
-		default:
-			body, err := ioutil.ReadAll(resp.Body)
-			log.Println("error = " + string(body))
-			return body, err
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
+		"405 Method Not Allowed", "406 Not Acceptable",
+		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
+		//TODO
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, err
 
-		}
 	}
 }
 
@@ -220,7 +216,7 @@ func (c *NitroClient) listBoundResources(resourceName string, resourceType strin
 		url = c.url + fmt.Sprintf("%s_%s_binding/%s?filter=%s:%s", resourceType, boundResourceType, resourceName, boundResourceFilterName, boundResourceFilterValue)
 	}
 
-	req, err := c.createHttpRequest("GET", url, bytes.NewBuffer([]byte{}))
+	req, err := c.createHTTPRequest("GET", url, bytes.NewBuffer([]byte{}))
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -230,26 +226,25 @@ func (c *NitroClient) listBoundResources(resourceName string, resourceType strin
 	if err != nil {
 		log.Fatal(err)
 		return []byte{}, err
-	} else {
-		log.Println("response Status:", resp.Status)
+	}
+	log.Println("response Status:", resp.Status)
 
-		switch resp.Status {
-		case "200 OK":
-			body, _ := ioutil.ReadAll(resp.Body)
-			return body, nil
-		case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
-			"405 Method Not Allowed", "406 Not Acceptable",
-			"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
-			//TODO
-			body, _ := ioutil.ReadAll(resp.Body)
-			log.Println("error = " + string(body))
-			return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
-		default:
-			body, err := ioutil.ReadAll(resp.Body)
-			log.Println("error = " + string(body))
-			return body, err
+	switch resp.Status {
+	case "200 OK":
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, nil
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
+		"405 Method Not Allowed", "406 Not Acceptable",
+		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
+		//TODO
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, err
 
-		}
 	}
 }
 
@@ -261,7 +256,7 @@ func (c *NitroClient) listResource(resourceType string, resourceName string) ([]
 		url = c.url + fmt.Sprintf("%s/%s", resourceType, resourceName)
 	}
 
-	req, err := c.createHttpRequest("GET", url, bytes.NewBuffer([]byte{}))
+	req, err := c.createHTTPRequest("GET", url, bytes.NewBuffer([]byte{}))
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -271,25 +266,24 @@ func (c *NitroClient) listResource(resourceType string, resourceName string) ([]
 	if err != nil {
 		log.Fatal(err)
 		return []byte{}, err
-	} else {
-		log.Println("response Status:", resp.Status)
+	}
+	log.Println("response Status:", resp.Status)
 
-		switch resp.Status {
-		case "200 OK":
-			body, _ := ioutil.ReadAll(resp.Body)
-			return body, nil
-		case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
-			"405 Method Not Allowed", "406 Not Acceptable",
-			"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
-			//TODO
-			body, _ := ioutil.ReadAll(resp.Body)
-			log.Println("error = " + string(body))
-			return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
-		default:
-			body, err := ioutil.ReadAll(resp.Body)
-			log.Println("error = " + string(body))
-			return body, err
+	switch resp.Status {
+	case "200 OK":
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, nil
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
+		"405 Method Not Allowed", "406 Not Acceptable",
+		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
+		//TODO
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, err
 
-		}
 	}
 }

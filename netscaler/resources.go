@@ -22,23 +22,23 @@ type Enum interface {
 	ValueOf() *[]string
 }
 
-type NetScalerResource uint
+type Resource uint
 
-func (rsrc NetScalerResource) Name() string {
+func (rsrc Resource) Name() string {
 	return resources[rsrc]
 }
-func (rsrc NetScalerResource) Ordinal() int {
+func (rsrc Resource) Ordinal() int {
 	return int(rsrc)
 }
-func (rsrc NetScalerResource) String() string {
+func (rsrc Resource) String() string {
 	return resources[rsrc]
 }
-func (rsrc NetScalerResource) Values() *[]string {
+func (rsrc Resource) Values() *[]string {
 	return &resources
 }
 
 const (
-	Aaacertparams NetScalerResource = iota
+	Aaacertparams Resource = iota
 	Aaaglobal_aaapreauthenticationpolicy_binding
 	Aaaglobal_authenticationnegotiateaction_binding
 	Aaaglobal_binding

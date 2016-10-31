@@ -16,3 +16,7 @@ unit:  build
 	@echo "go test SDK and vendor packages"
 	@go test   $(SDK_ONLY_PKGS)
 
+lint:  build 
+	@echo "go lint netscaler package (ignoring generated packages)"
+	@golint   netscaler | grep -v netscaler/resources.go || true
+
