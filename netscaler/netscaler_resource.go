@@ -26,20 +26,6 @@ import (
 	"strings"
 )
 
-type NitroClient struct {
-	url      string
-	username string
-	password string
-}
-
-func NewNitroClient(url string, username string, password string) *NitroClient {
-	c := new(NitroClient)
-	c.url = strings.Trim(url, " /") + "/nitro/v1/config/"
-	c.username = username
-	c.password = password
-	return c
-}
-
 func (c *NitroClient) createHttpRequest(method string, url string, buff *bytes.Buffer) (*http.Request, error) {
 	req, err := http.NewRequest(method, url, buff)
 	if err != nil {
