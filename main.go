@@ -16,9 +16,9 @@ limitations under the License.
 package main
 
 import (
+	"github.com/chiradeep/go-nitro/config/basic"
+	"github.com/chiradeep/go-nitro/config/lb"
 	"github.com/chiradeep/go-nitro/netscaler"
-	"github.com/chiradeep/go-nitro/netscaler/basic"
-	"github.com/chiradeep/go-nitro/netscaler/lb"
 )
 
 func main() {
