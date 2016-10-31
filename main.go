@@ -30,7 +30,7 @@ func configEnums() {
 
 func main() {
 	configEnums()
-	client := netscaler.NewNitroClient("http://127.0.0.1:32774", "nsroot", "nsroot")
+	client := netscaler.NewNitroClient("http://127.0.0.1:32776", "nsroot", "nsroot")
 	/*client, err := netscaler.NewNitroClientFromEnv("http://127.0.0.1:32774")
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
@@ -44,7 +44,7 @@ func main() {
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	client.AddResource("sample_lb", "lbvserver", &lb1)
+	client.AddResource(netscaler.Lbvserver.Name(), "sample_lb", &lb1)
 
 	lb1 = lb.Lbvserver{
 		Name:     "sample_lb",
@@ -53,23 +53,23 @@ func main() {
 	client.UpdateResource("sample_lb", netscaler.Lbvserver.Name(), &lb1)
 
 	service1 := basic.Service{
-		Name:        "service_1",
+		Name:        "sample_svc_1",
 		Ip:          "172.22.33.4",
 		Port:        80,
 		Servicetype: "HTTP",
 	}
 
-	client.AddResource("service_1", "service", &service1)
+	client.AddResource(netscaler.Service.Name(), "sample_svc_1", &service1)
 
 	binding := lb.Lbvserverservicebinding{
 		Name:        "sample_lb",
-		Servicename: "service_1",
+		Servicename: "sample_svc_1",
 	}
 
-	client.BindResource("sample_lb", "lbvserver", "service_1", "service", &binding)
+	client.BindResource("lbvserver", "sample_lb", "service", "sample_svc_1", &binding)
 
-	client.UnbindResource("sample_lb", "lbvserver", "service_1", "service", "servicename")
+	client.UnbindResource("sample_lb", "lbvserver", "sample_svc_1", "service", "servicename")
 
 	client.DeleteResource("sample_lb", "lbvserver")
-	client.DeleteResource("service_1", "service")
+	client.DeleteResource("sample_svc_1", "service")
 }
