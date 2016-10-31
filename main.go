@@ -19,10 +19,24 @@ import (
 	"github.com/chiradeep/go-nitro/config/basic"
 	"github.com/chiradeep/go-nitro/config/lb"
 	"github.com/chiradeep/go-nitro/netscaler"
+	"log"
 )
 
+func configEnums() {
+	log.Println(netscaler.Lbvserver)
+	log.Println(netscaler.Lbvserver.Name())
+	log.Println(netscaler.Lbvserver.Ordinal())
+}
+
 func main() {
+	configEnums()
 	client := netscaler.NewNitroClient("http://127.0.0.1:32774", "nsroot", "nsroot")
+	/*client, err := netscaler.NewNitroClientFromEnv("http://127.0.0.1:32774")
+	if err != nil {
+		log.Fatal("Could not create a client: ", err)
+	}
+	*/
+	log.Printf("Client is %+v\n", *client)
 	lb1 := lb.Lbvserver{
 		Name:        "sample_lb",
 		Ipv46:       "10.71.136.50",
@@ -36,7 +50,7 @@ func main() {
 		Name:     "sample_lb",
 		Lbmethod: "LEASTCONNECTION",
 	}
-	client.UpdateResource("sample_lb", "lbvserver", &lb1)
+	client.UpdateResource("sample_lb", netscaler.Lbvserver.Name(), &lb1)
 
 	service1 := basic.Service{
 		Name:        "service_1",
