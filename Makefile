@@ -20,3 +20,7 @@ lint:  build
 	@echo "go lint netscaler package (ignoring generated packages)"
 	@golint   netscaler | grep -v netscaler/resources.go || true
 
+generate:
+	@echo "Generate go schema from json schema"
+	(cd tools; ./generate.sh)
+
