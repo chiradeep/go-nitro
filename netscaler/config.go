@@ -20,7 +20,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"reflect"
 	"strings"
 )
 
@@ -227,19 +226,15 @@ func (c *NitroClient) ListEnabledFeatures() ([]string, error) {
 		return []string{}, fmt.Errorf("No features found")
 	}
 	features := data["nsfeature"].(map[string]interface{})
-	log.Println("Features: ", features)
-	log.Println("Features[feature]: ", features["feature"], " type ", reflect.TypeOf(features["feature"]))
-	//result := make([]string, len(features["feature"]), len(features["feature"]))
-	//for i, v := range features["feature"] {
-	//result[i] = v.(string)
-	//}
+	// since the returned JSON map mixes boolean and array values, the unmarshal fails to figure out there
+	// is an array. So we have to convert it to a string and then parse it.
+	// this doesn't work: return features["feature"].([]string), nil
+	// convert to string: [LB CS SSL] (note: no commas)
 
-	//return result, nil
 	result := fmt.Sprintf("%v", features["feature"])
 	result = strings.TrimPrefix(result, "[")
 	result = strings.TrimSuffix(result, "]")
 	flist := strings.Split(result, " ")
 	log.Println("result: ", result, "flist: ", flist)
-	//return features["feature"].([]string), nil
 	return flist, nil
 }
