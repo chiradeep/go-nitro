@@ -20,6 +20,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"reflect"
+	"strings"
 )
 
 //AddResource adds a resource of supplied type and name
@@ -179,4 +181,65 @@ func (c *NitroClient) ResourceBindingExists(resourceType string, resourceName st
 
 	log.Printf("%s of type  %s is bound to %s type and name %s", resourceType, resourceName, boundResourceType, boundResourceFilterValue)
 	return true
+}
+
+//Enable a list of features
+func (c *NitroClient) EnableFeatures(featureNames []string) error {
+	/* construct this:
+	{
+	        "nsfeature":
+		{
+		    "feature": [ "LB", ]
+		}
+	}
+	*/
+	featureStruct := make(map[string]map[string][]string)
+	featureStruct["nsfeature"] = make(map[string][]string)
+	featureStruct["nsfeature"]["feature"] = featureNames
+
+	featureJSON, err := json.Marshal(featureStruct)
+	if err != nil {
+		log.Println("Failed to marshal features to JSON")
+		return fmt.Errorf("Failed to marshal features to JSON")
+	}
+
+	_, err = c.enableFeatures(featureJSON)
+	if err != nil {
+		return fmt.Errorf("Failed to enable feature ", err)
+	}
+	return nil
+}
+
+//Determine list of features
+func (c *NitroClient) ListEnabledFeatures() ([]string, error) {
+
+	bytes, err := c.listEnabledFeatures()
+	if err != nil {
+		return []string{}, fmt.Errorf("Failed to enable feature ", err)
+	}
+	var data map[string]interface{}
+	if err = json.Unmarshal(bytes, &data); err != nil {
+		log.Println("Failed to unmarshal Netscaler Response!")
+		return []string{}, fmt.Errorf("Failed to unmarshal Netscaler Response to list Features")
+	}
+	if data["nsfeature"] == nil {
+		log.Printf("No features found")
+		return []string{}, fmt.Errorf("No features found")
+	}
+	features := data["nsfeature"].(map[string]interface{})
+	log.Println("Features: ", features)
+	log.Println("Features[feature]: ", features["feature"], " type ", reflect.TypeOf(features["feature"]))
+	//result := make([]string, len(features["feature"]), len(features["feature"]))
+	//for i, v := range features["feature"] {
+	//result[i] = v.(string)
+	//}
+
+	//return result, nil
+	result := fmt.Sprintf("%v", features["feature"])
+	result = strings.TrimPrefix(result, "[")
+	result = strings.TrimSuffix(result, "]")
+	flist := strings.Split(result, " ")
+	log.Println("result: ", result, "flist: ", flist)
+	//return features["feature"].([]string), nil
+	return flist, nil
 }

@@ -63,4 +63,6 @@ func main() {
 
 	client.DeleteResource(netscaler.Lbvserver.Name(), "sample_lb")
 	client.DeleteResource(netscaler.Service.Name(), "sample_svc_1")
+
+	client.EnableFeatures([]string{"CS"})
 }

@@ -159,3 +159,30 @@ func TestDelete(t *testing.T) {
 		t.Error("Failed to delete ", "sample_svc_1")
 	}
 }
+
+func TestEnableFeatures(t *testing.T) {
+	client, err := NewNitroClientFromEnv()
+	if err != nil {
+		log.Fatal("Could not create a client: ", err)
+	}
+	features := []string{"SSL", "CS"}
+	err = client.EnableFeatures(features)
+	if err != nil {
+		t.Error("Failed to enable features")
+	}
+	result, err := client.ListEnabledFeatures()
+	if err != nil {
+		t.Error("Failed to retrieve features")
+	}
+	found := 0
+	for _, f := range features {
+		for _, r := range result {
+			if f == r {
+				found = found + 1
+			}
+		}
+	}
+	if found != len(features) {
+		t.Error("Requested features do not match enabled features=", features, "result=", result)
+	}
+}

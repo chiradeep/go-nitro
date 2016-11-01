@@ -287,3 +287,73 @@ func (c *NitroClient) listResource(resourceType string, resourceName string) ([]
 
 	}
 }
+
+func (c *NitroClient) enableFeatures(featureJSON []byte) ([]byte, error) {
+	log.Println("Enabling features")
+	url := c.url + "nsfeature?action=enable"
+
+	req, err := c.createHTTPRequest("POST", url, bytes.NewBuffer(featureJSON))
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+	if err != nil {
+		log.Fatal(err)
+		return []byte{}, err
+	}
+	log.Println("response Status:", resp.Status)
+
+	switch resp.Status {
+	case "200 OK":
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, nil
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
+		"405 Method Not Allowed", "406 Not Acceptable",
+		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, err
+
+	}
+}
+
+func (c *NitroClient) listEnabledFeatures() ([]byte, error) {
+	log.Println("listing features")
+	url := c.url + "nsfeature"
+
+	req, err := c.createHTTPRequest("GET", url, bytes.NewBuffer([]byte{}))
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+	if err != nil {
+		log.Fatal(err)
+		return []byte{}, err
+	}
+	log.Println("response Status:", resp.Status)
+
+	switch resp.Status {
+	case "200 OK":
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, nil
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
+		"405 Method Not Allowed", "406 Not Acceptable",
+		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, err
+
+	}
+}
