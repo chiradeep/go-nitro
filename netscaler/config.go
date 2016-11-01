@@ -22,30 +22,6 @@ import (
 	"log"
 )
 
-//BindResource binds the 'bindingResourceName' to the 'bindToResourceName'.
-func (c *NitroClient) BindResource(bindToResourceType string, bindToResourceName string, bindingResourceType string, bindingResourceName string, bindingStruct interface{}) error {
-	if c.ResourceExists(bindToResourceType, bindToResourceName) == false {
-		return fmt.Errorf("BindTo Resource %s of type %s does not exist", bindToResourceType, bindToResourceName)
-	}
-
-	if c.ResourceExists(bindingResourceType, bindingResourceName) == false {
-		return fmt.Errorf("Binding Resource %s of type %s does not exist", bindingResourceType, bindingResourceName)
-	}
-	bindingName := bindToResourceType + "_" + bindingResourceType + "_binding"
-	nsBinding := make(map[string]interface{})
-	nsBinding[bindingName] = bindingStruct
-
-	resourceJSON, err := json.Marshal(nsBinding)
-
-	body, err := c.createResource(bindingName, resourceJSON)
-	if err != nil {
-		log.Fatal("Failed to bind resource %s to resource %s, err=%s", bindToResourceName, bindingResourceName, err)
-		return err
-	}
-	_ = body
-	return nil
-}
-
 //AddResource adds a resource of supplied type and name
 func (c *NitroClient) AddResource(resourceType string, name string, resourceStruct interface{}) (string, error) {
 
@@ -104,6 +80,30 @@ func (c *NitroClient) DeleteResource(resourceType string, resourceName string) e
 	} else {
 		log.Printf("Resource %s already deleted ", resourceName)
 	}
+	return nil
+}
+
+//BindResource binds the 'bindingResourceName' to the 'bindToResourceName'.
+func (c *NitroClient) BindResource(bindToResourceType string, bindToResourceName string, bindingResourceType string, bindingResourceName string, bindingStruct interface{}) error {
+	if c.ResourceExists(bindToResourceType, bindToResourceName) == false {
+		return fmt.Errorf("BindTo Resource %s of type %s does not exist", bindToResourceType, bindToResourceName)
+	}
+
+	if c.ResourceExists(bindingResourceType, bindingResourceName) == false {
+		return fmt.Errorf("Binding Resource %s of type %s does not exist", bindingResourceType, bindingResourceName)
+	}
+	bindingName := bindToResourceType + "_" + bindingResourceType + "_binding"
+	nsBinding := make(map[string]interface{})
+	nsBinding[bindingName] = bindingStruct
+
+	resourceJSON, err := json.Marshal(nsBinding)
+
+	body, err := c.createResource(bindingName, resourceJSON)
+	if err != nil {
+		log.Fatal("Failed to bind resource %s to resource %s, err=%s", bindToResourceName, bindingResourceName, err)
+		return err
+	}
+	_ = body
 	return nil
 }
 
