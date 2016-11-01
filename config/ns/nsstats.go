@@ -1,5 +1,5 @@
 package ns
 
 type Nsstats struct {
-  Cleanuplevel string `json:"cleanuplevel,omitempty"`
+	Cleanuplevel string `json:"cleanuplevel,omitempty"`
 }

@@ -1,5 +1,5 @@
 package authentication
 
 type Authenticationwebauthpolicybinding struct {
-  Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 }

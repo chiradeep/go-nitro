@@ -1,5 +1,5 @@
 package ns
 
 type Nslimitidentifiernslimitsessionsbinding struct {
-  Limitidentifier string `json:"limitidentifier,omitempty"`
+	Limitidentifier string `json:"limitidentifier,omitempty"`
 }

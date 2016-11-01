@@ -1,5 +1,5 @@
 package ns
 
 type Nssavedconfig struct {
-  Textblob string `json:"textblob,omitempty"`
+	Textblob string `json:"textblob,omitempty"`
 }

@@ -1,5 +1,5 @@
 package system
 
 type Systemgroupbinding struct {
-  Groupname string `json:"groupname,omitempty"`
+	Groupname string `json:"groupname,omitempty"`
 }

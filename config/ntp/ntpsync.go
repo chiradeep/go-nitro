@@ -1,5 +1,5 @@
 package ntp
 
 type Ntpsync struct {
-  State string `json:"state,omitempty"`
+	State string `json:"state,omitempty"`
 }

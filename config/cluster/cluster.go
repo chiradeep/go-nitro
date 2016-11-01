@@ -1,6 +1,6 @@
 package cluster
 
 type Cluster struct {
-  Clip string `json:"clip,omitempty"`
-  Password string `json:"password,omitempty"`
+	Clip     string `json:"clip,omitempty"`
+	Password string `json:"password,omitempty"`
 }

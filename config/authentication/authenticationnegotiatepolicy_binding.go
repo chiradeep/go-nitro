@@ -1,5 +1,5 @@
 package authentication
 
 type Authenticationnegotiatepolicybinding struct {
-  Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 }

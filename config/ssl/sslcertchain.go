@@ -1,5 +1,5 @@
 package ssl
 
 type Sslcertchain struct {
-  Certkeyname string `json:"certkeyname,omitempty"`
+	Certkeyname string `json:"certkeyname,omitempty"`
 }

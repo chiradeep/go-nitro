@@ -1,5 +1,5 @@
 package ns
 
 type Nsservicepath struct {
-  Servicepathname string `json:"servicepathname,omitempty"`
+	Servicepathname string `json:"servicepathname,omitempty"`
 }

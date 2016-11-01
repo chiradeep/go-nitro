@@ -1,5 +1,5 @@
 package appflow
 
 type Appflowpolicylabelbinding struct {
-  Labelname string `json:"labelname,omitempty"`
+	Labelname string `json:"labelname,omitempty"`
 }

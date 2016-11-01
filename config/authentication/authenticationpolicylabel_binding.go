@@ -1,5 +1,5 @@
 package authentication
 
 type Authenticationpolicylabelbinding struct {
-  Labelname string `json:"labelname,omitempty"`
+	Labelname string `json:"labelname,omitempty"`
 }

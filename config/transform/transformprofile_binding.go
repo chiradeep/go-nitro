@@ -1,5 +1,5 @@
 package transform
 
 type Transformprofilebinding struct {
-  Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 }

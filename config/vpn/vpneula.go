@@ -1,5 +1,5 @@
 package vpn
 
 type Vpneula struct {
-  Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 }

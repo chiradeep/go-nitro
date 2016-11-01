@@ -1,5 +1,5 @@
 package network
 
 type Rsskeytype struct {
-  Rsstype string `json:"rsstype,omitempty"`
+	Rsstype string `json:"rsstype,omitempty"`
 }

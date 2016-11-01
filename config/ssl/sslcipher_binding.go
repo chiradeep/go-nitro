@@ -1,5 +1,5 @@
 package ssl
 
 type Sslcipherbinding struct {
-  Ciphergroupname string `json:"ciphergroupname,omitempty"`
+	Ciphergroupname string `json:"ciphergroupname,omitempty"`
 }

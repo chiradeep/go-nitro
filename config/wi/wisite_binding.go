@@ -1,5 +1,5 @@
 package wi
 
 type Wisitebinding struct {
-  Sitepath string `json:"sitepath,omitempty"`
+	Sitepath string `json:"sitepath,omitempty"`
 }

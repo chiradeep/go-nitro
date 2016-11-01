@@ -1,5 +1,5 @@
 package dns
 
 type Dnssuffix struct {
-  Dnssuffix string `json:"Dnssuffix,omitempty"`
+	Dnssuffix string `json:"Dnssuffix,omitempty"`
 }

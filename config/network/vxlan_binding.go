@@ -1,5 +1,5 @@
 package network
 
 type Vxlanbinding struct {
-  Id int `json:"id,omitempty"`
+	Id int `json:"id,omitempty"`
 }

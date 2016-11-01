@@ -1,5 +1,5 @@
 package cache
 
 type Cachepolicybinding struct {
-  Policyname string `json:"policyname,omitempty"`
+	Policyname string `json:"policyname,omitempty"`
 }

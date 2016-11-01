@@ -1,5 +1,5 @@
 package vpn
 
 type Vpnglobalsharefileserverbinding struct {
-  Sharefile string `json:"sharefile,omitempty"`
+	Sharefile string `json:"sharefile,omitempty"`
 }

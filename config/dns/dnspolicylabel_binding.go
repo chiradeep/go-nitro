@@ -1,5 +1,5 @@
 package dns
 
 type Dnspolicylabelbinding struct {
-  Labelname string `json:"labelname,omitempty"`
+	Labelname string `json:"labelname,omitempty"`
 }

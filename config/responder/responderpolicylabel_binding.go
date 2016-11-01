@@ -1,5 +1,5 @@
 package responder
 
 type Responderpolicylabelbinding struct {
-  Labelname string `json:"labelname,omitempty"`
+	Labelname string `json:"labelname,omitempty"`
 }

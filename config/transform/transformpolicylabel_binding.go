@@ -1,5 +1,5 @@
 package transform
 
 type Transformpolicylabelbinding struct {
-  Labelname string `json:"labelname,omitempty"`
+	Labelname string `json:"labelname,omitempty"`
 }

@@ -1,5 +1,5 @@
 package rewrite
 
 type Rewritepolicylabelbinding struct {
-  Labelname string `json:"labelname,omitempty"`
+	Labelname string `json:"labelname,omitempty"`
 }

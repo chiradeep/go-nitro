@@ -1,5 +1,5 @@
 package vpn
 
 type Vpnglobalappcontrollerbinding struct {
-  Appcontroller string `json:"appcontroller,omitempty"`
+	Appcontroller string `json:"appcontroller,omitempty"`
 }

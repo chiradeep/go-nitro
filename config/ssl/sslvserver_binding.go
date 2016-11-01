@@ -1,5 +1,5 @@
 package ssl
 
 type Sslvserverbinding struct {
-  Vservername string `json:"vservername,omitempty"`
+	Vservername string `json:"vservername,omitempty"`
 }
