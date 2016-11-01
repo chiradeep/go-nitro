@@ -58,6 +58,7 @@ func main() {
 	}
 
 	client.BindResource(netscaler.Lbvserver.Name(), "sample_lb", netscaler.Service.Name(), "sample_svc_1", &binding)
+	client.SaveConfig()
 
 	client.UnbindResource(netscaler.Lbvserver.Name(), "sample_lb", netscaler.Service.Name(), "sample_svc_1", "servicename")
 
@@ -65,4 +66,6 @@ func main() {
 	client.DeleteResource(netscaler.Service.Name(), "sample_svc_1")
 
 	client.EnableFeatures([]string{"CS"})
+	client.SaveConfig()
+
 }
