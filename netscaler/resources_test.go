@@ -21,7 +21,7 @@ import (
 
 func TestResourceEnums(t *testing.T) {
 	t.Log("Resource enum Lbvserver must match string lbvserver")
-	if Lbvserver.Name() != "lbvserver" {
-		t.Error("Expected lbvserver, got ", Lbvserver.Name())
+	if Lbvserver.Type() != "lbvserver" {
+		t.Error("Expected lbvserver, got ", Lbvserver.Type())
 	}
 }

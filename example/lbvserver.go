@@ -35,13 +35,13 @@ func main() {
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	client.AddResource(netscaler.Lbvserver.Name(), "sample_lb", &lb1)
+	client.AddResource(netscaler.Lbvserver.Type(), "sample_lb", &lb1)
 
 	lb1 = lb.Lbvserver{
 		Name:     "sample_lb",
 		Lbmethod: "LEASTCONNECTION",
 	}
-	client.UpdateResource(netscaler.Lbvserver.Name(), "sample_lb", &lb1)
+	client.UpdateResource(netscaler.Lbvserver.Type(), "sample_lb", &lb1)
 
 	service1 := basic.Service{
 		Name:        "sample_svc_1",
@@ -50,20 +50,20 @@ func main() {
 		Servicetype: "HTTP",
 	}
 
-	client.AddResource(netscaler.Service.Name(), "sample_svc_1", &service1)
+	client.AddResource(netscaler.Service.Type(), "sample_svc_1", &service1)
 
 	binding := lb.Lbvserverservicebinding{
 		Name:        "sample_lb",
 		Servicename: "sample_svc_1",
 	}
 
-	client.BindResource(netscaler.Lbvserver.Name(), "sample_lb", netscaler.Service.Name(), "sample_svc_1", &binding)
+	client.BindResource(netscaler.Lbvserver.Type(), "sample_lb", netscaler.Service.Type(), "sample_svc_1", &binding)
 	client.SaveConfig()
 
-	client.UnbindResource(netscaler.Lbvserver.Name(), "sample_lb", netscaler.Service.Name(), "sample_svc_1", "servicename")
+	client.UnbindResource(netscaler.Lbvserver.Type(), "sample_lb", netscaler.Service.Type(), "sample_svc_1", "servicename")
 
-	client.DeleteResource(netscaler.Lbvserver.Name(), "sample_lb")
-	client.DeleteResource(netscaler.Service.Name(), "sample_svc_1")
+	client.DeleteResource(netscaler.Lbvserver.Type(), "sample_lb")
+	client.DeleteResource(netscaler.Service.Type(), "sample_svc_1")
 
 	client.EnableFeatures([]string{"CS"})
 	client.SaveConfig()

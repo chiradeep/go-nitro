@@ -47,11 +47,11 @@ func TestAdd(t *testing.T) {
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	client.AddResource(Lbvserver.Name(), "sample_lb", &lb1)
+	client.AddResource(Lbvserver.Type(), "sample_lb", &lb1)
 
-	rsrc, err := client.FindResource(Lbvserver.Name(), "sample_lb")
+	rsrc, err := client.FindResource(Lbvserver.Type(), "sample_lb")
 	if err != nil {
-		t.Error("Did not find resource of type ", Lbvserver.Name(), ":", "sample_lb")
+		t.Error("Did not find resource of type ", Lbvserver.Type(), ":", "sample_lb")
 	}
 	val, ok := rsrc["ipv46"]
 	if ok {
@@ -78,11 +78,11 @@ func TestAdd(t *testing.T) {
 		Servicetype: "HTTP",
 	}
 
-	client.AddResource(Service.Name(), "sample_svc_1", &service1)
+	client.AddResource(Service.Type(), "sample_svc_1", &service1)
 
-	_, err = client.FindResource(Service.Name(), "sample_svc_1")
+	_, err = client.FindResource(Service.Type(), "sample_svc_1")
 	if err != nil {
-		t.Error("Did not find resource of type ", Service.Name(), ":", "sample_svc_1")
+		t.Error("Did not find resource of type ", Service.Type(), ":", "sample_svc_1")
 	}
 }
 
@@ -96,10 +96,10 @@ func TestUpdate(t *testing.T) {
 		Name:     "sample_lb",
 		Lbmethod: "LEASTCONNECTION",
 	}
-	client.UpdateResource(Lbvserver.Name(), "sample_lb", &lb1)
-	rsrc, err := client.FindResource(Lbvserver.Name(), "sample_lb")
+	client.UpdateResource(Lbvserver.Type(), "sample_lb", &lb1)
+	rsrc, err := client.FindResource(Lbvserver.Type(), "sample_lb")
 	if err != nil {
-		t.Error("Did not find resource of type ", Lbvserver.Name(), ":", "sample_lb")
+		t.Error("Did not find resource of type ", Lbvserver.Type(), ":", "sample_lb")
 	}
 	val, ok := rsrc["lbmethod"]
 	if ok {
@@ -123,8 +123,8 @@ func TestBind(t *testing.T) {
 		Servicename: "sample_svc_1",
 	}
 
-	client.BindResource(Lbvserver.Name(), "sample_lb", Service.Name(), "sample_svc_1", &binding)
-	exists := client.ResourceBindingExists(Lbvserver.Name(), "sample_lb", Service.Name(), "servicename", "sample_svc_1")
+	client.BindResource(Lbvserver.Type(), "sample_lb", Service.Type(), "sample_svc_1", &binding)
+	exists := client.ResourceBindingExists(Lbvserver.Type(), "sample_lb", Service.Type(), "servicename", "sample_svc_1")
 	if !exists {
 		t.Error("Failed to bind service to lb vserver")
 	}
@@ -137,8 +137,8 @@ func TestUnbind(t *testing.T) {
 		log.Fatal("Could not create a client: ", err)
 	}
 
-	client.UnbindResource(Lbvserver.Name(), "sample_lb", Service.Name(), "sample_svc_1", "servicename")
-	exists := client.ResourceBindingExists(Lbvserver.Name(), "sample_lb", Service.Name(), "servicename", "sample_svc_1")
+	client.UnbindResource(Lbvserver.Type(), "sample_lb", Service.Type(), "sample_svc_1", "servicename")
+	exists := client.ResourceBindingExists(Lbvserver.Type(), "sample_lb", Service.Type(), "servicename", "sample_svc_1")
 	if exists {
 		t.Error("Failed to unbind service to lb vserver")
 	}
@@ -150,12 +150,12 @@ func TestDelete(t *testing.T) {
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
 	}
-	client.DeleteResource(Lbvserver.Name(), "sample_lb")
-	if client.ResourceExists(Lbvserver.Name(), "sample_lb") {
+	client.DeleteResource(Lbvserver.Type(), "sample_lb")
+	if client.ResourceExists(Lbvserver.Type(), "sample_lb") {
 		t.Error("Failed to delete ", "sample_lb")
 	}
-	client.DeleteResource(Service.Name(), "sample_svc_1")
-	if client.ResourceExists(Service.Name(), "sample_svc_1") {
+	client.DeleteResource(Service.Type(), "sample_svc_1")
+	if client.ResourceExists(Service.Type(), "sample_svc_1") {
 		t.Error("Failed to delete ", "sample_svc_1")
 	}
 }

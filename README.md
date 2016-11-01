@@ -5,7 +5,7 @@ The [NITRO](https://docs.citrix.com/en-us/netscaler/11-1/nitro-api/nitro-rest.ht
 
 ## Usage
 Import the SDK from github.com/chiradeep/go-nitro/netscaler. Config objects are available at github.com/chiradeep/go-nitro/config. 
-Instantiate a client using `NewNitroClient`. To initialize the client from environment variables (`NS_URL`, `NS_LOGIN`, `NS_PASSWORD`), use `NewNitroClientFromEnv`. Config object types can be passed in as strings ("lbvserver"), or looked up from `netscaler.<config object type>.Name()`
+Instantiate a client using `NewNitroClient`. To initialize the client from environment variables (`NS_URL`, `NS_LOGIN`, `NS_PASSWORD`), use `NewNitroClientFromEnv`. Config object types can be passed in as strings ("lbvserver"), or looked up from `netscaler.<config object type>.Type()`
 The general pattern for NetScaler config objects is some combination of  `AddResource`, `UpdateResource`, `BindResource`, `UnbindResource` and `DeleteResource`. See the [NITRO REST docs](https://docs.citrix.com/en-us/netscaler/11-1/nitro-api/nitro-rest/nitro-rest-general.html) for more information.
 
 ## Example
@@ -27,7 +27,7 @@ function main() {
                 Servicetype: "HTTP",
                 Port:        8000,
         }
-        result, err := client.AddResource(netscaler.Lbvserver.Name(), "sample_lb", &lb1)
+        result, err := client.AddResource(netscaler.Lbvserver.Type(), "sample_lb", &lb1)
         if err == nil {
             client.SaveConfig()
         }
