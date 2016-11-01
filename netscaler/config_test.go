@@ -186,3 +186,14 @@ func TestEnableFeatures(t *testing.T) {
 		t.Error("Requested features do not match enabled features=", features, "result=", result)
 	}
 }
+
+func TestSaveConfig(t *testing.T) {
+	client, err := NewNitroClientFromEnv()
+	if err != nil {
+		log.Fatal("Could not create a client: ", err)
+	}
+	err = client.SaveConfig()
+	if err != nil {
+		t.Error("Failed to save config")
+	}
+}

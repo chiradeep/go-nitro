@@ -357,3 +357,38 @@ func (c *NitroClient) listEnabledFeatures() ([]byte, error) {
 
 	}
 }
+
+func (c *NitroClient) saveConfig(saveJSON []byte) error {
+	log.Println("Saving config")
+	url := c.url + "nsconfig?action=save"
+
+	req, err := c.createHTTPRequest("POST", url, bytes.NewBuffer(saveJSON))
+	//req.Header.Set("Content-Type", "application/vnd.com.citrix.netscaler.nsconfig+json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+	if err != nil {
+		return fmt.Errorf("save failed: ", err)
+	}
+	log.Println("response Status:", resp.Status)
+
+	switch resp.Status {
+	case "200 OK":
+		_, _ = ioutil.ReadAll(resp.Body)
+		return nil
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
+		"405 Method Not Allowed", "406 Not Acceptable",
+		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return fmt.Errorf("save failed: "+resp.Status+" ("+string(body)+")", err)
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return fmt.Errorf("save failed: "+resp.Status+" ("+string(body)+")", err)
+
+	}
+}

@@ -182,7 +182,8 @@ func (c *NitroClient) ResourceBindingExists(resourceType string, resourceName st
 	return true
 }
 
-//Enable a list of features
+//EnableFeatures enables the provided list of features. Depending on the licensing of the NetScaler, not all supplied features may actually
+//enabled
 func (c *NitroClient) EnableFeatures(featureNames []string) error {
 	/* construct this:
 	{
@@ -209,7 +210,7 @@ func (c *NitroClient) EnableFeatures(featureNames []string) error {
 	return nil
 }
 
-//Determine list of features
+//ListEnabledFeatures returns a string array of the list of features enabled on the NetScaler appliance
 func (c *NitroClient) ListEnabledFeatures() ([]string, error) {
 
 	bytes, err := c.listEnabledFeatures()
@@ -237,4 +238,28 @@ func (c *NitroClient) ListEnabledFeatures() ([]string, error) {
 	flist := strings.Split(result, " ")
 	log.Println("result: ", result, "flist: ", flist)
 	return flist, nil
+}
+
+//SaveConfig persists the config on the NetScaler to the NetScaler's persistent storage. This could take a few seconds
+func (c *NitroClient) SaveConfig() error {
+	/* construct this:
+	{
+	        "nsconfig": {}
+	}
+	*/
+	saveStruct := make(map[string]interface{})
+	saveStruct["nsconfig"] = make(map[string]interface{})
+
+	saveJSON, err := json.Marshal(saveStruct)
+	if err != nil {
+		log.Println("Failed to marshal save config to JSON")
+		return fmt.Errorf("Failed to marshal save config to JSON")
+	}
+	log.Println("saveJSON is " + string(saveJSON))
+
+	err = c.saveConfig(saveJSON)
+	if err != nil {
+		return fmt.Errorf("Failed to save config ", err)
+	}
+	return nil
 }
