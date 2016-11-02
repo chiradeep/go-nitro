@@ -197,3 +197,52 @@ func TestSaveConfig(t *testing.T) {
 		t.Error("Failed to save config")
 	}
 }
+
+func TestFindAllResources(t *testing.T) {
+	client, err := NewNitroClientFromEnv()
+	if err != nil {
+		log.Fatal("Could not create a client: ", err)
+	}
+	lb1 := lb.Lbvserver{
+		Name:        "sample_lb_1",
+		Ipv46:       "10.71.136.50",
+		Lbmethod:    "ROUNDROBIN",
+		Servicetype: "HTTP",
+		Port:        8000,
+	}
+	lb2 := lb.Lbvserver{
+		Name:        "sample_lb_2",
+		Ipv46:       "10.71.136.60",
+		Lbmethod:    "LEASTCONNECTION",
+		Servicetype: "HTTP",
+		Port:        8000,
+	}
+	_, err = client.AddResource(Lbvserver.Type(), "sample_lb_1", &lb1)
+	if err != nil {
+		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", "sample_lb_1")
+	}
+	_, err = client.AddResource(Lbvserver.Type(), "sample_lb_2", &lb2)
+	if err != nil {
+		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", "sample_lb_2")
+	}
+	rsrcs, err := client.FindAllResources(Lbvserver.Type())
+	if err != nil {
+		t.Error("Did not find resources of type ", Lbvserver.Type())
+	}
+	if len(rsrcs) < 2 {
+		t.Error("Found only ", len(rsrcs), " resources of type ", Lbvserver.Type(), " expected at least 2")
+	}
+
+	found := 0
+	for _, v := range rsrcs {
+		name := v["name"].(string)
+		log.Println("Found lb vserver name=", name)
+		if name == "sample_lb_1" || name == "sample_lb_2" {
+			found = found + 1
+		}
+	}
+	if found != 2 {
+		t.Error("Did not find all configured lbvservers")
+	}
+
+}
