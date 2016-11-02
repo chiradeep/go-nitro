@@ -378,3 +378,37 @@ func (c *NitroClient) saveConfig(saveJSON []byte) error {
 
 	}
 }
+
+func (c *NitroClient) clearConfig(clearJSON []byte) error {
+	log.Println("Clearing config")
+	url := c.url + "nsconfig?action=clear"
+
+	req, err := c.createHTTPRequest("POST", url, bytes.NewBuffer(clearJSON))
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+	if err != nil {
+		return fmt.Errorf("clear failed: ", err)
+	}
+	log.Println("response Status:", resp.Status)
+
+	switch resp.Status {
+	case "200 OK":
+		_, _ = ioutil.ReadAll(resp.Body)
+		return nil
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
+		"405 Method Not Allowed", "406 Not Acceptable",
+		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return fmt.Errorf("clear failed: "+resp.Status+" ("+string(body)+")", err)
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return fmt.Errorf("clear failed: "+resp.Status+" ("+string(body)+")", err)
+
+	}
+}

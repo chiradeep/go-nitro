@@ -336,3 +336,29 @@ func (c *NitroClient) SaveConfig() error {
 	}
 	return nil
 }
+
+//ClearConfig deletes the config on the NetScaler
+func (c *NitroClient) ClearConfig() error {
+	/* construct this:
+	{
+	    "nsconfig": {"level": "basic"}
+	}
+	*/
+	clearStruct := make(map[string]map[string]string)
+	clearStruct["nsconfig"] = make(map[string]string)
+
+	clearStruct["nsconfig"]["level"] = "basic"
+
+	clearJSON, err := json.Marshal(clearStruct)
+	if err != nil {
+		log.Println("Failed to marshal clear config to JSON")
+		return fmt.Errorf("Failed to marshal clear config to JSON")
+	}
+	log.Println("clearJSON is " + string(clearJSON))
+
+	err = c.clearConfig(clearJSON)
+	if err != nil {
+		return fmt.Errorf("Failed to clear config ", err)
+	}
+	return nil
+}

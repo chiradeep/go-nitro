@@ -45,7 +45,19 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-// Functional test
+// Functional tests
+
+func TestClearConfig(t *testing.T) {
+	client, err := NewNitroClientFromEnv()
+	if err != nil {
+		log.Fatal("Could not create a client: ", err)
+	}
+	err = client.ClearConfig()
+	if err != nil {
+		t.Error("Could not clear config: ", err)
+	}
+}
+
 func TestAdd(t *testing.T) {
 	client, err := NewNitroClientFromEnv()
 	if err != nil {
