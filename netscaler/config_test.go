@@ -40,8 +40,8 @@ func randomIP() string {
 	return fmt.Sprintf("%d.%d.%d.%d", rand.Intn(218)+1, rand.Intn(252)+1, rand.Intn(252)+1, rand.Intn(252)+1)
 }
 
-//Dummy test to init random
-func TestInit(t *testing.T) {
+//init random
+func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
