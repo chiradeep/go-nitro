@@ -16,22 +16,34 @@ limitations under the License.
 package netscaler
 
 import (
+	"fmt"
 	"github.com/chiradeep/go-nitro/config/basic"
 	"github.com/chiradeep/go-nitro/config/lb"
 	"log"
+	"math/rand"
 	"testing"
+	"time"
 )
 
-/*
-func TestClientCreate() {
-	client, err := netscaler.NewNitroClientFromEnv("http://127.0.0.1:32774")
-	if err != nil {
-		log.Fatal("Could not create a client: ", err)
-	}
-	log.Printf("Client is %+v\n", *client)
+//Used to generate random config object names
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
+func randomString(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }
-*/
+
+func randomIP() string {
+	return fmt.Sprintf("%d.%d.%d.%d", rand.Intn(218)+1, rand.Intn(252)+1, rand.Intn(252)+1, rand.Intn(252)+1)
+}
+
+//Dummy test to init random
+func TestInit(t *testing.T) {
+	rand.Seed(time.Now().UnixNano())
+}
 
 // Functional test
 func TestAdd(t *testing.T) {
@@ -40,49 +52,55 @@ func TestAdd(t *testing.T) {
 		log.Fatal("Could not create a client: ", err)
 	}
 
+	rndIP := randomIP()
+	lbName := "test_lb_" + randomString(5)
+
 	lb1 := lb.Lbvserver{
-		Name:        "sample_lb",
-		Ipv46:       "10.71.136.50",
+		Name:        lbName,
+		Ipv46:       rndIP,
 		Lbmethod:    "ROUNDROBIN",
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	client.AddResource(Lbvserver.Type(), "sample_lb", &lb1)
+	client.AddResource(Lbvserver.Type(), lbName, &lb1)
 
-	rsrc, err := client.FindResource(Lbvserver.Type(), "sample_lb")
+	rsrc, err := client.FindResource(Lbvserver.Type(), lbName)
 	if err != nil {
-		t.Error("Did not find resource of type ", Lbvserver.Type(), ":", "sample_lb")
+		t.Error("Did not find resource of type ", Lbvserver.Type(), ":", lbName)
 	}
 	val, ok := rsrc["ipv46"]
 	if ok {
-		if val != "10.71.136.50" {
-			t.Error("Wrong ipv46 for lb ", "sample_lb", ": ", val)
+		if val != rndIP {
+			t.Error("Wrong ipv46 for lb ", lbName, ": ", val)
 		}
 		val, ok = rsrc["lbmethod"]
 		if val != "ROUNDROBIN" {
-			t.Error("Wrong lbmethod for lb ", "sample_lb", ": ", val)
+			t.Error("Wrong lbmethod for lb ", lbName, ": ", val)
 		}
 		val, ok = rsrc["servicetype"]
 		if val != "HTTP" {
-			t.Error("Wrong servicetype for lb ", "sample_lb", ": ", val)
+			t.Error("Wrong servicetype for lb ", lbName, ": ", val)
 		}
 	}
 	if !ok {
-		t.Error("Non existent property in retrieved lb ", "sample_lb")
+		t.Error("Non existent property in retrieved lb ", lbName)
 	}
 
+	svcName := randomString(5)
+	rndIP2 := randomIP()
+
 	service1 := basic.Service{
-		Name:        "sample_svc_1",
-		Ip:          "172.22.33.4",
+		Name:        svcName,
+		Ip:          rndIP2,
 		Port:        80,
 		Servicetype: "HTTP",
 	}
 
-	client.AddResource(Service.Type(), "sample_svc_1", &service1)
+	client.AddResource(Service.Type(), svcName, &service1)
 
-	_, err = client.FindResource(Service.Type(), "sample_svc_1")
+	_, err = client.FindResource(Service.Type(), svcName)
 	if err != nil {
-		t.Error("Did not find resource of type ", Service.Type(), ":", "sample_svc_1")
+		t.Error("Did not find resource of type ", Service.Type(), ":", svcName)
 	}
 }
 
@@ -91,15 +109,29 @@ func TestUpdate(t *testing.T) {
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
 	}
+	rndIP := randomIP()
+	lbName := "test_lb_" + randomString(5)
 
 	lb1 := lb.Lbvserver{
-		Name:     "sample_lb",
+		Name:        lbName,
+		Ipv46:       rndIP,
+		Lbmethod:    "ROUNDROBIN",
+		Servicetype: "HTTP",
+		Port:        8000,
+	}
+	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	if err != nil {
+		t.Error("Could not create LB")
+	}
+
+	lb1 = lb.Lbvserver{
+		Name:     lbName,
 		Lbmethod: "LEASTCONNECTION",
 	}
-	client.UpdateResource(Lbvserver.Type(), "sample_lb", &lb1)
-	rsrc, err := client.FindResource(Lbvserver.Type(), "sample_lb")
+	client.UpdateResource(Lbvserver.Type(), lbName, &lb1)
+	rsrc, err := client.FindResource(Lbvserver.Type(), lbName)
 	if err != nil {
-		t.Error("Did not find resource of type ", Lbvserver.Type(), ":", "sample_lb")
+		t.Error("Did not find resource of type ", Lbvserver.Type(), ":", lbName)
 	}
 	val, ok := rsrc["lbmethod"]
 	if ok {
@@ -112,35 +144,104 @@ func TestUpdate(t *testing.T) {
 	}
 }
 
-func TestBind(t *testing.T) {
+func TestBindUnBind(t *testing.T) {
 	client, err := NewNitroClientFromEnv()
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
 	}
+	rndIP := randomIP()
+	lbName := "test_lb_" + randomString(5)
+	rndIP2 := randomIP()
+	svcName := "test_svc_" + randomString(5)
 
-	binding := lb.Lbvserverservicebinding{
-		Name:        "sample_lb",
-		Servicename: "sample_svc_1",
+	lb1 := lb.Lbvserver{
+		Name:        lbName,
+		Ipv46:       rndIP,
+		Lbmethod:    "ROUNDROBIN",
+		Servicetype: "HTTP",
+		Port:        8000,
+	}
+	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	if err != nil {
+		t.Error("Could not create LB")
+	}
+	service1 := basic.Service{
+		Name:        svcName,
+		Ip:          rndIP2,
+		Port:        80,
+		Servicetype: "HTTP",
 	}
 
-	client.BindResource(Lbvserver.Type(), "sample_lb", Service.Type(), "sample_svc_1", &binding)
-	exists := client.ResourceBindingExists(Lbvserver.Type(), "sample_lb", Service.Type(), "servicename", "sample_svc_1")
+	_, err = client.AddResource(Service.Type(), svcName, &service1)
+	if err != nil {
+		t.Error("Could not create service")
+	}
+
+	binding := lb.Lbvserverservicebinding{
+		Name:        lbName,
+		Servicename: svcName,
+	}
+
+	client.BindResource(Lbvserver.Type(), lbName, Service.Type(), svcName, &binding)
+	exists := client.ResourceBindingExists(Lbvserver.Type(), lbName, Service.Type(), "servicename", svcName)
 	if !exists {
 		t.Error("Failed to bind service to lb vserver")
+	}
+	err = client.UnbindResource(Lbvserver.Type(), lbName, Service.Type(), svcName, "servicename")
+	exists = client.ResourceBindingExists(Lbvserver.Type(), lbName, Service.Type(), "servicename", svcName)
+	if exists {
+		t.Error("Failed to unbind service to lb vserver")
 	}
 
 }
 
-func TestUnbind(t *testing.T) {
+func TestFindBoundResource(t *testing.T) {
 	client, err := NewNitroClientFromEnv()
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
 	}
+	lbName := "test_lb_" + randomString(5)
+	lb1 := lb.Lbvserver{
+		Name:        lbName,
+		Ipv46:       randomIP(),
+		Lbmethod:    "ROUNDROBIN",
+		Servicetype: "HTTP",
+		Port:        8000,
+	}
+	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	if err != nil {
+		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", "sample_lb_1")
+	}
+	svcName := "test_svc_" + randomString(5)
+	service1 := basic.Service{
+		Name:        svcName,
+		Ip:          randomIP(),
+		Port:        80,
+		Servicetype: "HTTP",
+	}
 
-	client.UnbindResource(Lbvserver.Type(), "sample_lb", Service.Type(), "sample_svc_1", "servicename")
-	exists := client.ResourceBindingExists(Lbvserver.Type(), "sample_lb", Service.Type(), "servicename", "sample_svc_1")
-	if exists {
-		t.Error("Failed to unbind service to lb vserver")
+	_, err = client.AddResource(Service.Type(), svcName, &service1)
+	if err != nil {
+		t.Error("Failed to add resource of type ", Service.Type(), ":", svcName)
+
+	}
+	binding := lb.Lbvserverservicebinding{
+		Name:        lbName,
+		Servicename: svcName,
+	}
+	err = client.BindResource(Lbvserver.Type(), lbName, Service.Type(), svcName, &binding)
+	if err != nil {
+		t.Error("Failed to bind resource of type ", Service.Type(), ":", svcName)
+
+	}
+	result, err := client.FindBoundResource(Lbvserver.Type(), lbName, Service.Type(), "servicename", svcName)
+	if err != nil {
+		t.Error("Failed to find bound resource of type ", Service.Type(), ":", svcName)
+
+	}
+	//log.Println("Found bound resource ", result)
+	if result["servicename"] != svcName {
+		t.Error("Failed to find bound resource of type ", Service.Type(), ":", svcName)
 	}
 
 }
@@ -150,13 +251,24 @@ func TestDelete(t *testing.T) {
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
 	}
-	client.DeleteResource(Lbvserver.Type(), "sample_lb")
-	if client.ResourceExists(Lbvserver.Type(), "sample_lb") {
-		t.Error("Failed to delete ", "sample_lb")
+	rndIP := randomIP()
+	lbName := "test_lb_" + randomString(5)
+
+	lb1 := lb.Lbvserver{
+		Name:        lbName,
+		Ipv46:       rndIP,
+		Lbmethod:    "ROUNDROBIN",
+		Servicetype: "HTTP",
+		Port:        8000,
 	}
-	client.DeleteResource(Service.Type(), "sample_svc_1")
-	if client.ResourceExists(Service.Type(), "sample_svc_1") {
-		t.Error("Failed to delete ", "sample_svc_1")
+	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	if err != nil {
+		t.Error("Could not create LB")
+	}
+
+	client.DeleteResource(Lbvserver.Type(), lbName)
+	if client.ResourceExists(Lbvserver.Type(), lbName) {
+		t.Error("Failed to delete ", lbName)
 	}
 }
 
@@ -203,27 +315,29 @@ func TestFindAllResources(t *testing.T) {
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
 	}
+	lbName1 := "test_lb_" + randomString(5)
+	lbName2 := "test_lb_" + randomString(5)
 	lb1 := lb.Lbvserver{
-		Name:        "sample_lb_1",
-		Ipv46:       "10.71.136.50",
+		Name:        lbName1,
+		Ipv46:       randomIP(),
 		Lbmethod:    "ROUNDROBIN",
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
 	lb2 := lb.Lbvserver{
-		Name:        "sample_lb_2",
-		Ipv46:       "10.71.136.60",
+		Name:        lbName2,
+		Ipv46:       randomIP(),
 		Lbmethod:    "LEASTCONNECTION",
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	_, err = client.AddResource(Lbvserver.Type(), "sample_lb_1", &lb1)
+	_, err = client.AddResource(Lbvserver.Type(), lbName1, &lb1)
 	if err != nil {
-		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", "sample_lb_1")
+		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", lbName1)
 	}
-	_, err = client.AddResource(Lbvserver.Type(), "sample_lb_2", &lb2)
+	_, err = client.AddResource(Lbvserver.Type(), lbName2, &lb2)
 	if err != nil {
-		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", "sample_lb_2")
+		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", lbName2)
 	}
 	rsrcs, err := client.FindAllResources(Lbvserver.Type())
 	if err != nil {
@@ -236,8 +350,7 @@ func TestFindAllResources(t *testing.T) {
 	found := 0
 	for _, v := range rsrcs {
 		name := v["name"].(string)
-		log.Println("Found lb vserver name=", name)
-		if name == "sample_lb_1" || name == "sample_lb_2" {
+		if name == lbName1 || name == lbName2 {
 			found = found + 1
 		}
 	}

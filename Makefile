@@ -1,4 +1,5 @@
 SDK_ONLY_PKGS=$(shell go list ./... | grep -v "/vendor/")
+SDK_TEST_ONLY_PKGS=$(shell go list ./... | grep -v "/vendor/" | grep -v "/config" | grep -v "/example")
 
 all: build unit
 
@@ -13,8 +14,8 @@ build:
 	@go build ${SDK_ONLY_PKGS}
 
 unit:  build 
-	@echo "go test SDK and vendor packages"
-	@go test   $(SDK_ONLY_PKGS)
+	@echo "go test SDK  package"
+	@go test  -v $(SDK_TEST_ONLY_PKGS)
 
 lint:  build 
 	@echo "go lint netscaler package (ignoring generated packages)"

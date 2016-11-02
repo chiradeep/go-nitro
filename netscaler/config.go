@@ -177,7 +177,6 @@ func (c *NitroClient) FindAllResources(resourceType string) ([]map[string]interf
 		log.Printf("No %s found", resourceType)
 		return make([]map[string]interface{}, 0, 0), nil
 	}
-	log.Println("data[resourceType]= ", data[resourceType])
 	resources := data[resourceType].([]interface{})
 
 	ret := make([]map[string]interface{}, len(resources), len(resources))
@@ -207,6 +206,28 @@ func (c *NitroClient) ResourceBindingExists(resourceType string, resourceName st
 
 	log.Printf("%s of type  %s is bound to %s type and name %s", resourceType, resourceName, boundResourceType, boundResourceFilterValue)
 	return true
+}
+
+//FindBoundResource finds a bound resource if it exists
+func (c *NitroClient) FindBoundResource(resourceType string, resourceName string, boundResourceType string, boundResourceFilterName string, boundResourceFilterValue string) (map[string]interface{}, error) {
+	result, err := c.listBoundResources(resourceName, resourceType, boundResourceType, boundResourceFilterName, boundResourceFilterValue)
+	if err != nil {
+		log.Printf("No %s %s to %s %s binding found", resourceType, resourceName, boundResourceType, boundResourceFilterValue)
+		return nil, fmt.Errorf("No %s %s to %s %s binding found, err=%s", resourceType, resourceName, boundResourceType, boundResourceFilterValue, err)
+	}
+
+	var data map[string]interface{}
+	if err := json.Unmarshal(result, &data); err != nil {
+		log.Println("Failed to unmarshal Netscaler Response!")
+		return nil, fmt.Errorf("Failed to unmarshal Netscaler Response!, err=%s", err)
+	}
+	bindingType := fmt.Sprintf("%s_%s_binding", resourceType, boundResourceType)
+	if data[bindingType] == nil {
+		return nil, fmt.Errorf("No %s %s to %s %s binding found", resourceType, resourceName, boundResourceType, boundResourceFilterValue)
+	}
+	resource := data[bindingType].([]interface{})[0] //only one resource obviously
+	return resource.(map[string]interface{}), nil
+
 }
 
 //EnableFeatures enables the provided list of features. Depending on the licensing of the NetScaler, not all supplied features may actually
