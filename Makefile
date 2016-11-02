@@ -8,6 +8,7 @@ help:
 	@echo "  build                   to go build the SDK"
 	@echo "  unit                    to run unit tests"
 	@echo "  lint                    to lint the SDK"
+	@echo "  generate                to generate the Go Structs from JSON schema"
 
 build:
 	@echo "go build SDK and vendor packages"
