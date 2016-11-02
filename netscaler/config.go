@@ -230,6 +230,31 @@ func (c *NitroClient) FindBoundResource(resourceType string, resourceName string
 
 }
 
+//FindAllBoundResources returns an array of bound config objects of the type specified that are bound to the resource specified
+func (c *NitroClient) FindAllBoundResources(resourceType string, resourceName string, boundResourceType string) ([]map[string]interface{}, error) {
+	result, err := c.listBoundResources(resourceName, resourceType, boundResourceType, "", "")
+	if err != nil {
+		log.Printf("No %s %s to %s  binding found", resourceType, resourceName, boundResourceType)
+		return nil, fmt.Errorf("No %s %s to %s binding found, err=%s", resourceType, resourceName, boundResourceType, err)
+	}
+
+	var data map[string]interface{}
+	if err := json.Unmarshal(result, &data); err != nil {
+		log.Println("Failed to unmarshal Netscaler Response!")
+		return nil, fmt.Errorf("FindAllBoundResources: Failed to unmarshal Netscaler Response!, err=%s", err)
+	}
+	bindingType := fmt.Sprintf("%s_%s_binding", resourceType, boundResourceType)
+	if data[bindingType] == nil {
+		return nil, fmt.Errorf("No %s %s to %s  binding found", resourceType, resourceName, boundResourceType)
+	}
+	resources := data[bindingType].([]interface{})
+	ret := make([]map[string]interface{}, len(resources), len(resources))
+	for i, v := range resources {
+		ret[i] = v.(map[string]interface{})
+	}
+	return ret, nil
+}
+
 //EnableFeatures enables the provided list of features. Depending on the licensing of the NetScaler, not all supplied features may actually
 //enabled
 func (c *NitroClient) EnableFeatures(featureNames []string) error {

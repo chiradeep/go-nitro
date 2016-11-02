@@ -359,3 +359,84 @@ func TestFindAllResources(t *testing.T) {
 	}
 
 }
+
+func TestFindAllBoundResources(t *testing.T) {
+	client, err := NewNitroClientFromEnv()
+	if err != nil {
+		log.Fatal("Could not create a client: ", err)
+	}
+	lbName1 := "test_lb_" + randomString(5)
+	svcName1 := "test_svc_" + randomString(5)
+	svcName2 := "test_svc_" + randomString(5)
+	lb1 := lb.Lbvserver{
+		Name:        lbName1,
+		Ipv46:       randomIP(),
+		Lbmethod:    "ROUNDROBIN",
+		Servicetype: "HTTP",
+		Port:        8000,
+	}
+	_, err = client.AddResource(Lbvserver.Type(), lbName1, &lb1)
+	if err != nil {
+		t.Error("Could not create LB")
+	}
+	service1 := basic.Service{
+		Name:        svcName1,
+		Ip:          randomIP(),
+		Port:        80,
+		Servicetype: "HTTP",
+	}
+	service2 := basic.Service{
+		Name:        svcName2,
+		Ip:          randomIP(),
+		Port:        80,
+		Servicetype: "HTTP",
+	}
+
+	_, err = client.AddResource(Service.Type(), svcName1, &service1)
+	if err != nil {
+		t.Error("Could not create service service1")
+	}
+	_, err = client.AddResource(Service.Type(), svcName2, &service2)
+	if err != nil {
+		t.Error("Could not create service service2")
+	}
+
+	binding1 := lb.Lbvserverservicebinding{
+		Name:        lbName1,
+		Servicename: svcName1,
+	}
+	binding2 := lb.Lbvserverservicebinding{
+		Name:        lbName1,
+		Servicename: svcName2,
+	}
+
+	err = client.BindResource(Lbvserver.Type(), lbName1, Service.Type(), svcName1, &binding1)
+	if err != nil {
+		t.Error("Could not bind service service1")
+	}
+
+	err = client.BindResource(Lbvserver.Type(), lbName1, Service.Type(), svcName2, &binding2)
+	if err != nil {
+		t.Error("Could not bind service service2")
+	}
+	rsrcs, err := client.FindAllBoundResources(Lbvserver.Type(), lbName1, Service.Type())
+	if err != nil {
+		t.Error("Did not find bound resources of type ", Service.Type())
+	}
+	if len(rsrcs) < 2 {
+		t.Error("Found only ", len(rsrcs), " resources of type ", Service.Type(), " expected at least 2")
+	}
+
+	found := 0
+	for _, v := range rsrcs {
+		name := v["servicename"].(string)
+		log.Println("Found service : ", v)
+		if name == svcName1 || name == svcName2 {
+			found = found + 1
+		}
+	}
+	if found != 2 {
+		t.Error("Did not find all bound services")
+	}
+
+}
