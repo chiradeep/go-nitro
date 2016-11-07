@@ -50,6 +50,25 @@ func createResponseHandler(resp *http.Response) ([]byte, error) {
 	}
 }
 
+func deleteResponseHandler(resp *http.Response) ([]byte, error) {
+	switch resp.Status {
+	case "200 OK", "404 Not Found":
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, nil
+
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
+		"405 Method Not Allowed", "406 Not Acceptable",
+		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		return body, err
+
+	}
+}
+
 func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.Buffer) (*http.Request, error) {
 	req, err := http.NewRequest(method, url, buff)
 	if err != nil {
@@ -100,35 +119,8 @@ func (c *NitroClient) deleteResource(resourceType string, resourceName string) (
 	log.Println("Deleting resource of type ", resourceType)
 	url := c.url + resourceType + "/" + resourceName
 
-	req, err := c.createHTTPRequest("DELETE", url, bytes.NewBuffer([]byte{}))
+	return c.doHTTPRequest("DELETE", url, bytes.NewBuffer([]byte{}), deleteResponseHandler)
 
-	resp, err := c.client.Do(req)
-	if resp != nil {
-		defer resp.Body.Close()
-	}
-	if err != nil {
-		log.Fatal(err)
-		return []byte{}, err
-	}
-
-	log.Println("response Status:", resp.Status)
-
-	switch resp.Status {
-	case "200 OK", "404 Not Found":
-		body, _ := ioutil.ReadAll(resp.Body)
-		return body, nil
-
-	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
-		"405 Method Not Allowed", "406 Not Acceptable",
-		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
-		body, _ := ioutil.ReadAll(resp.Body)
-		log.Println("error = " + string(body))
-		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
-	default:
-		body, err := ioutil.ReadAll(resp.Body)
-		return body, err
-
-	}
 }
 
 func (c *NitroClient) unbindResource(resourceType string, resourceName string, boundResourceType string, boundResource string, bindingFilterName string) ([]byte, error) {
@@ -137,35 +129,8 @@ func (c *NitroClient) unbindResource(resourceType string, resourceName string, b
 
 	url := c.url + "/" + bindingName + "/" + resourceName + "?args=" + bindingFilterName + ":" + boundResource
 
-	req, err := c.createHTTPRequest("DELETE", url, bytes.NewBuffer([]byte{}))
+	return c.doHTTPRequest("DELETE", url, bytes.NewBuffer([]byte{}), deleteResponseHandler)
 
-	resp, err := c.client.Do(req)
-	if resp != nil {
-		defer resp.Body.Close()
-	}
-	if err != nil {
-		log.Fatal(err)
-		return []byte{}, err
-	}
-	log.Println("response Status:", resp.Status)
-
-	switch resp.Status {
-	case "200 OK", "404 Not Found":
-		body, _ := ioutil.ReadAll(resp.Body)
-		return body, nil
-
-	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
-		"405 Method Not Allowed", "406 Not Acceptable",
-		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
-		body, _ := ioutil.ReadAll(resp.Body)
-		log.Println("error = " + string(body))
-		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
-	default:
-		body, err := ioutil.ReadAll(resp.Body)
-		log.Println("error = " + string(body))
-		return body, err
-
-	}
 }
 
 func (c *NitroClient) listBoundResources(resourceName string, resourceType string, boundResourceType string, boundResourceFilterName string, boundResourceFilterValue string) ([]byte, error) {
