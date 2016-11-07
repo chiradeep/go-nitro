@@ -409,7 +409,6 @@ func TestFindAllBoundResources(t *testing.T) {
 	found := 0
 	for _, v := range rsrcs {
 		name := v["servicename"].(string)
-		log.Println("Found service : ", v)
 		if name == svcName1 || name == svcName2 {
 			found = found + 1
 		}
