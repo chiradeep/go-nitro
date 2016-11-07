@@ -181,34 +181,8 @@ func (c *NitroClient) enableFeatures(featureJSON []byte) ([]byte, error) {
 	log.Println("Enabling features")
 	url := c.url + "nsfeature?action=enable"
 
-	req, err := c.createHTTPRequest("POST", url, bytes.NewBuffer(featureJSON))
+	return c.doHTTPRequest("POST", url, bytes.NewBuffer(featureJSON), createResponseHandler)
 
-	resp, err := c.client.Do(req)
-	if resp != nil {
-		defer resp.Body.Close()
-	}
-	if err != nil {
-		log.Fatal(err)
-		return []byte{}, err
-	}
-	log.Println("response Status:", resp.Status)
-
-	switch resp.Status {
-	case "200 OK":
-		body, _ := ioutil.ReadAll(resp.Body)
-		return body, nil
-	case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
-		"405 Method Not Allowed", "406 Not Acceptable",
-		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
-		body, _ := ioutil.ReadAll(resp.Body)
-		log.Println("error = " + string(body))
-		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
-	default:
-		body, err := ioutil.ReadAll(resp.Body)
-		log.Println("error = " + string(body))
-		return body, err
-
-	}
 }
 
 func (c *NitroClient) listEnabledFeatures() ([]byte, error) {
@@ -223,64 +197,15 @@ func (c *NitroClient) saveConfig(saveJSON []byte) error {
 	log.Println("Saving config")
 	url := c.url + "nsconfig?action=save"
 
-	req, err := c.createHTTPRequest("POST", url, bytes.NewBuffer(saveJSON))
+	_, err := c.doHTTPRequest("POST", url, bytes.NewBuffer(saveJSON), createResponseHandler)
+	return err
 
-	resp, err := c.client.Do(req)
-	if resp != nil {
-		defer resp.Body.Close()
-	}
-	if err != nil {
-		return fmt.Errorf("save failed: ", err)
-	}
-	log.Println("response Status:", resp.Status)
-
-	switch resp.Status {
-	case "200 OK":
-		_, _ = ioutil.ReadAll(resp.Body)
-		return nil
-	case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
-		"405 Method Not Allowed", "406 Not Acceptable",
-		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
-		body, _ := ioutil.ReadAll(resp.Body)
-		log.Println("error = " + string(body))
-		return fmt.Errorf("save failed: "+resp.Status+" ("+string(body)+")", err)
-	default:
-		body, err := ioutil.ReadAll(resp.Body)
-		log.Println("error = " + string(body))
-		return fmt.Errorf("save failed: "+resp.Status+" ("+string(body)+")", err)
-
-	}
 }
 
 func (c *NitroClient) clearConfig(clearJSON []byte) error {
 	log.Println("Clearing config")
 	url := c.url + "nsconfig?action=clear"
 
-	req, err := c.createHTTPRequest("POST", url, bytes.NewBuffer(clearJSON))
-
-	resp, err := c.client.Do(req)
-	if resp != nil {
-		defer resp.Body.Close()
-	}
-	if err != nil {
-		return fmt.Errorf("clear failed: ", err)
-	}
-	log.Println("response Status:", resp.Status)
-
-	switch resp.Status {
-	case "200 OK":
-		_, _ = ioutil.ReadAll(resp.Body)
-		return nil
-	case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
-		"405 Method Not Allowed", "406 Not Acceptable",
-		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
-		body, _ := ioutil.ReadAll(resp.Body)
-		log.Println("error = " + string(body))
-		return fmt.Errorf("clear failed: "+resp.Status+" ("+string(body)+")", err)
-	default:
-		body, err := ioutil.ReadAll(resp.Body)
-		log.Println("error = " + string(body))
-		return fmt.Errorf("clear failed: "+resp.Status+" ("+string(body)+")", err)
-
-	}
+	_, err := c.doHTTPRequest("POST", url, bytes.NewBuffer(clearJSON), createResponseHandler)
+	return err
 }
