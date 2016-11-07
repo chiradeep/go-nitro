@@ -25,6 +25,31 @@ import (
 	"net/http"
 )
 
+type responseHandlerFunc func(resp *http.Response) ([]byte, error)
+
+func createResponseHandler(resp *http.Response) ([]byte, error) {
+	switch resp.Status {
+	case "201 Created", "200 OK", "409 Conflict":
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, nil
+
+	case "207 Multi Status":
+		//This happens in case of Bulk operations, which we do not support yet
+		body, _ := ioutil.ReadAll(resp.Body)
+		return body, nil
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
+		"404 Not Found", "405 Method Not Allowed", "406 Not Acceptable",
+		"503 Service Unavailable", "599 Netscaler specific error":
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("error = " + string(body))
+		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
+	default:
+		body, err := ioutil.ReadAll(resp.Body)
+		return body, err
+
+	}
+}
+
 func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.Buffer) (*http.Request, error) {
 	req, err := http.NewRequest(method, url, buff)
 	if err != nil {
@@ -38,14 +63,8 @@ func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.B
 	return req, nil
 }
 
-func (c *NitroClient) createResource(resourceType string, resourceJSON []byte) ([]byte, error) {
-	log.Println("Creating resource of type ", resourceType)
-
-	url := c.url + resourceType
-
-	method := "POST"
-
-	req, err := c.createHTTPRequest(method, url, bytes.NewBuffer(resourceJSON))
+func (c *NitroClient) doHTTPRequest(method string, url string, bytes *bytes.Buffer, respHandler responseHandlerFunc) ([]byte, error) {
+	req, err := c.createHTTPRequest(method, url, bytes)
 
 	resp, err := c.client.Do(req)
 	if resp != nil {
@@ -56,27 +75,16 @@ func (c *NitroClient) createResource(resourceType string, resourceJSON []byte) (
 		return []byte{}, err
 	}
 	log.Println("response Status:", resp.Status)
+	return respHandler(resp)
+}
 
-	switch resp.Status {
-	case "201 Created", "200 OK", "409 Conflict":
-		body, _ := ioutil.ReadAll(resp.Body)
-		return body, nil
+func (c *NitroClient) createResource(resourceType string, resourceJSON []byte) ([]byte, error) {
+	log.Println("Creating resource of type ", resourceType)
 
-	case "207 Multi Status":
-		//This happens in case of Bulk operations, which we do not support yet
-		body, _ := ioutil.ReadAll(resp.Body)
-		return body, err
-	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
-		"404 Not Found", "405 Method Not Allowed", "406 Not Acceptable",
-		"503 Service Unavailable", "599 Netscaler specific error":
-		body, _ := ioutil.ReadAll(resp.Body)
-		log.Println("error = " + string(body))
-		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
-	default:
-		body, err := ioutil.ReadAll(resp.Body)
-		return body, err
+	url := c.url + resourceType
 
-	}
+	return c.doHTTPRequest("POST", url, bytes.NewBuffer(resourceJSON), createResponseHandler)
+
 }
 
 func (c *NitroClient) updateResource(resourceType string, resourceName string, resourceJSON []byte) ([]byte, error) {
@@ -84,40 +92,8 @@ func (c *NitroClient) updateResource(resourceType string, resourceName string, r
 
 	url := c.url + resourceType + "/" + resourceName
 
-	method := "PUT"
+	return c.doHTTPRequest("PUT", url, bytes.NewBuffer(resourceJSON), createResponseHandler)
 
-	req, err := c.createHTTPRequest(method, url, bytes.NewBuffer(resourceJSON))
-
-	resp, err := c.client.Do(req)
-	if resp != nil {
-		defer resp.Body.Close()
-	}
-	if err != nil {
-		log.Fatal(err)
-		return []byte{}, err
-	}
-	log.Println("response Status:", resp.Status)
-
-	switch resp.Status {
-	case "201 Created", "200 OK", "409 Conflict":
-		body, _ := ioutil.ReadAll(resp.Body)
-		return body, nil
-
-	case "207 Multi Status":
-		//Bulk operations, not expected
-		body, _ := ioutil.ReadAll(resp.Body)
-		return body, err
-	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
-		"404 Not Found", "405 Method Not Allowed", "406 Not Acceptable",
-		"503 Service Unavailable", "599 Netscaler specific error":
-		body, _ := ioutil.ReadAll(resp.Body)
-		log.Println("error = " + string(body))
-		return body, errors.New("failed: " + resp.Status + " (" + string(body) + ")")
-	default:
-		body, err := ioutil.ReadAll(resp.Body)
-		return body, err
-
-	}
 }
 
 func (c *NitroClient) deleteResource(resourceType string, resourceName string) ([]byte, error) {
