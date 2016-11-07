@@ -47,8 +47,7 @@ func (c *NitroClient) createResource(resourceType string, resourceJSON []byte) (
 
 	req, err := c.createHTTPRequest(method, url, bytes.NewBuffer(resourceJSON))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.client.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
@@ -89,8 +88,7 @@ func (c *NitroClient) updateResource(resourceType string, resourceName string, r
 
 	req, err := c.createHTTPRequest(method, url, bytes.NewBuffer(resourceJSON))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.client.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
@@ -128,8 +126,7 @@ func (c *NitroClient) deleteResource(resourceType string, resourceName string) (
 
 	req, err := c.createHTTPRequest("DELETE", url, bytes.NewBuffer([]byte{}))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.client.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
@@ -166,8 +163,7 @@ func (c *NitroClient) unbindResource(resourceType string, resourceName string, b
 
 	req, err := c.createHTTPRequest("DELETE", url, bytes.NewBuffer([]byte{}))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.client.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
@@ -207,8 +203,7 @@ func (c *NitroClient) listBoundResources(resourceName string, resourceType strin
 
 	req, err := c.createHTTPRequest("GET", url, bytes.NewBuffer([]byte{}))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.client.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
@@ -246,8 +241,7 @@ func (c *NitroClient) listResource(resourceType string, resourceName string) ([]
 
 	req, err := c.createHTTPRequest("GET", url, bytes.NewBuffer([]byte{}))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.client.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
@@ -281,8 +275,7 @@ func (c *NitroClient) enableFeatures(featureJSON []byte) ([]byte, error) {
 
 	req, err := c.createHTTPRequest("POST", url, bytes.NewBuffer(featureJSON))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.client.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
@@ -316,8 +309,7 @@ func (c *NitroClient) listEnabledFeatures() ([]byte, error) {
 
 	req, err := c.createHTTPRequest("GET", url, bytes.NewBuffer([]byte{}))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.client.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
@@ -351,8 +343,7 @@ func (c *NitroClient) saveConfig(saveJSON []byte) error {
 
 	req, err := c.createHTTPRequest("POST", url, bytes.NewBuffer(saveJSON))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.client.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
@@ -385,8 +376,7 @@ func (c *NitroClient) clearConfig(clearJSON []byte) error {
 
 	req, err := c.createHTTPRequest("POST", url, bytes.NewBuffer(clearJSON))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	resp, err := c.client.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}

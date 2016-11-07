@@ -25,6 +25,8 @@ import (
 	"time"
 )
 
+var client *NitroClient
+
 //Used to generate random config object names
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
@@ -40,29 +42,26 @@ func randomIP() string {
 	return fmt.Sprintf("%d.%d.%d.%d", rand.Intn(218)+1, rand.Intn(252)+1, rand.Intn(252)+1, rand.Intn(252)+1)
 }
 
-//init random
+//init random and client
 func init() {
 	rand.Seed(time.Now().UnixNano())
-}
-
-// Functional tests
-
-func TestClearConfig(t *testing.T) {
-	client, err := NewNitroClientFromEnv()
+	var err error
+	client, err = NewNitroClientFromEnv()
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
 	}
-	err = client.ClearConfig()
+
+}
+
+// Functional tests
+func TestClearConfig(t *testing.T) {
+	err := client.ClearConfig()
 	if err != nil {
 		t.Error("Could not clear config: ", err)
 	}
 }
 
 func TestAdd(t *testing.T) {
-	client, err := NewNitroClientFromEnv()
-	if err != nil {
-		log.Fatal("Could not create a client: ", err)
-	}
 
 	rndIP := randomIP()
 	lbName := "test_lb_" + randomString(5)
@@ -117,10 +116,6 @@ func TestAdd(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
-	client, err := NewNitroClientFromEnv()
-	if err != nil {
-		log.Fatal("Could not create a client: ", err)
-	}
 	rndIP := randomIP()
 	lbName := "test_lb_" + randomString(5)
 
@@ -131,7 +126,7 @@ func TestUpdate(t *testing.T) {
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	_, err := client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Could not create LB")
 	}
@@ -157,10 +152,6 @@ func TestUpdate(t *testing.T) {
 }
 
 func TestBindUnBind(t *testing.T) {
-	client, err := NewNitroClientFromEnv()
-	if err != nil {
-		log.Fatal("Could not create a client: ", err)
-	}
 	rndIP := randomIP()
 	lbName := "test_lb_" + randomString(5)
 	rndIP2 := randomIP()
@@ -173,7 +164,7 @@ func TestBindUnBind(t *testing.T) {
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	_, err := client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Could not create LB")
 	}
@@ -208,10 +199,6 @@ func TestBindUnBind(t *testing.T) {
 }
 
 func TestFindBoundResource(t *testing.T) {
-	client, err := NewNitroClientFromEnv()
-	if err != nil {
-		log.Fatal("Could not create a client: ", err)
-	}
 	lbName := "test_lb_" + randomString(5)
 	lb1 := lb.Lbvserver{
 		Name:        lbName,
@@ -220,7 +207,7 @@ func TestFindBoundResource(t *testing.T) {
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	_, err := client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", "sample_lb_1")
 	}
@@ -259,10 +246,6 @@ func TestFindBoundResource(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	client, err := NewNitroClientFromEnv()
-	if err != nil {
-		log.Fatal("Could not create a client: ", err)
-	}
 	rndIP := randomIP()
 	lbName := "test_lb_" + randomString(5)
 
@@ -273,7 +256,7 @@ func TestDelete(t *testing.T) {
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	_, err := client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Could not create LB")
 	}
@@ -285,12 +268,8 @@ func TestDelete(t *testing.T) {
 }
 
 func TestEnableFeatures(t *testing.T) {
-	client, err := NewNitroClientFromEnv()
-	if err != nil {
-		log.Fatal("Could not create a client: ", err)
-	}
 	features := []string{"SSL", "CS"}
-	err = client.EnableFeatures(features)
+	err := client.EnableFeatures(features)
 	if err != nil {
 		t.Error("Failed to enable features")
 	}
@@ -312,21 +291,13 @@ func TestEnableFeatures(t *testing.T) {
 }
 
 func TestSaveConfig(t *testing.T) {
-	client, err := NewNitroClientFromEnv()
-	if err != nil {
-		log.Fatal("Could not create a client: ", err)
-	}
-	err = client.SaveConfig()
+	err := client.SaveConfig()
 	if err != nil {
 		t.Error("Failed to save config")
 	}
 }
 
 func TestFindAllResources(t *testing.T) {
-	client, err := NewNitroClientFromEnv()
-	if err != nil {
-		log.Fatal("Could not create a client: ", err)
-	}
 	lbName1 := "test_lb_" + randomString(5)
 	lbName2 := "test_lb_" + randomString(5)
 	lb1 := lb.Lbvserver{
@@ -343,7 +314,7 @@ func TestFindAllResources(t *testing.T) {
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	_, err = client.AddResource(Lbvserver.Type(), lbName1, &lb1)
+	_, err := client.AddResource(Lbvserver.Type(), lbName1, &lb1)
 	if err != nil {
 		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", lbName1)
 	}
@@ -373,10 +344,6 @@ func TestFindAllResources(t *testing.T) {
 }
 
 func TestFindAllBoundResources(t *testing.T) {
-	client, err := NewNitroClientFromEnv()
-	if err != nil {
-		log.Fatal("Could not create a client: ", err)
-	}
 	lbName1 := "test_lb_" + randomString(5)
 	svcName1 := "test_svc_" + randomString(5)
 	svcName2 := "test_svc_" + randomString(5)
@@ -387,7 +354,7 @@ func TestFindAllBoundResources(t *testing.T) {
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	_, err = client.AddResource(Lbvserver.Type(), lbName1, &lb1)
+	_, err := client.AddResource(Lbvserver.Type(), lbName1, &lb1)
 	if err != nil {
 		t.Error("Could not create LB")
 	}
