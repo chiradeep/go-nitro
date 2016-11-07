@@ -39,7 +39,7 @@ func randomString(n int) string {
 }
 
 func randomIP() string {
-	return fmt.Sprintf("%d.%d.%d.%d", rand.Intn(218)+1, rand.Intn(252)+1, rand.Intn(252)+1, rand.Intn(252)+1)
+	return fmt.Sprintf("%d.%d.%d.%d", rand.Intn(125)+1, rand.Intn(252)+1, rand.Intn(252)+1, rand.Intn(252)+1)
 }
 
 //init random and client
