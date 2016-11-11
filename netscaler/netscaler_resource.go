@@ -77,7 +77,11 @@ func readResponseHandler(resp *http.Response) ([]byte, error) {
 	case "200 OK":
 		body, _ := ioutil.ReadAll(resp.Body)
 		return body, nil
-	case "400 Bad Request", "401 Unauthorized", "403 Forbidden", "404 Not Found",
+	case "404 Not Found":
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println("[DEBUG] go-nitro: read: 404 not found")
+		return body, errors.New("go-nitro: read: 404 not found: ")
+	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
 		"405 Method Not Allowed", "406 Not Acceptable",
 		"409 Conflict", "503 Service Unavailable", "599 Netscaler specific error":
 		body, _ := ioutil.ReadAll(resp.Body)

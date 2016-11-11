@@ -159,8 +159,8 @@ func (c *NitroClient) FindResource(resourceType string, resourceName string) (ma
 	var data map[string]interface{}
 	result, err := c.listResource(resourceType, resourceName)
 	if err != nil {
-		log.Printf("[WARN] go-nitro: FindResource: No %s %s found", resourceType, resourceName)
-		return data, fmt.Errorf("[INFO] go-nitro: FindResource: No resource %s of type %s found", resourceName, resourceType)
+		log.Printf("[INFO] go-nitro: FindResource: No %s %s found", resourceType, resourceName)
+		return data, nil
 	}
 	if err = json.Unmarshal(result, &data); err != nil {
 		log.Println("[ERROR] go-nitro: FindResource: Failed to unmarshal Netscaler Response!")
@@ -227,7 +227,7 @@ func (c *NitroClient) FindBoundResource(resourceType string, resourceName string
 	result, err := c.listBoundResources(resourceName, resourceType, boundResourceType, boundResourceFilterName, boundResourceFilterValue)
 	if err != nil {
 		log.Printf("[INFO] go-nitro: FindBoundResource: No %s %s to %s %s binding found", resourceType, resourceName, boundResourceType, boundResourceFilterValue)
-		return nil, fmt.Errorf("[ERROR] go-nitro: No %s %s to %s %s binding found, err=%s", resourceType, resourceName, boundResourceType, boundResourceFilterValue, err)
+		return make(map[string]interface{}), nil
 	}
 
 	var data map[string]interface{}
@@ -249,7 +249,7 @@ func (c *NitroClient) FindAllBoundResources(resourceType string, resourceName st
 	result, err := c.listBoundResources(resourceName, resourceType, boundResourceType, "", "")
 	if err != nil {
 		log.Printf("[WARN] go-nitro: FindAllBoundResources: No %s %s to %s  binding found", resourceType, resourceName, boundResourceType)
-		return nil, fmt.Errorf("[ERROR] go-nitro: No %s %s to %s binding found, err=%s", resourceType, resourceName, boundResourceType, err)
+		return make([]map[string]interface{}, 0, 0), nil
 	}
 
 	var data map[string]interface{}
