@@ -171,6 +171,25 @@ func (c *NitroClient) ResourceExists(resourceType string, resourceName string) b
 	return true
 }
 
+//FindResourceArray returns the config of the supplied resource name and type if it exists. Use when the resource to be returned is an array
+func (c *NitroClient) FindResourceArray(resourceType string, resourceName string) ([]map[string]interface{}, error) {
+	var data map[string]interface{}
+	result, err := c.listResource(resourceType, resourceName)
+	if err != nil {
+		log.Printf("[WARN] go-nitro: FindResourceArray: No %s %s found", resourceType, resourceName)
+		return nil, fmt.Errorf("[INFO] go-nitro: FindResourceArray: No resource %s of type %s found", resourceName, resourceType)
+	}
+	if err = json.Unmarshal(result, &data); err != nil {
+		log.Println("[ERROR] go-nitro: FindResourceArray: Failed to unmarshal Netscaler Response!")
+		return nil, fmt.Errorf("[ERROR] go-nitro: FindResourceArray: Failed to unmarshal Netscaler Response:resource %s of type %s", resourceName, resourceType)
+	}
+	if data[resourceType] == nil {
+		log.Printf("[WARN] go-nitro: FindResourceArray No %s type with name %s found", resourceType, resourceName)
+		return nil, fmt.Errorf("[INFO] go-nitro: FindResourceArray: No resource %s of type %s found", resourceName, resourceType)
+	}
+	return data[resourceType].([]map[string]interface{}), nil
+}
+
 //FindResource returns the config of the supplied resource name and type if it exists
 func (c *NitroClient) FindResource(resourceType string, resourceName string) (map[string]interface{}, error) {
 	var data map[string]interface{}
