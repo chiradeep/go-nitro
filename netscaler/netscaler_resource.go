@@ -136,6 +136,16 @@ func (c *NitroClient) createResource(resourceType string, resourceJSON []byte) (
 
 }
 
+func (c *NitroClient) applyResource(resourceType string, resourceJSON []byte) ([]byte, error) {
+	log.Println("[DEBUG] go-nitro: Applying resource of type ", resourceType)
+
+	url := c.url + resourceType + "?action=apply"
+	log.Println("[TRACE] go-nitro: url is ", url)
+
+	return c.doHTTPRequest("POST", url, bytes.NewBuffer(resourceJSON), createResponseHandler)
+
+}
+
 func (c *NitroClient) changeResource(resourceType string, resourceName string, resourceJSON []byte) ([]byte, error) {
 	log.Println("[DEBUG] go-nitro: changing resource of type ", resourceType)
 
