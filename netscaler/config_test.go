@@ -17,12 +17,14 @@ package netscaler
 
 import (
 	"fmt"
-	"github.com/chiradeep/go-nitro/config/basic"
-	"github.com/chiradeep/go-nitro/config/lb"
 	"log"
 	"math/rand"
 	"testing"
 	"time"
+
+	"github.com/chiradeep/go-nitro/config/basic"
+	"github.com/chiradeep/go-nitro/config/lb"
+	"github.com/go-nitro/config/ns"
 )
 
 var client *NitroClient
@@ -112,6 +114,19 @@ func TestAdd(t *testing.T) {
 	_, err = client.FindResource(Service.Type(), svcName)
 	if err != nil {
 		t.Error("Did not find resource of type ", Service.Type(), ":", svcName)
+	}
+}
+
+func TestApply(t *testing.T) {
+
+	nsName := "test_ns_" + randomString(5)
+
+	ns1 := ns.Nsacls{}
+	client.ApplyResource(Nsacls.Type(), nsName, &ns1)
+
+	_, err := client.FindResource(Nsacls.Type(), nsName)
+	if err != nil {
+		t.Error("Did not find resource of type ", Nsacls.Type(), ":", nsName)
 	}
 }
 
