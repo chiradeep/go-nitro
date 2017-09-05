@@ -4,8 +4,16 @@
 The [NITRO](https://docs.citrix.com/en-us/netscaler/11-1/nitro-api/nitro-rest.html) API is the REST-like API to the Citrix NetScaler. This project provides a Golang SDK that can be used to make configuration API calls to a Citrix NetScaler.
 
 ## Usage
-Import the SDK from github.com/chiradeep/go-nitro/netscaler. Config objects are available at github.com/chiradeep/go-nitro/config. 
-Instantiate a client using `NewNitroClient`. To initialize the client from environment variables (`NS_URL`, `NS_LOGIN`, `NS_PASSWORD`), use `NewNitroClientFromEnv`. Config object types can be passed in as strings ("lbvserver"), or looked up from `netscaler.<config object type>.Type()`
+Import the SDK from github.com/chiradeep/go-nitro/netscaler. Config objects are available at github.com/chiradeep/go-nitro/config.
+Instantiate a client using `NewNitroClient`. To initialize the client from environment variables:
+
+```
+export NS_URL=http://<ip-address>
+export NS_LOGIN=<netscaler-username>
+export NS_PASSWORD=<netscaler-password>
+```
+
+Config object types can be passed in as strings ("lbvserver"), or looked up from `netscaler.<config object type>.Type()`
 The general pattern for NetScaler config objects is some combination of  `AddResource`, `UpdateResource`, `BindResource`, `UnbindResource` and `DeleteResource`. See the [NITRO REST docs](https://docs.citrix.com/en-us/netscaler/11-1/nitro-api/nitro-rest/nitro-rest-general.html) for more information.
 
 ## Example

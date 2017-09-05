@@ -16,10 +16,11 @@ limitations under the License.
 package main
 
 import (
+	"log"
+
 	"github.com/chiradeep/go-nitro/config/basic"
 	"github.com/chiradeep/go-nitro/config/lb"
 	"github.com/chiradeep/go-nitro/netscaler"
-	"log"
 )
 
 func main() {
