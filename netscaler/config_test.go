@@ -17,12 +17,14 @@ package netscaler
 
 import (
 	"fmt"
-	"github.com/chiradeep/go-nitro/config/basic"
-	"github.com/chiradeep/go-nitro/config/lb"
 	"log"
 	"math/rand"
 	"testing"
 	"time"
+
+	"github.com/chiradeep/go-nitro/config/basic"
+	"github.com/chiradeep/go-nitro/config/lb"
+	"github.com/chiradeep/go-nitro/config/ns"
 )
 
 var client *NitroClient
@@ -112,6 +114,34 @@ func TestAdd(t *testing.T) {
 	_, err = client.FindResource(Service.Type(), svcName)
 	if err != nil {
 		t.Error("Did not find resource of type ", Service.Type(), ":", svcName)
+	}
+}
+
+func TestApply(t *testing.T) {
+	aclName := "test_acl_" + randomString(5)
+	acl1 := ns.Nsacl{
+		Aclname:   aclName,
+		Aclaction: "ALLOW",
+		Srcip:     true,
+		Srcipval:  "192.168.11.10",
+		Destip:    true,
+		Destipval: "192.183.83.11",
+		Priority:  1100,
+	}
+
+	client.AddResource(Nsacl.Type(), aclName, &acl1)
+
+	acls := ns.Nsacls{}
+	client.ApplyResource(Nsacls.Type(), &acls)
+
+	readAcls, err := client.FindResourceArray(Nsacl.Type(), aclName)
+	if err != nil {
+		t.Error("Did not find resource of type ", Nsacl.Type(), ":", aclName)
+	}
+	acl2 := readAcls[0]
+	log.Println("Found acl, kernelstate= ", acl2["kernelstate"])
+	if acl2["kernelstate"].(string) != "APPLIED" {
+		t.Error("ACL created but not APPLIED ", Nsacl.Type(), ":", aclName)
 	}
 }
 
