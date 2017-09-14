@@ -103,8 +103,13 @@ func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.B
 	}
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("X-NITRO-USER", c.username)
-	req.Header.Set("X-NITRO-PASS", c.password)
+	if c.proxiedNs == "" {
+		req.Header.Set("X-NITRO-USER", c.username)
+		req.Header.Set("X-NITRO-PASS", c.password)
+	} else {
+		req.SetBasicAuth(c.username, c.password)
+		req.Header.Set("_MPS_API_PROXY_MANAGED_INSTANCE_IP", c.proxiedNs)
+	}
 	return req, nil
 }
 
