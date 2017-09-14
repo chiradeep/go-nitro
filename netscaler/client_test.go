@@ -49,6 +49,14 @@ func TestClientCreate(t *testing.T) {
 	if err != nil {
 		t.Error("Didnt expect to fail in creating client")
 	}
+	os.Setenv("_MPS_API_PROXY_MANAGED_INSTANCE_IP", "10.221.48.207")
+	client, err := NewNitroClientFromEnv()
+	if err != nil {
+		t.Error("Didnt expect to fail in creating client")
+	}
+	if client.proxiedNs != "10.221.48.207" {
+		t.Error("proxiedNS not set despite being set in the environment")
+	}
 
 	os.Unsetenv("NS_URL")
 	_, err = NewNitroClientFromEnv("http://127.0.0.11:34552")
