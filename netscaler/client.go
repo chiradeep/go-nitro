@@ -35,7 +35,7 @@ type NitroClient struct {
 }
 
 //NewNitroClient returns a usable NitroClient. Does not check validity of supplied parameters
-func NewNitroClient(url string, username string, password string, bool sslverify) *NitroClient {
+func NewNitroClient(url string, username string, password string, sslverify bool) *NitroClient {
 	c := new(NitroClient)
 	c.url = strings.Trim(url, " /") + "/nitro/v1/config/"
 	c.username = username
