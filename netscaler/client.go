@@ -22,6 +22,7 @@ import (
 	"crypto/tls"
 	"os"
 	"strings"
+	"strconv"
 )
 
 //NitroClient has methods to configure the NetScaler
@@ -55,7 +56,7 @@ func NewNitroClient(url string, username string, password string, sslverify bool
 	return c
 }
 
-func NewProxyingNitroClient(url string, username string, password string, proxiedNsIp string, bool sslverify) *NitroClient {
+func NewProxyingNitroClient(url string, username string, password string, proxiedNsIp string, sslverify bool) *NitroClient {
 	c := new(NitroClient)
 	c.url = strings.Trim(url, " /") + "/nitro/v1/config/"
 	c.username = username
@@ -105,12 +106,12 @@ func NewNitroClientFromEnv(args ...string) (*NitroClient, error) {
 			return nil, fmt.Errorf("Could not determine NetScaler password: NS_PASSWORD not set or passed in as third parameter")
 		}
 	}
-	password := os.Getenv("NS_SSLVERIFY")
-	if sslverify == "" {
+	sslverify, err := strconv.ParseBool(os.Getenv("NS_SSLVERIFY"))
+	if err != nil  {
 		if argslen >= 4 {
 			url = args[3]
 		} else {
-			return nil, fmt.Errorf("Could not determine ssl verification: NS_SSLVERIFY not set or passed in as third parameter")
+			return nil, fmt.Errorf("Could not convert SSL vefification type to true or false: NS_SSLVERIFY not set properly or passed in as fourth parameter")
 		}
 	}
 	proxiedNs := os.Getenv("_MPS_API_PROXY_MANAGED_INSTANCE_IP")
