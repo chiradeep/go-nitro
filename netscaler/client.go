@@ -25,6 +25,8 @@ import (
 	"strconv"
 )
 
+var SSLVerify bool = true
+
 //NitroClient has methods to configure the NetScaler
 //It abstracts the REST operations of the NITRO API
 type NitroClient struct {
@@ -35,44 +37,43 @@ type NitroClient struct {
 	client    *http.Client
 }
 
-//NewNitroClient returns a usable NitroClient. Does not check validity of supplied parameters
-func NewNitroClient(url string, username string, password string, sslverify bool) *NitroClient {
-	c := new(NitroClient)
-	c.url = strings.Trim(url, " /") + "/nitro/v1/config/"
-	c.username = username
-	c.password = password
+// DisableSSLVerify sets our SSL verification flag to disabled
+func DisableSSLVerify(){
+	SSLVerify = false
+}
 
-	if sslverify == true {
-		c.client = &http.Client{}
+// GetClient returns a standard client or one with SSL checking disabled
+func GetClient() *http.Client {
+	if SSLVerify == true {
+		return &http.Client{}
 	} else {
 
 		tr := &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		}
 
-		c.client = &http.Client{Transport: tr}
+		return &http.Client{Transport: tr}
 	}
+}
+
+//NewNitroClient returns a usable NitroClient. Does not check validity of supplied parameters
+func NewNitroClient(url string, username string, password string) *NitroClient {
+	c := new(NitroClient)
+	c.url = strings.Trim(url, " /") + "/nitro/v1/config/"
+	c.username = username
+	c.password = password
+	c.client = GetClient()
 
 	return c
 }
 
-func NewProxyingNitroClient(url string, username string, password string, proxiedNsIp string, sslverify bool) *NitroClient {
+func NewProxyingNitroClient(url string, username string, password string, proxiedNsIp string) *NitroClient {
 	c := new(NitroClient)
 	c.url = strings.Trim(url, " /") + "/nitro/v1/config/"
 	c.username = username
 	c.password = password
 	c.proxiedNs = proxiedNsIp
-
-	if sslverify == true {
-		c.client = &http.Client{}
-	} else {
-
-		tr := &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		}
-
-		c.client = &http.Client{Transport: tr}
-	}
+	c.client = GetClient()
 
 	return c
 }
@@ -115,9 +116,14 @@ func NewNitroClientFromEnv(args ...string) (*NitroClient, error) {
 		}
 	}
 	proxiedNs := os.Getenv("_MPS_API_PROXY_MANAGED_INSTANCE_IP")
+
+	if sslverify == false {
+		DisableSSLVerify()
+	}
+
 	if proxiedNs == "" {
-		return NewNitroClient(url, username, password, sslverify), nil
+		return NewNitroClient(url, username, password), nil
 	} else {
-		return NewProxyingNitroClient(url, username, password, proxiedNs, sslverify), nil
+		return NewProxyingNitroClient(url, username, password, proxiedNs), nil
 	}
 }
