@@ -29,10 +29,6 @@ import (
 
 function main() {
         client, _ := netscaler.NewNitroClientFromEnv()
-
-        // Option to disable SSL validation
-        client.DisableSSLVerify()
-
         lb1 := lb.Lbvserver{
                 Name:        "sample_lb",
                 Ipv46:       "10.71.136.50",
