@@ -19,6 +19,7 @@ package netscaler
 import (
 	"fmt"
 	"net/http"
+	"crypto/tls"
 	"os"
 	"strings"
 )
@@ -34,22 +35,44 @@ type NitroClient struct {
 }
 
 //NewNitroClient returns a usable NitroClient. Does not check validity of supplied parameters
-func NewNitroClient(url string, username string, password string) *NitroClient {
+func NewNitroClient(url string, username string, password string, bool sslverify) *NitroClient {
 	c := new(NitroClient)
 	c.url = strings.Trim(url, " /") + "/nitro/v1/config/"
 	c.username = username
 	c.password = password
-	c.client = &http.Client{}
+
+	if sslverify == true {
+		c.client = &http.Client{}
+	} else {
+
+		tr := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+
+		c.client = &http.Client{Transport: tr}
+	}
+
 	return c
 }
 
-func NewProxyingNitroClient(url string, username string, password string, proxiedNsIp string) *NitroClient {
+func NewProxyingNitroClient(url string, username string, password string, proxiedNsIp string, bool sslverify) *NitroClient {
 	c := new(NitroClient)
 	c.url = strings.Trim(url, " /") + "/nitro/v1/config/"
 	c.username = username
 	c.password = password
 	c.proxiedNs = proxiedNsIp
-	c.client = &http.Client{}
+
+	if sslverify == true {
+		c.client = &http.Client{}
+	} else {
+
+		tr := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+
+		c.client = &http.Client{Transport: tr}
+	}
+
 	return c
 }
 
@@ -82,10 +105,18 @@ func NewNitroClientFromEnv(args ...string) (*NitroClient, error) {
 			return nil, fmt.Errorf("Could not determine NetScaler password: NS_PASSWORD not set or passed in as third parameter")
 		}
 	}
+	password := os.Getenv("NS_SSLVERIFY")
+	if sslverify == "" {
+		if argslen >= 4 {
+			url = args[3]
+		} else {
+			return nil, fmt.Errorf("Could not determine ssl verification: NS_SSLVERIFY not set or passed in as third parameter")
+		}
+	}
 	proxiedNs := os.Getenv("_MPS_API_PROXY_MANAGED_INSTANCE_IP")
 	if proxiedNs == "" {
-		return NewNitroClient(url, username, password), nil
+		return NewNitroClient(url, username, password, sslverify), nil
 	} else {
-		return NewProxyingNitroClient(url, username, password, proxiedNs), nil
+		return NewProxyingNitroClient(url, username, password, proxiedNs, sslverify), nil
 	}
 }
