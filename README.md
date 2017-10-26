@@ -11,6 +11,7 @@ Instantiate a client using `NewNitroClient`. To initialize the client from envir
 export NS_URL=http://<ip-address>
 export NS_LOGIN=<netscaler-username>
 export NS_PASSWORD=<netscaler-password>
+export NS_SSLVERIFY=<bool>
 ```
 
 Config object types can be passed in as strings ("lbvserver"), or looked up from `netscaler.<config object type>.Type()`
@@ -28,6 +29,10 @@ import (
 
 function main() {
         client, _ := netscaler.NewNitroClientFromEnv()
+
+        // Option to disable SSL validation
+        client.DisableSSLVerify()
+
         lb1 := lb.Lbvserver{
                 Name:        "sample_lb",
                 Ipv46:       "10.71.136.50",
