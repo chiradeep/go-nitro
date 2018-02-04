@@ -19,9 +19,13 @@ package netscaler
 import (
 	"fmt"
 	"net/http"
+	"crypto/tls"
 	"os"
 	"strings"
+	"strconv"
 )
+
+var SSLVerify bool = true
 
 //NitroClient has methods to configure the NetScaler
 //It abstracts the REST operations of the NITRO API
@@ -33,13 +37,33 @@ type NitroClient struct {
 	client    *http.Client
 }
 
+// DisableSSLVerify sets our SSL verification flag to disabled
+func DisableSSLVerify(){
+	SSLVerify = false
+}
+
+// GetClient returns a standard client or one with SSL checking disabled
+func GetClient() *http.Client {
+	if SSLVerify == true {
+		return &http.Client{}
+	} else {
+
+		tr := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+
+		return &http.Client{Transport: tr}
+	}
+}
+
 //NewNitroClient returns a usable NitroClient. Does not check validity of supplied parameters
 func NewNitroClient(url string, username string, password string) *NitroClient {
 	c := new(NitroClient)
 	c.url = strings.Trim(url, " /") + "/nitro/v1/config/"
 	c.username = username
 	c.password = password
-	c.client = &http.Client{}
+	c.client = GetClient()
+
 	return c
 }
 
@@ -49,7 +73,8 @@ func NewProxyingNitroClient(url string, username string, password string, proxie
 	c.username = username
 	c.password = password
 	c.proxiedNs = proxiedNsIp
-	c.client = &http.Client{}
+	c.client = GetClient()
+
 	return c
 }
 
@@ -82,7 +107,20 @@ func NewNitroClientFromEnv(args ...string) (*NitroClient, error) {
 			return nil, fmt.Errorf("Could not determine NetScaler password: NS_PASSWORD not set or passed in as third parameter")
 		}
 	}
+	sslverify, err := strconv.ParseBool(os.Getenv("NS_SSLVERIFY"))
+	if err != nil  {
+		if argslen >= 4 {
+			url = args[3]
+		} else {
+			return nil, fmt.Errorf("Could not convert SSL vefification type to true or false: NS_SSLVERIFY not set properly or passed in as fourth parameter")
+		}
+	}
 	proxiedNs := os.Getenv("_MPS_API_PROXY_MANAGED_INSTANCE_IP")
+
+	if sslverify == false {
+		DisableSSLVerify()
+	}
+
 	if proxiedNs == "" {
 		return NewNitroClient(url, username, password), nil
 	} else {

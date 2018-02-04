@@ -11,6 +11,7 @@ Instantiate a client using `NewNitroClient`. To initialize the client from envir
 export NS_URL=http://<ip-address>
 export NS_LOGIN=<netscaler-username>
 export NS_PASSWORD=<netscaler-password>
+export NS_SSLVERIFY=<bool>(optional)
 ```
 
 Config object types can be passed in as strings ("lbvserver"), or looked up from `netscaler.<config object type>.Type()`
