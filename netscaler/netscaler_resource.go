@@ -151,6 +151,21 @@ func (c *NitroClient) applyResource(resourceType string, resourceJSON []byte) ([
 
 }
 
+func (c *NitroClient) enableDisableResource(resourceType string, status bool, resourceJSON []byte) ([]byte, error) {
+	log.Println("[DEBUG] go-nitro: Enabling/Disabling resource of type ", resourceType)
+
+	var action string
+	if status {
+		action = "enable"
+	} else {
+		action = "disable"
+	}
+	url := c.url + resourceType + "?action=" + action
+	log.Println("[TRACE] go-nitro: url is ", url)
+
+	return c.doHTTPRequest("POST", url, bytes.NewBuffer(resourceJSON), createResponseHandler)
+}
+
 func (c *NitroClient) changeResource(resourceType string, resourceName string, resourceJSON []byte) ([]byte, error) {
 	log.Println("[DEBUG] go-nitro: changing resource of type ", resourceType)
 
@@ -207,6 +222,7 @@ func (c *NitroClient) listBoundResources(resourceName string, resourceType strin
 		url = c.url + fmt.Sprintf("%s_%s_binding/%s?filter=%s:%s", resourceType, boundResourceType, resourceName, boundResourceFilterName, boundResourceFilterValue)
 	}
 
+	fmt.Println(url)
 	return c.doHTTPRequest("GET", url, bytes.NewBuffer([]byte{}), readResponseHandler)
 
 }
