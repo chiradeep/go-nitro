@@ -22,7 +22,7 @@ import (
 	"github.com/chiradeep/go-nitro/netscaler"
 )
 
-func main() {
+func example2() {
 	client, err := netscaler.NewNitroClientFromEnv()
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)

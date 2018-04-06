@@ -58,24 +58,6 @@ func TestClientCreate(t *testing.T) {
 		t.Error("proxiedNS not set despite being set in the environment")
 	}
 
-	os.Unsetenv("NS_URL")
-	_, err = NewNitroClientFromEnv("http://127.0.0.11:34552")
-	if err != nil {
-		t.Error("Didnt expect to fail in creating client")
-	}
-
-	os.Unsetenv("NS_LOGIN")
-	_, err = NewNitroClientFromEnv("http://127.0.0.11:34552", "nsroot")
-	if err != nil {
-		t.Error("Didnt expect to fail in creating client")
-	}
-
-	os.Unsetenv("NS_PASSWORD")
-	_, err = NewNitroClientFromEnv("http://127.0.0.11:34552", "nsroot", "nsroot")
-	if err != nil {
-		t.Error("Didnt expect to fail in creating client")
-	}
-
 	os.Setenv("NS_URL", oldURL)
 	os.Setenv("NS_LOGIN", oldLogin)
 	os.Setenv("NS_PASSWORD", oldPwd)
