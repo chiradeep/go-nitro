@@ -87,7 +87,7 @@ func NewNitroClientFromEnv() (*NitroClient, error) {
 	}
 	proxiedNs := os.Getenv("_MPS_API_PROXY_MANAGED_INSTANCE_IP")
 	sslverifyStr := os.Getenv("NS_SSLVERIFY")
-	sslVerify := false
+	sslVerify := true
 	if sslverifyStr != "" {
 		var err error
 		sslVerify, err = strconv.ParseBool(sslverifyStr)
