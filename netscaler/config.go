@@ -61,6 +61,24 @@ func (c *NitroClient) ApplyResource(resourceType string, resourceStruct interfac
 	return nil
 }
 
+// EnableDisableResource enables or disable a resource
+func (c *NitroClient) EnableDisableResource(resourceType string, status bool, resourceStruct interface{}) error {
+	nsResource := make(map[string]interface{})
+	nsResource[resourceType] = resourceStruct
+
+	resourceJSON, err := json.Marshal(nsResource)
+
+	log.Println("[TRACE] go-nitro: Resourcejson is " + string(resourceJSON))
+
+	body, err := c.enableDisableResource(resourceType, status, resourceJSON)
+	if err != nil {
+		return fmt.Errorf("[ERROR] go-nitro: Failed to enable/disable resource of type %s,  err=%s", resourceType, err)
+	}
+	_ = body
+
+	return nil
+}
+
 //UpdateResource updates a resource of supplied type and name
 func (c *NitroClient) UpdateResource(resourceType string, name string, resourceStruct interface{}) (string, error) {
 
