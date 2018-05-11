@@ -27,12 +27,11 @@ import (
 
 //NitroParams encapsulates options to create a NitroClient
 type NitroParams struct {
-	url       string
-	username  string
-	password  string
-	proxiedNs string
-	sslVerify bool
-	client    *http.Client
+	Url       string
+	Username  string
+	Password  string
+	ProxiedNs string
+	SslVerify bool
 }
 
 //NitroClient has methods to configure the NetScaler
@@ -60,11 +59,11 @@ func NewNitroClient(url string, username string, password string) *NitroClient {
 //NewNitroClientFromParams returns a usable NitroClient. Does not check validity of supplied parameters
 func NewNitroClientFromParams(params NitroParams) *NitroClient {
 	c := new(NitroClient)
-	c.url = strings.Trim(params.url, " /") + "/nitro/v1/config/"
-	c.username = params.username
-	c.password = params.password
-	c.proxiedNs = params.proxiedNs
-	if params.sslVerify {
+	c.url = strings.Trim(params.Url, " /") + "/nitro/v1/config/"
+	c.username = params.Username
+	c.password = params.Password
+	c.proxiedNs = params.ProxiedNs
+	if params.SslVerify {
 		c.client = &http.Client{}
 	} else {
 		tr := &http.Transport{
@@ -96,11 +95,11 @@ func NewNitroClientFromEnv() (*NitroClient, error) {
 		}
 	}
 	nitroParams := NitroParams{
-		url:       url,
-		username:  username,
-		password:  password,
-		proxiedNs: proxiedNs,
-		sslVerify: sslVerify,
+		Url:       url,
+		Username:  username,
+		Password:  password,
+		ProxiedNs: proxiedNs,
+		SslVerify: sslVerify,
 	}
 	return NewNitroClientFromParams(nitroParams), nil
 }

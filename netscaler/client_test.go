@@ -57,6 +57,11 @@ func TestClientCreate(t *testing.T) {
 	if client.proxiedNs != "10.221.48.207" {
 		t.Error("proxiedNS not set despite being set in the environment")
 	}
+	os.Setenv("NS_SSLVERIFY", "False")
+	_, err = NewNitroClientFromEnv()
+	if err != nil {
+		t.Error("Didnt expect to fail in creating client with SSL verify option")
+	}
 
 	os.Setenv("NS_URL", oldURL)
 	os.Setenv("NS_LOGIN", oldLogin)
