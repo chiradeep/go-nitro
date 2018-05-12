@@ -67,3 +67,30 @@ func TestClientCreate(t *testing.T) {
 	os.Setenv("NS_LOGIN", oldLogin)
 	os.Setenv("NS_PASSWORD", oldPwd)
 }
+
+func TestClientCreateFromParams(t *testing.T) {
+	t.Log("Create client from supplied params")
+
+	params := NitroParams{
+		Url:      os.Getenv("NS_URL"),
+		Username: os.Getenv("NS_LOGIN"),
+		Password: os.Getenv("NS_PASSWORD"),
+	}
+	client, err := NewNitroClientFromParams(params)
+	if client == nil {
+		t.Error("Expected to succeed in creating client")
+	}
+
+	params.SslVerify = false
+	client, err = NewNitroClientFromParams(params)
+	if client == nil {
+		t.Error("Expected to succeed in creating client")
+	}
+
+	params.Url = "localhost:32770"
+	client, err = NewNitroClientFromParams(params)
+	if err == nil {
+		t.Error("Expected to fail in creating client due to invalid URL")
+	}
+
+}

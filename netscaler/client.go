@@ -20,6 +20,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -57,7 +58,14 @@ func NewNitroClient(url string, username string, password string) *NitroClient {
 }
 
 //NewNitroClientFromParams returns a usable NitroClient. Does not check validity of supplied parameters
-func NewNitroClientFromParams(params NitroParams) *NitroClient {
+func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
+	u, err := url.Parse(params.Url)
+	if err != nil {
+		return nil, fmt.Errorf("Supplied URL %s is not a URL", params.Url)
+	}
+	if u.Scheme != "http" && u.Scheme != "https" {
+		return nil, fmt.Errorf("Supplied URL %s does not have a HTTP/HTTPS scheme", params.Url)
+	}
 	c := new(NitroClient)
 	c.url = strings.Trim(params.Url, " /") + "/nitro/v1/config/"
 	c.username = params.Username
@@ -71,7 +79,7 @@ func NewNitroClientFromParams(params NitroParams) *NitroClient {
 		}
 		c.client = &http.Client{Transport: tr}
 	}
-	return c
+	return c, nil
 }
 
 //NewNitroClientFromEnv returns a usable NitroClient. Parameters url, username and password can be passed in
@@ -101,5 +109,5 @@ func NewNitroClientFromEnv() (*NitroClient, error) {
 		ProxiedNs: proxiedNs,
 		SslVerify: sslVerify,
 	}
-	return NewNitroClientFromParams(nitroParams), nil
+	return NewNitroClientFromParams(nitroParams)
 }
