@@ -118,13 +118,31 @@ func (c *NitroClient) DeleteResource(resourceType string, resourceName string) e
 	return nil
 }
 
-//DeleteResourceWithArgs deletes a resource of supplied type and name
+//DeleteResourceWithArgs deletes a resource of supplied type and name. Args are supplied as an array of strings
+//Each array entry is formatted as "key:value"
 func (c *NitroClient) DeleteResourceWithArgs(resourceType string, resourceName string, args []string) error {
 
-	_, err := c.listResource(resourceType, resourceName)
+	_, err := c.listResourceWithArgs(resourceType, resourceName, args)
 	if err == nil { // resource exists
 		log.Printf("[INFO] go-nitro: DeleteResource found resource of type %s: %s", resourceType, resourceName)
 		_, err = c.deleteResourceWithArgs(resourceType, resourceName, args)
+		if err != nil {
+			log.Printf("[ERROR] go-nitro: Failed to delete resourceType %s: %s, err=%s", resourceType, resourceName, err)
+			return err
+		}
+	} else {
+		log.Printf("[INFO] go-nitro: Resource %s already deleted ", resourceName)
+	}
+	return nil
+}
+
+//DeleteResourceWithArgsMap deletes a resource of supplied type and name. Args are supplied as map of key value
+func (c *NitroClient) DeleteResourceWithArgsMap(resourceType string, resourceName string, args map[string]string) error {
+
+	_, err := c.listResourceWithArgsMap(resourceType, resourceName, args)
+	if err == nil { // resource exists
+		log.Printf("[INFO] go-nitro: DeleteResource found resource of type %s: %s", resourceType, resourceName)
+		_, err = c.deleteResourceWithArgsMap(resourceType, resourceName, args)
 		if err != nil {
 			log.Printf("[ERROR] go-nitro: Failed to delete resourceType %s: %s, err=%s", resourceType, resourceName, err)
 			return err

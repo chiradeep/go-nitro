@@ -349,6 +349,32 @@ func TestDelete(t *testing.T) {
 	}
 }
 
+func TestDeleteWithArgs(t *testing.T) {
+	monitorName := "test_lb_monitor_" + randomString(5)
+
+	lbmonitor := lb.Lbmonitor{
+		Monitorname:    monitorName,
+		Type:           "http",
+		Retries:        20,
+		Failureretries: 10,
+		Downtime:       60,
+	}
+	_, err := client.AddResource(Lbmonitor.Type(), monitorName, &lbmonitor)
+	if err != nil {
+		t.Error("Could not create monitor", err)
+		log.Println("Cannot continue")
+		return
+	}
+
+	args := map[string]string{"type": "http"}
+	err = client.DeleteResourceWithArgsMap(Lbmonitor.Type(), monitorName, args)
+	if err != nil {
+		t.Error("Could not delete monitor", monitorName, err)
+		log.Println("Cannot continue")
+		return
+	}
+}
+
 func TestEnableFeatures(t *testing.T) {
 	features := []string{"SSL", "CS"}
 	err := client.EnableFeatures(features)
