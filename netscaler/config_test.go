@@ -544,3 +544,97 @@ func TestFindAllBoundResources(t *testing.T) {
 	}
 
 }
+
+func TestAction(t *testing.T) {
+	svcGrpName := "test_sg_" + randomString(5)
+	sg1 := basic.Servicegroup{
+		Servicegroupname: svcGrpName,
+		Servicetype:      "http",
+	}
+
+	_, err := client.AddResource(Servicegroup.Type(), svcGrpName, &sg1)
+	if err != nil {
+		t.Error("Could not add resource service group", err)
+		log.Println("Cannot continue")
+		return
+	}
+	createServer := basic.Server{
+		Ipaddress: "192.168.1.101",
+		Name:      "test-srvr",
+	}
+
+	_, err = client.AddResource(Server.Type(), "test-server", &createServer)
+	if err != nil {
+		t.Error("Could not add resource server", err)
+		log.Println("Cannot continue")
+		return
+	}
+
+	bindSvcGrpToServer := basic.Servicegroupservicegroupmemberbinding{
+		Servicegroupname: svcGrpName,
+		Servername:       "test-srvr",
+		Port:             22,
+	}
+
+	_, err = client.AddResource(Servicegroup_servicegroupmember_binding.Type(), "test-svcgroup", &bindSvcGrpToServer)
+	if err != nil {
+		t.Error("Could not bind resource server", err)
+		log.Println("Cannot continue")
+		return
+	}
+
+	bindSvcGrpToServer2 := basic.Servicegroupservicegroupmemberbinding{
+		Servicegroupname: svcGrpName,
+		Ip:               "192.168.1.102",
+		Port:             22,
+	}
+
+	_, err = client.AddResource(Servicegroup_servicegroupmember_binding.Type(), "test-svcgroup", &bindSvcGrpToServer2)
+	if err != nil {
+		t.Error("Could not bind resource server", err)
+		log.Println("Cannot continue")
+		return
+	}
+	sg2 := basic.Servicegroup{
+		Servicegroupname: svcGrpName,
+		Servername:       "test-srvr",
+		Port:             22,
+		Delay:            100,
+		Graceful:         "YES",
+	}
+
+	err = client.ActOnResource(Servicegroup.Type(), &sg2, "disable")
+
+	if err != nil {
+		t.Error("Could not disable server", err)
+		log.Println("Cannot continue")
+		return
+	}
+	sg3 := basic.Servicegroup{
+		Servicegroupname: svcGrpName,
+		Servername:       "test-srvr",
+		Port:             22,
+	}
+
+	err = client.ActOnResource(Servicegroup.Type(), &sg3, "enable")
+
+	if err != nil {
+		t.Error("Could not enable server", err)
+		log.Println("Cannot continue")
+		return
+	}
+
+	sg4 := basic.Servicegroup{
+		Servicegroupname: svcGrpName,
+		Newname:          svcGrpName + "-NEW",
+	}
+
+	err = client.ActOnResource(Servicegroup.Type(), &sg4, "rename")
+
+	if err != nil {
+		t.Error("Could not rename servicegroup", err)
+		log.Println("Cannot continue")
+		return
+	}
+
+}
