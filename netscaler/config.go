@@ -61,6 +61,24 @@ func (c *NitroClient) ApplyResource(resourceType string, resourceStruct interfac
 	return nil
 }
 
+// ActOnResource applies the configured settings using the action (enable, disable, unset, apply, rename)
+func (c *NitroClient) ActOnResource(resourceType string, resourceStruct interface{}, action string) error {
+
+	nsResource := make(map[string]interface{})
+	nsResource[resourceType] = resourceStruct
+
+	resourceJSON, err := json.Marshal(nsResource)
+
+	log.Printf("[TRACE] go-nitro: Resourcejson is " + string(resourceJSON))
+
+	_, err = c.actOnResource(resourceType, resourceJSON, action)
+	if err != nil {
+		return fmt.Errorf("[ERROR] go-nitro: Failed to apply action on resource of type %s,  action=%s err=%s", resourceType, action, err)
+	}
+
+	return nil
+}
+
 //UpdateResource updates a resource of supplied type and name
 func (c *NitroClient) UpdateResource(resourceType string, name string, resourceStruct interface{}) (string, error) {
 
