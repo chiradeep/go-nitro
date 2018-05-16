@@ -254,6 +254,22 @@ func (c *NitroClient) listBoundResources(resourceName string, resourceType strin
 
 }
 
+func (c *NitroClient) listFilteredResource(resourceType string, filter map[string]string) ([]byte, error) {
+	log.Println("[DEBUG] go-nitro: listing resource of type ", resourceType, ", filter: ", filter)
+
+	var filter_strings []string
+	for key, value := range filter {
+		filter_strings = append(filter_strings, fmt.Sprintf("%s:%s", key, value))
+	}
+
+	filter_string := strings.Join(filter_strings, ",")
+
+	url := c.url + fmt.Sprintf("%s?filter=%s", resourceType, filter_string)
+
+	return c.doHTTPRequest("GET", url, bytes.NewBuffer([]byte{}), readResponseHandler)
+
+}
+
 func (c *NitroClient) listResource(resourceType string, resourceName string) ([]byte, error) {
 	log.Println("[DEBUG] go-nitro: listing resource of type ", resourceType, ", name: ", resourceName)
 	url := c.url + resourceType

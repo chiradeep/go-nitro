@@ -269,6 +269,31 @@ func (c *NitroClient) FindResourceArray(resourceType string, resourceName string
 	return ret, nil
 }
 
+//FindFilteredResourceArray returns the config of the supplied resource type, filtered with given filter
+func (c *NitroClient) FindFilteredResourceArray(resourceType string, filter map[string]string) ([]map[string]interface{}, error) {
+	var data map[string]interface{}
+	result, err := c.listFilteredResource(resourceType, filter)
+	if err != nil {
+		log.Printf("[WARN] go-nitro: FindFilteredResourceArray: No %s found matching filter %s", resourceType, filter)
+		return nil, fmt.Errorf("[INFO] go-nitro: FindFilteredResourceArray: No resource of type %s found matching filter %s", resourceType, filter)
+	}
+	if err = json.Unmarshal(result, &data); err != nil {
+		log.Println("[ERROR] go-nitro: FindFilteredResourceArray: Failed to unmarshal Netscaler Response!")
+		return nil, fmt.Errorf("[ERROR] go-nitro: FindFilteredResourceArray: Failed to unmarshal Netscaler Response:resource of type %s matching filter %s", resourceType, filter)
+	}
+	rsrcs, ok := data[resourceType]
+	if !ok || rsrcs == nil {
+		log.Printf("[WARN] go-nitro: FindFilteredResourceArray No %s type matching filter %s found", resourceType, filter)
+		return nil, fmt.Errorf("[INFO] go-nitro: FindFilteredResourceArray: No resource type %s matching filter %s found", filter, resourceType)
+	}
+	resources := data[resourceType].([]interface{})
+	ret := make([]map[string]interface{}, len(resources), len(resources))
+	for i, v := range resources {
+		ret[i] = v.(map[string]interface{})
+	}
+	return ret, nil
+}
+
 //FindResource returns the config of the supplied resource name and type if it exists
 func (c *NitroClient) FindResource(resourceType string, resourceName string) (map[string]interface{}, error) {
 	var data map[string]interface{}
