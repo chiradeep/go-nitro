@@ -99,6 +99,24 @@ func (c *NitroClient) UpdateResource(resourceType string, name string, resourceS
 	return name, nil
 }
 
+//UpdateUnnamedResource updates a resource of supplied type , which doesn't have a name. E.g., rnat rule
+func (c *NitroClient) UpdateUnnamedResource(resourceType string, resourceStruct interface{}) error {
+
+	nsResource := make(map[string]interface{})
+	nsResource[resourceType] = resourceStruct
+	resourceJSON, err := json.Marshal(nsResource)
+
+	log.Printf("[DEBUG] go-nitro: UpdateResource: Resourcejson is " + string(resourceJSON))
+
+	body, err := c.updateUnnamedResource(resourceType, resourceJSON)
+	if err != nil {
+		return fmt.Errorf("[ERROR] go-nitro: Failed to update resource of type %s,  err=%s", resourceType, err)
+	}
+	_ = body
+
+	return nil
+}
+
 //ChangeResource updates a resource of supplied type and name (used for SSL objects)
 func (c *NitroClient) ChangeResource(resourceType string, name string, resourceStruct interface{}) (string, error) {
 

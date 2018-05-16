@@ -181,6 +181,16 @@ func (c *NitroClient) updateResource(resourceType string, resourceName string, r
 
 }
 
+func (c *NitroClient) updateUnnamedResource(resourceType string, resourceJSON []byte) ([]byte, error) {
+	log.Println("[DEBUG] go-nitro: Updating resource of type ", resourceType)
+
+	url := c.url + resourceType
+	log.Println("[TRACE] go-nitro: url is ", url)
+
+	return c.doHTTPRequest("PUT", url, bytes.NewBuffer(resourceJSON), createResponseHandler)
+
+}
+
 func (c *NitroClient) deleteResource(resourceType string, resourceName string) ([]byte, error) {
 	log.Println("[DEBUG] go-nitro: Deleting resource of type ", resourceType)
 	var url string

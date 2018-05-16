@@ -24,7 +24,9 @@ import (
 
 	"github.com/chiradeep/go-nitro/config/basic"
 	"github.com/chiradeep/go-nitro/config/lb"
+	"github.com/chiradeep/go-nitro/config/network"
 	"github.com/chiradeep/go-nitro/config/ns"
+	"os"
 )
 
 var client *NitroClient
@@ -53,6 +55,12 @@ func init() {
 		log.Fatal("Could not create a client: ", err)
 	}
 
+}
+
+func TestMain(m *testing.M) {
+	r := m.Run()
+	client.ClearConfig()
+	os.Exit(r)
 }
 
 // Functional tests
@@ -637,4 +645,19 @@ func TestAction(t *testing.T) {
 		return
 	}
 
+}
+
+func TestUpdateUnnamedResource(t *testing.T) {
+	rnat := network.Rnat{
+		Natip:   "172.17.0.2",
+		Netmask: "255.255.240.0",
+		Network: "192.168.16.0",
+	}
+
+	err := client.UpdateUnnamedResource(Rnat.Type(), &rnat)
+	if err != nil {
+		t.Error("Could not add Rnat", err)
+		log.Println("Cannot continue")
+		return
+	}
 }
