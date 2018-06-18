@@ -50,7 +50,7 @@ type NitroClient struct {
 //Please use NewNitroClientFromParams
 func NewNitroClient(url string, username string, password string) *NitroClient {
 	c := new(NitroClient)
-	c.url = strings.Trim(url, " /") + "/nitro/v1/config/"
+	c.url = strings.Trim(url, " /") + "/nitro/v1/"
 	c.username = username
 	c.password = password
 	c.client = &http.Client{}
@@ -67,7 +67,7 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 		return nil, fmt.Errorf("Supplied URL %s does not have a HTTP/HTTPS scheme", params.Url)
 	}
 	c := new(NitroClient)
-	c.url = strings.Trim(params.Url, " /") + "/nitro/v1/config/"
+	c.url = strings.Trim(params.Url, " /") + "/nitro/v1/"
 	c.username = params.Username
 	c.password = params.Password
 	c.proxiedNs = params.ProxiedNs
