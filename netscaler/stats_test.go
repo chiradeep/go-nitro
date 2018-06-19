@@ -10,15 +10,19 @@ func TestNitroClient_FindAllStats(t *testing.T) {
 }
 
 func TestNitroClient_FindStats(t *testing.T) {
-	for _, resourceType := range []string{"lbvserver", "service", "gslbvserver", "gslbservice"} {
-		rsrc, err := client.FindAllResources("i")
+	for _, resourceType := range []string{Lbvserver.Type(), Service.Type(), Gslbvserver.Type(), Gslbservice.Type()} {
+		rsrc, err := client.FindAllResources(resourceType)
 		if err != nil {
 			// Ignore the erratic resource type
 			continue
 		}
-		_, err = client.FindStat(resourceType, rsrc[0]["name"].(string))
-		if err != nil {
-			t.Fatal(err)
+		for _, availableItem := range rsrc {
+			_, err = client.FindStat(resourceType, availableItem["name"].(string))
+			if err != nil {
+				t.Fatal(err)
+			}
+			// only check one
+			break
 		}
 	}
 }
