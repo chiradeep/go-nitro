@@ -1,7 +1,7 @@
-# An incomplete but mostly useful Go client for configuring Citrix NetScaler
+# Go client for configuring Citrix ADC
 
 ## About
-The [NITRO](https://docs.citrix.com/en-us/netscaler/11-1/nitro-api/nitro-rest.html) API is the REST-like API to the Citrix NetScaler. This project provides a Golang SDK that can be used to make configuration API calls to a Citrix NetScaler.
+The [NITRO](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/12.0/) API is the REST-like API to the Citrix ADC (aka NetScaler). This project provides a Golang SDK that can be used to make configuration API calls to a Citrix ADC.
 
 ## Usage
 Import the SDK from github.com/chiradeep/go-nitro/netscaler. Config objects are available at github.com/chiradeep/go-nitro/config.
