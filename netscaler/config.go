@@ -41,8 +41,9 @@ func (c *NitroClient) AddResource(resourceType string, name string, resourceStru
 
 	resourceJSON, err := JSONMarshal(nsResource)
 
-	log.Printf("[TRACE] go-nitro: Resourcejson is " + string(resourceJSON))
-
+	if resourceType != "systemfile" {
+		log.Printf("[TRACE] go-nitro: Resourcejson is " + string(resourceJSON))
+	}
 	body, err := c.createResource(resourceType, resourceJSON)
 	if err != nil {
 		return "", fmt.Errorf("[ERROR] go-nitro: Failed to create resource of type %s, name=%s, err=%s", resourceType, name, err)
