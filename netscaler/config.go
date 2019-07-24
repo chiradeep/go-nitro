@@ -21,6 +21,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"reflect"
 	"strings"
 )
 
@@ -324,7 +325,15 @@ func (c *NitroClient) FindResource(resourceType string, resourceName string) (ma
 	}
 	resource := data[resourceType].([]interface{})[0] //only one resource obviously
 
-	return resource.(map[string]interface{}), nil
+	rt := reflect.TypeOf(data[resourceType])
+	switch rt.Kind() {
+	case reflect.Map:
+		resource := data[resourceType]
+		return resource.(map[string]interface{}), nil
+	default:
+		resource := data[resourceType].([]interface{})[0] //only one resource obviously
+		return resource.(map[string]interface{}), nil
+	}
 }
 
 //FindAllResources finds all config objects of the supplied resource type and returns them in an array
