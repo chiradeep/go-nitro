@@ -322,7 +322,6 @@ func (c *NitroClient) FindResource(resourceType string, resourceName string) (ma
 		log.Printf("[WARN] go-nitro: FindResource No %s type with name %s found", resourceType, resourceName)
 		return nil, fmt.Errorf("[INFO] go-nitro: FindResource: No resource %s of type %s found", resourceName, resourceType)
 	}
-	resource := data[resourceType].([]interface{})[0] //only one resource obviously
 
 	switch result := data[resourceType].(type) {
 	case map[string]interface{}:
