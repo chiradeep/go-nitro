@@ -21,17 +21,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"reflect"
 	"strings"
 )
 
 // https://stackoverflow.com/questions/28595664/how-to-stop-json-marshal-from-escaping-and/28596225#28596225
 func JSONMarshal(t interface{}) ([]byte, error) {
-    buffer := &bytes.Buffer{}
-    encoder := json.NewEncoder(buffer)
-    encoder.SetEscapeHTML(false)
-    err := encoder.Encode(t)
-    return buffer.Bytes(), err
+	buffer := &bytes.Buffer{}
+	encoder := json.NewEncoder(buffer)
+	encoder.SetEscapeHTML(false)
+	err := encoder.Encode(t)
+	return buffer.Bytes(), err
 }
 
 //AddResource adds a resource of supplied type and name
@@ -325,14 +324,14 @@ func (c *NitroClient) FindResource(resourceType string, resourceName string) (ma
 	}
 	resource := data[resourceType].([]interface{})[0] //only one resource obviously
 
-	rt := reflect.TypeOf(data[resourceType])
-	switch rt.Kind() {
-	case reflect.Map:
-		resource := data[resourceType]
-		return resource.(map[string]interface{}), nil
+	switch result := data[resourceType].(type) {
+	case map[string]interface{}:
+		return result, nil
+	case []interface{}:
+		return result[0].(map[string]interface{}), nil
 	default:
-		resource := data[resourceType].([]interface{})[0] //only one resource obviously
-		return resource.(map[string]interface{}), nil
+		log.Printf("[WARN] go-nitro: FindResource Unable to determine type of response")
+		return nil, fmt.Errorf("[INFO] go-nitro: FindResource: Unable to determine type of response")
 	}
 }
 
