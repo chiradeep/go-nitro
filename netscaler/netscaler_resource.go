@@ -333,6 +333,22 @@ func (c *NitroClient) listEnabledFeatures() ([]byte, error) {
 
 }
 
+func (c *NitroClient) enableModes(modeJSON []byte) ([]byte, error) {
+	log.Println("[DEBUG] go-nitro Enabling modes")
+	url := c.url + "nsmode?action=enable"
+
+	return c.doHTTPRequest("POST", url, bytes.NewBuffer(modeJSON), createResponseHandler)
+
+}
+
+func (c *NitroClient) listEnabledModes() ([]byte, error) {
+	log.Println("[DEBUG] go-nitro: listing modes")
+	url := c.url + "nsmode"
+
+	return c.doHTTPRequest("GET", url, bytes.NewBuffer([]byte{}), readResponseHandler)
+
+}
+
 func (c *NitroClient) saveConfig(saveJSON []byte) error {
 	log.Println("[DEBUG] go-nitro: Saving config")
 	url := c.url + "nsconfig?action=save"
