@@ -411,6 +411,33 @@ func TestEnableFeatures(t *testing.T) {
 	}
 }
 
+func TestEnableModes(t *testing.T) {
+	modes := []string{"ULFD", "MBF"}
+	err := client.EnableModes(modes)
+	if err != nil {
+		t.Error("Failed to enable modes", err)
+		log.Println("Cannot continue")
+		return
+	}
+	result, err := client.ListEnabledModes()
+	if err != nil {
+		t.Error("Failed to retrieve modes", err)
+		log.Println("Cannot continue")
+		return
+	}
+	found := 0
+	for _, m := range modes{
+		for _, r := range result {
+			if m == r {
+				found = found + 1
+			}
+		}
+	}
+	if found != len(modes) {
+		t.Error("Requested modes do not match enabled modes=", modes, "result=", result)
+	}
+}
+
 func TestSaveConfig(t *testing.T) {
 	err := client.SaveConfig()
 	if err != nil {
