@@ -6,7 +6,7 @@
     },
     "autoscale" : {
       "type" : "string",
-      "enum" : [ "DISABLED", "DNS", "POLICY", "CLOUD" ],
+      "enum" : [ "DISABLED", "DNS", "POLICY", "CLOUD", "API" ],
       "readonly" : true
     },
     "cacheable" : {

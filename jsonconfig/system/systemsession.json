@@ -6,7 +6,7 @@
     },
     "clienttype" : {
       "type" : "string",
-      "enum" : [ "CLI", "API", "GUI" ],
+      "enum" : [ "CLI", "CONSOLE", "API", "GUI" ],
       "readonly" : true
     },
     "currentconn" : {

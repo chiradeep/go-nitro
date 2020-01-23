@@ -13,5 +13,7 @@ type Authenticationpushservice struct {
 	Refreshinterval       int    `json:"refreshinterval,omitempty"`
 	Servicekey            string `json:"servicekey,omitempty"`
 	Servicekeyname        string `json:"servicekeyname,omitempty"`
+	Signingkey            string `json:"signingkey,omitempty"`
+	Signingkeyname        string `json:"signingkeyname,omitempty"`
 	Trustservice          string `json:"trustservice,omitempty"`
 }

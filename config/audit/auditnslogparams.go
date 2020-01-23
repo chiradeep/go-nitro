@@ -7,6 +7,7 @@ type Auditnslogparams struct {
 	Builtin              interface{} `json:"builtin,omitempty"`
 	Contentinspectionlog string      `json:"contentinspectionlog,omitempty"`
 	Dateformat           string      `json:"dateformat,omitempty"`
+	Feature              string      `json:"feature,omitempty"`
 	Logfacility          string      `json:"logfacility,omitempty"`
 	Loglevel             interface{} `json:"loglevel,omitempty"`
 	Lsn                  string      `json:"lsn,omitempty"`

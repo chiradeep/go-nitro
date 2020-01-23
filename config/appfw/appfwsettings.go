@@ -1,11 +1,13 @@
 package appfw
 
 type Appfwsettings struct {
+	Builtin                  interface{} `json:"builtin,omitempty"`
 	Ceflogging               string      `json:"ceflogging,omitempty"`
 	Clientiploggingheader    string      `json:"clientiploggingheader,omitempty"`
 	Cookiepostencryptprefix  string      `json:"cookiepostencryptprefix,omitempty"`
 	Defaultprofile           string      `json:"defaultprofile,omitempty"`
 	Entitydecoding           string      `json:"entitydecoding,omitempty"`
+	Feature                  string      `json:"feature,omitempty"`
 	Geolocationlogging       string      `json:"geolocationlogging,omitempty"`
 	Importsizelimit          int         `json:"importsizelimit,omitempty"`
 	Learnratelimit           int         `json:"learnratelimit,omitempty"`

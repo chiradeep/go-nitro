@@ -13,12 +13,15 @@
     "ingressvlan" : {
       "type" : "integer"
     },
+    "iptunnel" : {
+      "type" : "string"
+    },
     "name" : {
       "type" : "string"
     },
     "type" : {
       "type" : "string",
-      "enum" : [ "InlineInspection" ]
+      "enum" : [ "InlineInspection", "Mirror" ]
     }
   },
   "$schema" : "http://json-schema.org/draft-04/schema#",

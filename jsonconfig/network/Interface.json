@@ -29,6 +29,10 @@
       "type" : "integer",
       "readonly" : true
     },
+    "actualringsize" : {
+      "type" : "integer",
+      "readonly" : true
+    },
     "autoneg" : {
       "type" : "string",
       "enum" : [ "DISABLED", "ENABLED" ]
@@ -320,6 +324,13 @@
     "reqthroughput" : {
       "type" : "integer",
       "readonly" : true
+    },
+    "ringsize" : {
+      "type" : "integer"
+    },
+    "ringtype" : {
+      "type" : "string",
+      "enum" : [ "Elastic", "Fixed" ]
     },
     "rxbytes" : {
       "type" : "integer",

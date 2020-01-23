@@ -2,7 +2,8 @@
   "type" : "object",
   "properties" : {
     "Namespace" : {
-      "type" : "string"
+      "type" : "string",
+      "readonly" : true
     },
     "certendpoint" : {
       "type" : "string",
@@ -42,6 +43,14 @@
       "readonly" : true
     },
     "servicekeyname" : {
+      "type" : "string",
+      "readonly" : true
+    },
+    "signingkey" : {
+      "type" : "string",
+      "readonly" : true
+    },
+    "signingkeyname" : {
       "type" : "string",
       "readonly" : true
     },
