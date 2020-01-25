@@ -426,7 +426,7 @@ func TestEnableModes(t *testing.T) {
 		return
 	}
 	found := 0
-	for _, m := range modes{
+	for _, m := range modes {
 		for _, r := range result {
 			if m == r {
 				found = found + 1
@@ -719,4 +719,50 @@ func TestFindFilteredResource(t *testing.T) {
 	} else {
 		t.Error("Error finding Rnat", fmt.Errorf("Discovered RNAT does not match"))
 	}
+}
+
+// TestDesiredStateServicegroupAPI tests the servicegroup_servicegroupmemberlist_binding API
+// which is used to bind multiple IP-only members to servicegroup in single Nitro call
+func TestDesiredStateServicegroupAPI(t *testing.T) {
+	svcGrpName := "test_sg_" + randomString(5)
+	sg1 := basic.Servicegroup{
+		Servicegroupname: svcGrpName,
+		Servicetype:      "http",
+		Autoscale:        "API",
+	}
+
+	_, err := client.AddResource(Servicegroup.Type(), svcGrpName, &sg1)
+	if err != nil {
+		t.Error("Could not add resource autoscale service group", err)
+		log.Println("Cannot continue")
+		return
+	}
+
+	ipmembers := []basic.Member{
+		{
+			Ip:   "1.1.1.1",
+			Port: 80,
+		},
+		{
+			Ip:   "2.2.2.2",
+			Port: 80,
+		},
+		{
+			Ip:   "3.3.3.3",
+			Port: 80,
+		},
+	}
+
+	bindSvcGrpToServer := basic.Servicegroupservicegroupmemberlistbinding{
+		Servicegroupname: svcGrpName,
+		Members:          ipmembers,
+	}
+
+	_, err = client.AddResource(Servicegroup_servicegroupmemberlist_binding.Type(), "test-svcgroup", &bindSvcGrpToServer)
+	if err != nil {
+		t.Error("Could not bind resource server", err)
+		log.Println("Cannot continue")
+		return
+	}
+
 }
