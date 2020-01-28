@@ -43,6 +43,10 @@
     "port" : {
       "type" : "integer"
     },
+    "responsetime" : {
+      "type" : "integer",
+      "readonly" : true
+    },
     "serverid" : {
       "type" : "integer"
     },

@@ -10,6 +10,7 @@ type Auditsyslogaction struct {
 	Dns                  string      `json:"dns,omitempty"`
 	Domainresolvenow     bool        `json:"domainresolvenow,omitempty"`
 	Domainresolveretry   int         `json:"domainresolveretry,omitempty"`
+	Feature              string      `json:"feature,omitempty"`
 	Ip                   string      `json:"ip,omitempty"`
 	Lbvservername        string      `json:"lbvservername,omitempty"`
 	Logfacility          string      `json:"logfacility,omitempty"`

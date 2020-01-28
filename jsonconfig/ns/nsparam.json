@@ -1,6 +1,10 @@
 {
   "type" : "object",
   "properties" : {
+    "advancedanalyticsstats" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
+    },
     "aftpallowrandomsourceport" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
@@ -61,6 +65,10 @@
     },
     "pmtutimeout" : {
       "type" : "integer"
+    },
+    "proxyprotocol" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
     },
     "securecookie" : {
       "type" : "string",

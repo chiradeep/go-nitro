@@ -110,6 +110,10 @@
       "enum" : [ "Primary", "Secondary", "UNKNOWN" ],
       "readonly" : true
     },
+    "syncstatusstrictmode" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
+    },
     "syncvlan" : {
       "type" : "integer"
     }

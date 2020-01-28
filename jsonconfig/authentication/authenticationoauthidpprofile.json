@@ -13,6 +13,9 @@
     "clientsecret" : {
       "type" : "string"
     },
+    "configservice" : {
+      "type" : "string"
+    },
     "defaultauthenticationgroup" : {
       "type" : "string"
     },
@@ -43,6 +46,13 @@
     "sendpassword" : {
       "type" : "string",
       "enum" : [ "ON", "OFF" ]
+    },
+    "signaturealg" : {
+      "type" : "string",
+      "enum" : [ "RS256", "RS512" ]
+    },
+    "signatureservice" : {
+      "type" : "string"
     },
     "skewtime" : {
       "type" : "integer"
