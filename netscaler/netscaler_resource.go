@@ -325,6 +325,14 @@ func (c *NitroClient) enableFeatures(featureJSON []byte) ([]byte, error) {
 
 }
 
+func (c *NitroClient) disableFeatures(featureJSON []byte) ([]byte, error) {
+	log.Println("[DEBUG] go-nitro Disabling features")
+	url := c.url + "nsfeature?action=disable"
+
+	return c.doHTTPRequest("POST", url, bytes.NewBuffer(featureJSON), createResponseHandler)
+
+}
+
 func (c *NitroClient) listEnabledFeatures() ([]byte, error) {
 	log.Println("[DEBUG] go-nitro: listing features")
 	url := c.url + "nsfeature"
