@@ -478,7 +478,7 @@ func (c *NitroClient) DisableFeatures(featureNames []string) error {
 
 	featureJSON, err := JSONMarshal(featureStruct)
 	if err != nil {
-		log.Printf("[ERROR] go-nitro: EnableFeatures: Failed to marshal features to JSON")
+		log.Printf("[ERROR] go-nitro: DisableFeatures: Failed to marshal features to JSON")
 		return fmt.Errorf("[ERROR] go-nitro: Failed to marshal features to JSON")
 	}
 
