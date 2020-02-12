@@ -463,6 +463,32 @@ func (c *NitroClient) EnableFeatures(featureNames []string) error {
 	return nil
 }
 
+func (c *NitroClient) DisableFeatures(featureNames []string) error {
+	/* construct this:
+	{
+	        "nsfeature":
+		{
+		    "feature": [ "LB", ]
+		}
+	}
+	*/
+	featureStruct := make(map[string]map[string][]string)
+	featureStruct["nsfeature"] = make(map[string][]string)
+	featureStruct["nsfeature"]["feature"] = featureNames
+
+	featureJSON, err := JSONMarshal(featureStruct)
+	if err != nil {
+		log.Printf("[ERROR] go-nitro: DisableFeatures: Failed to marshal features to JSON")
+		return fmt.Errorf("[ERROR] go-nitro: Failed to marshal features to JSON")
+	}
+
+	_, err = c.disableFeatures(featureJSON)
+	if err != nil {
+		return fmt.Errorf("[ERROR] go-nitro: Failed to disable feature %v", err)
+	}
+	return nil
+}
+
 //ListEnabledFeatures returns a string array of the list of features enabled on the NetScaler appliance
 func (c *NitroClient) ListEnabledFeatures() ([]string, error) {
 
