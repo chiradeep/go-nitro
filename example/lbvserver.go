@@ -18,9 +18,9 @@ package main
 import (
 	"log"
 
-	"github.com/chiradeep/go-nitro/config/basic"
-	"github.com/chiradeep/go-nitro/config/lb"
-	"github.com/chiradeep/go-nitro/netscaler"
+	"github.com/imkritesh/go-nitro/config/basic"
+	"github.com/imkritesh/go-nitro/config/lb"
+	"github.com/imkritesh/go-nitro/netscaler"
 )
 
 func main() {
@@ -29,6 +29,7 @@ func main() {
 		log.Fatal("Could not create a client: ", err)
 	}
 	log.Printf("Client is %+v\n", *client)
+	client.Login()
 	lb1 := lb.Lbvserver{
 		Name:        "sample_lb",
 		Ipv46:       "10.71.136.50",
@@ -68,5 +69,6 @@ func main() {
 
 	client.EnableFeatures([]string{"CS"})
 	client.SaveConfig()
+	client.Logout()
 
 }

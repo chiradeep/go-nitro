@@ -23,8 +23,21 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"strings"
 )
+
+// Idempotent flag can't be added for these resources
+var IdempotentInvalidResources = []string{"login", "logout", "reboot", "shutdown", "ping", "ping6", "traceroute", "traceroute6", "install"}
+
+func contains(slice []string, val string) bool {
+	for _, item := range slice {
+		if item == val {
+			return true
+		}
+	}
+	return false
+}
 
 type responseHandlerFunc func(resp *http.Response) ([]byte, error)
 
@@ -103,18 +116,32 @@ func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.B
 	}
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
+	splitStrings := strings.Split(strings.Split(url, "?")[0], "/")
+	resourceName := splitStrings[len(splitStrings)-1]
 	if c.proxiedNs == "" {
-		req.Header.Set("X-NITRO-USER", c.username)
-		req.Header.Set("X-NITRO-PASS", c.password)
+		if c.sessionid != "" {
+			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.sessionid)
+		} else {
+			if resourceName != "login" {
+				req.Header.Set("X-NITRO-USER", c.username)
+				req.Header.Set("X-NITRO-PASS", c.password)
+			}
+		}
 	} else {
-		req.SetBasicAuth(c.username, c.password)
+		if c.sessionid != "" {
+			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.sessionid)
+		} else {
+			if resourceName != "login" {
+				req.SetBasicAuth(c.username, c.password)
+			}
+		}
 		req.Header.Set("_MPS_API_PROXY_MANAGED_INSTANCE_IP", c.proxiedNs)
 	}
 	return req, nil
 }
 
-func (c *NitroClient) doHTTPRequest(method string, url string, bytes *bytes.Buffer, respHandler responseHandlerFunc) ([]byte, error) {
-	req, err := c.createHTTPRequest(method, url, bytes)
+func (c *NitroClient) doHTTPRequest(method string, urlstr string, bytes *bytes.Buffer, respHandler responseHandlerFunc) ([]byte, error) {
+	req, err := c.createHTTPRequest(method, urlstr, bytes)
 
 	resp, err := c.client.Do(req)
 	if resp != nil {
@@ -122,6 +149,14 @@ func (c *NitroClient) doHTTPRequest(method string, url string, bytes *bytes.Buff
 	}
 	if err != nil {
 		return []byte{}, err
+	}
+	for _, cookie := range resp.Cookies() {
+		if cookie.Name == "sessionid" {
+			sessionid, err := url.QueryUnescape(cookie.Value)
+			if err == nil {
+				c.sessionid = sessionid
+			}
+		}
 	}
 	log.Println("[DEBUG] go-nitro: response Status:", resp.Status)
 	return respHandler(resp)
@@ -132,7 +167,7 @@ func (c *NitroClient) createResource(resourceType string, resourceJSON []byte) (
 
 	url := c.url + resourceType
 
-	if !strings.HasSuffix(resourceType, "_binding") {
+	if !strings.HasSuffix(resourceType, "_binding") && !contains(IdempotentInvalidResources, resourceType) {
 		url = url + "?idempotent=yes"
 	}
 	log.Println("[TRACE] go-nitro: url is ", url)

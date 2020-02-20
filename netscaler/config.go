@@ -21,6 +21,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"reflect"
 	"strings"
 )
 
@@ -31,6 +32,37 @@ func JSONMarshal(t interface{}) ([]byte, error) {
 	encoder.SetEscapeHTML(false)
 	err := encoder.Encode(t)
 	return buffer.Bytes(), err
+}
+
+type login struct {
+	Username string `json:"username,omitempty"`
+	Password string `json:"password,omitempty"`
+	Timeout  int    `json:"timeout,omitempty"`
+}
+
+type logout struct {
+}
+
+// Login to netscaler and store the session
+func (c *NitroClient) Login() {
+	loginObj := login{
+		Username: c.username,
+		Password: c.password,
+		Timeout:  c.timeout,
+	}
+	c.AddResource(GetStructName(loginObj), "login", loginObj)
+}
+
+// Logout from netscaler and clear the session
+func (c *NitroClient) Logout() {
+	logoutObj := logout{}
+	c.AddResource(GetStructName(logoutObj), "logout", logoutObj)
+	c.sessionid = ""
+}
+
+// GetStructName returns name of struct in lowercase for provided object
+func GetStructName(object interface{}) string {
+	return strings.ToLower(reflect.TypeOf(object).Name())
 }
 
 //AddResource adds a resource of supplied type and name
