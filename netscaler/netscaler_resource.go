@@ -31,9 +31,14 @@ import (
 // Idempotent flag can't be added for these resources
 var idempotentInvalidResources = []string{"login", "logout", "reboot", "shutdown", "ping", "ping6", "traceroute", "traceroute6", "install"}
 
+const (
+	nsErrSessionExpired = 444
+	nsErrAuthTimeout    = 1027
+)
+
 func contains(slice []string, val string) bool {
 	for _, item := range slice {
-		if item == val {
+		if strings.EqualFold(item, val) {
 			return true
 		}
 	}
@@ -170,7 +175,7 @@ func (c *NitroClient) doHTTPRequest(method string, urlstr string, bytes *bytes.B
 		err2 := json.Unmarshal(body, &data)
 		if err2 == nil {
 			data["errorcode"] = int(data["errorcode"].(float64))
-			if data["errorcode"] == 444 || data["errorcode"] == 1027 {
+			if data["errorcode"] == nsErrSessionExpired || data["errorcode"] == nsErrAuthTimeout {
 				c.sessionid = ""
 			}
 		}

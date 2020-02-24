@@ -21,7 +21,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"reflect"
 	"strings"
 )
 
@@ -50,19 +49,14 @@ func (c *NitroClient) Login() {
 		Password: c.password,
 		Timeout:  c.timeout,
 	}
-	c.AddResource(GetStructName(loginObj), "login", loginObj)
+	c.AddResource(Login.Type(), "login", loginObj)
 }
 
 // Logout from netscaler and clear the session
 func (c *NitroClient) Logout() {
 	logoutObj := logout{}
-	c.AddResource(GetStructName(logoutObj), "logout", logoutObj)
+	c.AddResource(Logout.Type(), "logout", logoutObj)
 	c.sessionid = ""
-}
-
-// GetStructName returns name of struct in lowercase for provided object
-func GetStructName(object interface{}) string {
-	return strings.ToLower(reflect.TypeOf(object).Name())
 }
 
 //AddResource adds a resource of supplied type and name
