@@ -18,6 +18,7 @@ package netscaler
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -28,7 +29,7 @@ import (
 )
 
 // Idempotent flag can't be added for these resources
-var IdempotentInvalidResources = []string{"login", "logout", "reboot", "shutdown", "ping", "ping6", "traceroute", "traceroute6", "install"}
+var idempotentInvalidResources = []string{"login", "logout", "reboot", "shutdown", "ping", "ping6", "traceroute", "traceroute6", "install"}
 
 func contains(slice []string, val string) bool {
 	for _, item := range slice {
@@ -119,7 +120,8 @@ func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.B
 	splitStrings := strings.Split(strings.Split(url, "?")[0], "/")
 	resourceName := splitStrings[len(splitStrings)-1]
 	if c.proxiedNs == "" {
-		if c.sessionid != "" {
+		if len(c.sessionid) > 0 {
+			log.Println("[DEBUG] createHTTPRequest: Using token-based authentication")
 			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.sessionid)
 		} else {
 			if resourceName != "login" {
@@ -128,7 +130,8 @@ func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.B
 			}
 		}
 	} else {
-		if c.sessionid != "" {
+		if len(c.sessionid) > 0 {
+			log.Println("[DEBUG] createHTTPRequest: Using token-based authentication")
 			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.sessionid)
 		} else {
 			if resourceName != "login" {
@@ -150,6 +153,7 @@ func (c *NitroClient) doHTTPRequest(method string, urlstr string, bytes *bytes.B
 	if err != nil {
 		return []byte{}, err
 	}
+	// For login request 'sessionid' is present in cookies
 	for _, cookie := range resp.Cookies() {
 		if cookie.Name == "sessionid" {
 			sessionid, err := url.QueryUnescape(cookie.Value)
@@ -159,7 +163,19 @@ func (c *NitroClient) doHTTPRequest(method string, urlstr string, bytes *bytes.B
 		}
 	}
 	log.Println("[DEBUG] go-nitro: response Status:", resp.Status)
-	return respHandler(resp)
+	body, err := respHandler(resp)
+	// Clear sessionid in case of session-expiry
+	if resp.Status == "401 Unauthorized" {
+		var data map[string]interface{}
+		err2 := json.Unmarshal(body, &data)
+		if err2 == nil {
+			data["errorcode"] = int(data["errorcode"].(float64))
+			if data["errorcode"] == 444 || data["errorcode"] == 1027 {
+				c.sessionid = ""
+			}
+		}
+	}
+	return body, err
 }
 
 func (c *NitroClient) createResource(resourceType string, resourceJSON []byte) ([]byte, error) {
@@ -167,7 +183,7 @@ func (c *NitroClient) createResource(resourceType string, resourceJSON []byte) (
 
 	url := c.url + resourceType
 
-	if !strings.HasSuffix(resourceType, "_binding") && !contains(IdempotentInvalidResources, resourceType) {
+	if !strings.HasSuffix(resourceType, "_binding") && !contains(idempotentInvalidResources, resourceType) {
 		url = url + "?idempotent=yes"
 	}
 	log.Println("[TRACE] go-nitro: url is ", url)

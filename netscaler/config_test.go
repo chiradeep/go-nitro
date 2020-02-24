@@ -24,10 +24,10 @@ import (
 
 	"os"
 
-	"github.com/chiradeep/go-nitro/config/basic"
-	"github.com/chiradeep/go-nitro/config/lb"
-	"github.com/chiradeep/go-nitro/config/network"
-	"github.com/chiradeep/go-nitro/config/ns"
+	"github.com/imkritesh/go-nitro/config/basic"
+	"github.com/imkritesh/go-nitro/config/lb"
+	"github.com/imkritesh/go-nitro/config/network"
+	"github.com/imkritesh/go-nitro/config/ns"
 )
 
 var client *NitroClient
@@ -765,4 +765,55 @@ func TestDesiredStateServicegroupAPI(t *testing.T) {
 		return
 	}
 
+}
+
+// TestTokenBasedAuth tests token-based authentication and tests if session-is is cleared in case of session-expiry
+func TestTokenBasedAuth(t *testing.T) {
+	client.Login()
+	rndIP := randomIP()
+	lbName := "test_lb_" + randomString(5)
+	lb1 := lb.Lbvserver{
+		Name:        lbName,
+		Ipv46:       rndIP,
+		Lbmethod:    "ROUNDROBIN",
+		Servicetype: "HTTP",
+		Port:        8000,
+	}
+	_, err := client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	if err != nil {
+		t.Error("Could not add Lbvserver: ", err)
+		log.Println("Not continuing test")
+		return
+	}
+
+	rsrc, err := client.FindResource(Lbvserver.Type(), lbName)
+	if err != nil {
+		t.Error("Did not find resource of type ", err, Lbvserver.Type(), ":", lbName)
+	} else {
+		log.Println("LB-METHOD: ", rsrc["lbmethod"])
+	}
+	err = client.DeleteResource(Lbvserver.Type(), lbName)
+	if err != nil {
+		t.Error("Could not delete LB", lbName, err)
+		log.Println("Cannot continue")
+		return
+	}
+	client.Logout()
+
+	// Test if session-id is cleared in case of session-expiry
+	client.timeout = 10
+	client.Login()
+	time.Sleep(15 * time.Second)
+	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	if err != nil {
+		if len(client.sessionid) > 0 {
+			t.Error("Sessionid not cleared")
+			return
+		}
+		log.Println("sessionid cleared because of session-expiry")
+	} else {
+		t.Error("Adding lbvserver should have failed because of session-expiry")
+	}
+	log.Println("session-id after:", client.sessionid)
+	client.Logout()
 }
