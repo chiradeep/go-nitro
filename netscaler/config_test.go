@@ -769,7 +769,12 @@ func TestDesiredStateServicegroupAPI(t *testing.T) {
 
 // TestTokenBasedAuth tests token-based authentication and tests if session-is is cleared in case of session-expiry
 func TestTokenBasedAuth(t *testing.T) {
-	client.Login()
+	var err error
+	err = client.Login()
+	if err != nil {
+		t.Error("Login Failed")
+		return
+	}
 	rndIP := randomIP()
 	lbName := "test_lb_" + randomString(5)
 	lb1 := lb.Lbvserver{
@@ -779,7 +784,7 @@ func TestTokenBasedAuth(t *testing.T) {
 		Servicetype: "HTTP",
 		Port:        8000,
 	}
-	_, err := client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Could not add Lbvserver: ", err)
 		log.Println("Not continuing test")
@@ -798,7 +803,11 @@ func TestTokenBasedAuth(t *testing.T) {
 		log.Println("Cannot continue")
 		return
 	}
-	client.Logout()
+	err = client.Logout()
+	if err != nil {
+		t.Error("Logout Failed")
+		return
+	}
 
 	// Test if session-id is cleared in case of session-expiry
 	client.timeout = 10
@@ -814,6 +823,4 @@ func TestTokenBasedAuth(t *testing.T) {
 	} else {
 		t.Error("Adding lbvserver should have failed because of session-expiry")
 	}
-	log.Println("session-id after:", client.sessionid)
-	client.Logout()
 }

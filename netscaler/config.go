@@ -43,20 +43,22 @@ type logout struct {
 }
 
 // Login to netscaler and store the session
-func (c *NitroClient) Login() {
+func (c *NitroClient) Login() error {
 	loginObj := login{
 		Username: c.username,
 		Password: c.password,
 		Timeout:  c.timeout,
 	}
-	c.AddResource(Login.Type(), "login", loginObj)
+	_, err := c.AddResource(Login.Type(), "login", loginObj)
+	return err
 }
 
 // Logout from netscaler and clear the session
-func (c *NitroClient) Logout() {
+func (c *NitroClient) Logout() error {
 	logoutObj := logout{}
-	c.AddResource(Logout.Type(), "logout", logoutObj)
+	_, err := c.AddResource(Logout.Type(), "logout", logoutObj)
 	c.sessionid = ""
+	return err
 }
 
 //AddResource adds a resource of supplied type and name
