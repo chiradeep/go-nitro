@@ -44,6 +44,10 @@ type logout struct {
 
 // Login to netscaler and store the session
 func (c *NitroClient) Login() error {
+	// Check if login is already done
+	if len(c.sessionid) > 0 {
+		return nil
+	}
 	loginObj := login{
 		Username: c.username,
 		Password: c.password,
