@@ -73,7 +73,8 @@ func (c *NitroClient) AddResource(resourceType string, name string, resourceStru
 
 	resourceJSON, err := JSONMarshal(nsResource)
 
-	if !strings.EqualFold(resourceType, "systemfile") {
+	var doNotPrintResources = []string{"systemfile", "login", "logout"}
+	if !contains(doNotPrintResources, resourceType) {
 		log.Printf("[TRACE] go-nitro: Resourcejson is " + string(resourceJSON))
 	}
 	body, err := c.createResource(resourceType, resourceJSON)
