@@ -18,9 +18,9 @@ package main
 import (
 	"log"
 
-	"github.com/imkritesh/go-nitro/config/basic"
-	"github.com/imkritesh/go-nitro/config/lb"
-	"github.com/imkritesh/go-nitro/netscaler"
+	"github.com/chiradeep/go-nitro/config/basic"
+	"github.com/chiradeep/go-nitro/config/lb"
+	"github.com/chiradeep/go-nitro/netscaler"
 )
 
 func main() {

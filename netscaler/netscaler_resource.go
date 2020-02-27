@@ -126,7 +126,6 @@ func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.B
 	resourceName := splitStrings[len(splitStrings)-1]
 	if c.proxiedNs == "" {
 		if len(c.sessionid) > 0 {
-			log.Println("[DEBUG] createHTTPRequest: Using token-based authentication")
 			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.sessionid)
 		} else {
 			if resourceName != "login" {
@@ -136,7 +135,6 @@ func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.B
 		}
 	} else {
 		if len(c.sessionid) > 0 {
-			log.Println("[DEBUG] createHTTPRequest: Using token-based authentication")
 			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.sessionid)
 		} else {
 			if resourceName != "login" {
