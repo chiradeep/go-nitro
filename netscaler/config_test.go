@@ -766,3 +766,19 @@ func TestDesiredStateServicegroupAPI(t *testing.T) {
 	}
 
 }
+
+func TestNullAction(t *testing.T) {
+	reboot := ns.Reboot{
+		Warm: true,
+	}
+
+	err := client.ActOnResource("reboot", &reboot, "")
+	if err != nil {
+		t.Error("Could not make null action reboot", err)
+		log.Println("Cannot continue")
+		return
+	}
+
+	// Add a timeout to wait for instance to be back online
+	time.Sleep(60 * time.Second)
+}
