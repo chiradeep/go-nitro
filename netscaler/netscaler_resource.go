@@ -115,20 +115,26 @@ func readResponseHandler(resp *http.Response) ([]byte, error) {
 	}
 }
 
-func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.Buffer) (*http.Request, error) {
-	req, err := http.NewRequest(method, url, buff)
+func (c *NitroClient) createHTTPRequest(method string, urlstr string, buff *bytes.Buffer) (*http.Request, error) {
+	req, err := http.NewRequest(method, urlstr, buff)
 	if err != nil {
 		return nil, err
 	}
+	// Get resourceType from url
+	u, err := url.Parse(urlstr)
+	if err != nil {
+		return nil, err
+	}
+	splitStrings := strings.Split(u.Path, "/")
+	resourceType := splitStrings[len(splitStrings)-1]
+
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
-	splitStrings := strings.Split(strings.Split(url, "?")[0], "/")
-	resourceName := splitStrings[len(splitStrings)-1]
 	if c.proxiedNs == "" {
 		if len(c.sessionid) > 0 {
 			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.sessionid)
 		} else {
-			if resourceName != "login" {
+			if resourceType != "login" {
 				req.Header.Set("X-NITRO-USER", c.username)
 				req.Header.Set("X-NITRO-PASS", c.password)
 			}
@@ -137,7 +143,7 @@ func (c *NitroClient) createHTTPRequest(method string, url string, buff *bytes.B
 		if len(c.sessionid) > 0 {
 			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.sessionid)
 		} else {
-			if resourceName != "login" {
+			if resourceType != "login" {
 				req.SetBasicAuth(c.username, c.password)
 			}
 		}
@@ -155,15 +161,6 @@ func (c *NitroClient) doHTTPRequest(method string, urlstr string, bytes *bytes.B
 	}
 	if err != nil {
 		return []byte{}, err
-	}
-	// For login request 'sessionid' is present in cookies
-	for _, cookie := range resp.Cookies() {
-		if cookie.Name == "sessionid" {
-			sessionid, err := url.QueryUnescape(cookie.Value)
-			if err == nil {
-				c.sessionid = sessionid
-			}
-		}
 	}
 	log.Println("[DEBUG] go-nitro: response Status:", resp.Status)
 	body, err := respHandler(resp)

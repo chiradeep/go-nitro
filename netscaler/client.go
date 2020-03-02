@@ -33,6 +33,7 @@ type NitroParams struct {
 	Password  string
 	ProxiedNs string
 	SslVerify bool
+	Timeout   int
 }
 
 //NitroClient has methods to configure the NetScaler
@@ -76,6 +77,7 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 	c.username = params.Username
 	c.password = params.Password
 	c.proxiedNs = params.ProxiedNs
+	c.timeout = params.Timeout
 	if params.SslVerify {
 		c.client = &http.Client{}
 	} else {
@@ -107,12 +109,22 @@ func NewNitroClientFromEnv() (*NitroClient, error) {
 			return nil, fmt.Errorf("Could not parse env variable NS_SSLVERIFY: valid values are true and false")
 		}
 	}
+	timeoutStr := os.Getenv("NS_TIMEOUT")
+	timeout := 0
+	if timeoutStr != "" {
+		var err error
+		timeout, err = strconv.Atoi(timeoutStr)
+		if err != nil {
+			return nil, fmt.Errorf("Could not parse env variable NS_TIMEOUT: integer value is expected")
+		}
+	}
 	nitroParams := NitroParams{
 		Url:       url,
 		Username:  username,
 		Password:  password,
 		ProxiedNs: proxiedNs,
 		SslVerify: sslVerify,
+		Timeout:   timeout,
 	}
 	return NewNitroClientFromParams(nitroParams)
 }

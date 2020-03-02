@@ -53,7 +53,13 @@ func (c *NitroClient) Login() error {
 		Password: c.password,
 		Timeout:  c.timeout,
 	}
-	_, err := c.AddResource(Login.Type(), "login", loginObj)
+	body, err := c.AddResourceReturnBody(Login.Type(), "login", loginObj)
+	// Read sessionid from response body
+	var data map[string]interface{}
+	err = json.Unmarshal(body, &data)
+	if err == nil {
+		c.sessionid = data["sessionid"].(string)
+	}
 	return err
 }
 
@@ -63,6 +69,25 @@ func (c *NitroClient) Logout() error {
 	_, err := c.AddResource(Logout.Type(), "logout", logoutObj)
 	c.sessionid = ""
 	return err
+}
+
+//AddResourceReturnBody adds a resource of supplied type and name and returns http response body
+func (c *NitroClient) AddResourceReturnBody(resourceType string, name string, resourceStruct interface{}) ([]byte, error) {
+
+	nsResource := make(map[string]interface{})
+	nsResource[resourceType] = resourceStruct
+
+	resourceJSON, err := JSONMarshal(nsResource)
+
+	var doNotPrintResources = []string{"systemfile", "login", "logout"}
+	if !contains(doNotPrintResources, resourceType) {
+		log.Printf("[TRACE] go-nitro: Resourcejson is " + string(resourceJSON))
+	}
+	body, err := c.createResource(resourceType, resourceJSON)
+	if err != nil {
+		return body, fmt.Errorf("[ERROR] go-nitro: Failed to create resource of type %s, name=%s, err=%s", resourceType, name, err)
+	}
+	return body, nil
 }
 
 //AddResource adds a resource of supplied type and name
