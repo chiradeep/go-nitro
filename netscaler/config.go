@@ -42,10 +42,18 @@ type login struct {
 type logout struct {
 }
 
+// IsLoggedIn tells if user is already logged in
+func (c *NitroClient) IsLoggedIn() bool {
+	if len(c.sessionid) > 0 {
+		return true
+	}
+	return false
+}
+
 // Login to netscaler and store the session
 func (c *NitroClient) Login() error {
 	// Check if login is already done
-	if len(c.sessionid) > 0 {
+	if c.IsLoggedIn() {
 		return nil
 	}
 	loginObj := login{
