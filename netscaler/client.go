@@ -24,6 +24,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 //NitroParams encapsulates options to create a NitroClient
@@ -39,14 +40,15 @@ type NitroParams struct {
 //NitroClient has methods to configure the NetScaler
 //It abstracts the REST operations of the NITRO API
 type NitroClient struct {
-	url       string
-	statsURL  string
-	username  string
-	password  string
-	proxiedNs string
-	client    *http.Client
-	sessionid string
-	timeout   int
+	url          string
+	statsURL     string
+	username     string
+	password     string
+	proxiedNs    string
+	client       *http.Client
+	sessionidMux sync.RWMutex
+	sessionid    string
+	timeout      int
 }
 
 //NewNitroClient returns a usable NitroClient. Does not check validity of supplied parameters
@@ -59,6 +61,8 @@ func NewNitroClient(url string, username string, password string) *NitroClient {
 	c.username = username
 	c.password = password
 	c.client = &http.Client{}
+	c.sessionid = ""
+	c.timeout = 0
 	return c
 }
 
@@ -77,6 +81,7 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 	c.username = params.Username
 	c.password = params.Password
 	c.proxiedNs = params.ProxiedNs
+	c.sessionid = ""
 	c.timeout = params.Timeout
 	if params.SslVerify {
 		c.client = &http.Client{}

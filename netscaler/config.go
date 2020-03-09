@@ -42,6 +42,22 @@ type login struct {
 type logout struct {
 }
 
+func (c *NitroClient) updateSessionid(sessionid string) {
+	c.sessionidMux.Lock()
+	c.sessionid = sessionid
+	c.sessionidMux.Unlock()
+}
+
+func (c *NitroClient) clearSessionid() {
+	c.updateSessionid("")
+}
+
+func (c *NitroClient) getSessionid() string {
+	c.sessionidMux.RLock()
+	defer c.sessionidMux.RUnlock()
+	return c.sessionid
+}
+
 // IsLoggedIn tells if user is already logged in
 func (c *NitroClient) IsLoggedIn() bool {
 	if len(c.sessionid) > 0 {
@@ -62,11 +78,14 @@ func (c *NitroClient) Login() error {
 		Timeout:  c.timeout,
 	}
 	body, err := c.AddResourceReturnBody(Login.Type(), "login", loginObj)
+	if err != nil {
+		return err
+	}
 	// Read sessionid from response body
 	var data map[string]interface{}
 	err = json.Unmarshal(body, &data)
 	if err == nil {
-		c.sessionid = data["sessionid"].(string)
+		c.updateSessionid(data["sessionid"].(string))
 	}
 	return err
 }
@@ -75,7 +94,7 @@ func (c *NitroClient) Login() error {
 func (c *NitroClient) Logout() error {
 	logoutObj := logout{}
 	_, err := c.AddResource(Logout.Type(), "logout", logoutObj)
-	c.sessionid = ""
+	c.clearSessionid()
 	return err
 }
 

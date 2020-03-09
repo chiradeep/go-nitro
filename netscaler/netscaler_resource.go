@@ -132,7 +132,7 @@ func (c *NitroClient) createHTTPRequest(method string, urlstr string, buff *byte
 	req.Header.Set("Content-Type", "application/json")
 	if c.proxiedNs == "" {
 		if len(c.sessionid) > 0 {
-			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.sessionid)
+			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.getSessionid())
 		} else {
 			if resourceType != "login" {
 				req.Header.Set("X-NITRO-USER", c.username)
@@ -140,13 +140,7 @@ func (c *NitroClient) createHTTPRequest(method string, urlstr string, buff *byte
 			}
 		}
 	} else {
-		if len(c.sessionid) > 0 {
-			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.sessionid)
-		} else {
-			if resourceType != "login" {
-				req.SetBasicAuth(c.username, c.password)
-			}
-		}
+		req.SetBasicAuth(c.username, c.password)
 		req.Header.Set("_MPS_API_PROXY_MANAGED_INSTANCE_IP", c.proxiedNs)
 	}
 	return req, nil
@@ -169,9 +163,12 @@ func (c *NitroClient) doHTTPRequest(method string, urlstr string, bytes *bytes.B
 		var data map[string]interface{}
 		err2 := json.Unmarshal(body, &data)
 		if err2 == nil {
-			data["errorcode"] = int(data["errorcode"].(float64))
-			if data["errorcode"] == nsErrSessionExpired || data["errorcode"] == nsErrAuthTimeout {
-				c.sessionid = ""
+			errorcode, ok := data["errorcode"]
+			if ok {
+				errorcode = int(errorcode.(float64))
+				if errorcode == nsErrSessionExpired || errorcode == nsErrAuthTimeout {
+					c.clearSessionid()
+				}
 			}
 		}
 	}
