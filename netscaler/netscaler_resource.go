@@ -131,7 +131,7 @@ func (c *NitroClient) createHTTPRequest(method string, urlstr string, buff *byte
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
 	if c.proxiedNs == "" {
-		if len(c.sessionid) > 0 {
+		if c.IsLoggedIn() {
 			req.Header.Set("Set-Cookie", "NITRO_AUTH_TOKEN="+c.getSessionid())
 		} else {
 			if resourceType != "login" {

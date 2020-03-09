@@ -60,7 +60,7 @@ func (c *NitroClient) getSessionid() string {
 
 // IsLoggedIn tells if user is already logged in
 func (c *NitroClient) IsLoggedIn() bool {
-	if len(c.sessionid) > 0 {
+	if len(c.getSessionid()) > 0 {
 		return true
 	}
 	return false

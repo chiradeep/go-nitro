@@ -815,7 +815,7 @@ func TestTokenBasedAuth(t *testing.T) {
 	time.Sleep(15 * time.Second)
 	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
-		if len(client.sessionid) > 0 {
+		if client.IsLoggedIn() {
 			t.Error("Sessionid not cleared")
 			return
 		}
