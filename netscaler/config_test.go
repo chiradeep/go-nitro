@@ -782,3 +782,61 @@ func TestNullAction(t *testing.T) {
 	// Add a timeout to wait for instance to be back online
 	time.Sleep(60 * time.Second)
 }
+
+// TestTokenBasedAuth tests token-based authentication and tests if session-is is cleared in case of session-expiry
+func TestTokenBasedAuth(t *testing.T) {
+	var err error
+	err = client.Login()
+	if err != nil {
+		t.Error("Login Failed")
+		return
+	}
+	rndIP := randomIP()
+	lbName := "test_lb_" + randomString(5)
+	lb1 := lb.Lbvserver{
+		Name:        lbName,
+		Ipv46:       rndIP,
+		Lbmethod:    "ROUNDROBIN",
+		Servicetype: "HTTP",
+		Port:        8000,
+	}
+	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	if err != nil {
+		t.Error("Could not add Lbvserver: ", err)
+		log.Println("Not continuing test")
+		return
+	}
+
+	rsrc, err := client.FindResource(Lbvserver.Type(), lbName)
+	if err != nil {
+		t.Error("Did not find resource of type ", err, Lbvserver.Type(), ":", lbName)
+	} else {
+		log.Println("LB-METHOD: ", rsrc["lbmethod"])
+	}
+	err = client.DeleteResource(Lbvserver.Type(), lbName)
+	if err != nil {
+		t.Error("Could not delete LB", lbName, err)
+		log.Println("Cannot continue")
+		return
+	}
+	err = client.Logout()
+	if err != nil {
+		t.Error("Logout Failed")
+		return
+	}
+
+	// Test if session-id is cleared in case of session-expiry
+	client.timeout = 10
+	client.Login()
+	time.Sleep(15 * time.Second)
+	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
+	if err != nil {
+		if client.IsLoggedIn() {
+			t.Error("Sessionid not cleared")
+			return
+		}
+		log.Println("sessionid cleared because of session-expiry")
+	} else {
+		t.Error("Adding lbvserver should have failed because of session-expiry")
+	}
+}
