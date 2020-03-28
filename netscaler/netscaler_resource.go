@@ -136,11 +136,19 @@ func (c *NitroClient) createHTTPRequest(method string, urlstr string, buff *byte
 		} else {
 			if resourceType != "login" {
 				req.Header.Set("X-NITRO-USER", c.username)
-				req.Header.Set("X-NITRO-PASS", c.password)
+				pw := c.password
+				if c.ks != nil {
+					pw = c.ks.decrypt(c.password)
+				}
+				req.Header.Set("X-NITRO-PASS", pw)
 			}
 		}
 	} else {
-		req.SetBasicAuth(c.username, c.password)
+		if c.ks != nil {
+			req.SetBasicAuth(c.username, c.ks.decrypt(c.password))
+		} else {
+			req.SetBasicAuth(c.username, c.password)
+		}
 		req.Header.Set("_MPS_API_PROXY_MANAGED_INSTANCE_IP", c.proxiedNs)
 	}
 	return req, nil

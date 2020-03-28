@@ -149,9 +149,13 @@ func (c *NitroClient) Login() error {
 	if c.IsLoggedIn() {
 		return nil
 	}
+	pw := c.password
+	if c.ks != nil {
+		pw = c.ks.decrypt(c.password)
+	}
 	loginObj := login{
 		Username: c.username,
-		Password: c.password,
+		Password: pw,
 		Timeout:  c.timeout,
 	}
 	body, err := c.AddResourceReturnBody(Login.Type(), "login", loginObj)

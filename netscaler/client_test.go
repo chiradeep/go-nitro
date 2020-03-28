@@ -92,5 +92,4 @@ func TestClientCreateFromParams(t *testing.T) {
 	if err == nil {
 		t.Error("Expected to fail in creating client due to invalid URL")
 	}
-
 }

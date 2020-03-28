@@ -35,6 +35,7 @@ type NitroParams struct {
 	ProxiedNs string
 	SslVerify bool
 	Timeout   int
+	Keyspec   *Keyspec
 }
 
 //NitroClient has methods to configure the NetScaler
@@ -49,6 +50,7 @@ type NitroClient struct {
 	sessionidMux sync.RWMutex
 	sessionid    string
 	timeout      int
+	ks           *Keyspec
 }
 
 //NewNitroClient returns a usable NitroClient. Does not check validity of supplied parameters
@@ -63,6 +65,7 @@ func NewNitroClient(url string, username string, password string) *NitroClient {
 	c.client = &http.Client{}
 	c.sessionid = ""
 	c.timeout = 0
+	c.ks = nil
 	return c
 }
 
@@ -78,8 +81,12 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 	c := new(NitroClient)
 	c.url = strings.Trim(params.Url, " /") + "/nitro/v1/config/"
 	c.statsURL = strings.Trim(params.Url, " /") + "/nitro/v1/stat/"
+	c.ks = params.Keyspec
 	c.username = params.Username
 	c.password = params.Password
+	if c.ks != nil {
+		c.password = c.ks.encrypt(params.Password)
+	}
 	c.proxiedNs = params.ProxiedNs
 	c.sessionid = ""
 	c.timeout = params.Timeout
