@@ -16,6 +16,8 @@ limitations under the License.
 package netscaler
 
 import (
+	"crypto/rand"
+	"crypto/sha256"
 	"os"
 	"testing"
 )
@@ -82,6 +84,15 @@ func TestClientCreateFromParams(t *testing.T) {
 	}
 
 	params.SslVerify = false
+	client, err = NewNitroClientFromParams(params)
+	if client == nil {
+		t.Error("Expected to succeed in creating client")
+	}
+
+	masterkey := make([]byte, 32)
+	rand.Read(masterkey)
+	keyspec := NewKeyspec(masterkey, 8, 1000, 32, sha256.New) // Saltsize: 8, Iterations: 1000, Key lenght: 32
+	params.Keyspec = keyspec
 	client, err = NewNitroClientFromParams(params)
 	if client == nil {
 		t.Error("Expected to succeed in creating client")
