@@ -88,7 +88,7 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 	c.sessionid = ""
 	c.timeout = params.Timeout
 	if params.SslVerify {
-		if(params.RootCAPath != ""){
+		if len(params.RootCAPath) > 0 {
 			caCert, err := ioutil.ReadFile(params.RootCAPath)
 			if err != nil {
 			    return nil, fmt.Errorf("Unable to read certificate file: %v", err)

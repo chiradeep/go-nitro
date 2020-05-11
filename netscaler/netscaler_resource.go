@@ -444,7 +444,7 @@ func (c *NitroClient) listStatWithArgs(resourceType string, resourceName string,
 	log.Println("[DEBUG] go-nitro: listing stat of type ", resourceType, ", name: ", resourceName, ", args:", args)
 	var url string
 
-	if resourceName != "" {
+	if len(resourceName) > 0 {
 		url = c.statsURL + fmt.Sprintf("%s/%s", resourceType, resourceName)
 	} else {
 		url = c.statsURL + fmt.Sprintf("%s", resourceType)
