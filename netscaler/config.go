@@ -448,7 +448,7 @@ func (c *NitroClient) FindFilteredResourceArray(resourceType string, filter map[
 	result, err := c.listFilteredResource(resourceType, filter)
 	if err != nil {
 		log.Printf("[WARN] go-nitro: FindFilteredResourceArray: No %s found matching filter %s", resourceType, filter)
-		return nil, fmt.Errorf("[INFO] go-nitro: FindFilteredResourceArray: No resource of type %s found matching filter %s", resourceType, filter)
+		return nil, fmt.Errorf("[INFO] go-nitro: FindFilteredResourceArray: No resource of type %s found matching filter %s %v", resourceType, filter, err)
 	}
 	if err = json.Unmarshal(result, &data); err != nil {
 		log.Println("[ERROR] go-nitro: FindFilteredResourceArray: Failed to unmarshal Netscaler Response!")
