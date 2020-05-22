@@ -18,6 +18,7 @@ package netscaler
 import (
 	"os"
 	"testing"
+	"strings"
 )
 
 func TestClientCreate(t *testing.T) {
@@ -93,4 +94,14 @@ func TestClientCreateFromParams(t *testing.T) {
 		t.Error("Expected to fail in creating client due to invalid URL")
 	}
 
+	nsUrlSplit := strings.Split(os.Getenv("NS_URL"), "://")
+	ip := nsUrlSplit[len(nsUrlSplit)-1]
+	params.Url = "https://" + ip
+	params.SslVerify = true
+	params.RootCAPath = os.Getenv("NS_CA_PATH")
+	params.ServerName = os.Getenv("NS_SERVER_NAME")
+	client, err = NewNitroClientFromParams(params)
+	if client == nil {
+		t.Error("Expected to succeed in creating client")
+	}
 }
