@@ -525,7 +525,7 @@ func (c *NitroClient) FindResourceArrayWithParams(findParams FindParams) ([]map[
 	log.Printf("[TRACE] go-nitro: FindResourceArrayWithParams: url is %s", url)
 	result, httpErr := c.doHTTPRequest("GET", url, bytes.NewBuffer([]byte{}), readResponseHandler)
 	log.Printf("[TRACE] go-nitro: FindResourceArrayWithParams: HTTP GET result: %v", string(result))
-	log.Printf("[TRACE] go-nitro: FindResourceArrayWithParams: HTTP GET error: %v", httpErr.Error())
+	log.Printf("[TRACE] go-nitro: FindResourceArrayWithParams: HTTP GET error: %v", httpErr)
 
 	// Ignore 404.
 	// We need to parse the NITRO errorcode value to determine if this is an actual error
