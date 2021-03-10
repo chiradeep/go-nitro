@@ -152,7 +152,7 @@ func (c *NitroClient) createHTTPRequest(method string, urlstr string, buff *byte
 }
 
 func maskHeaders(headers http.Header) http.Header {
-	maskedHeaders := make(http.Header)
+	maskedHeaders := make(http.Header, len(headers))
 	for k, v := range headers {
 		upperKey := strings.ToUpper(k)
 
