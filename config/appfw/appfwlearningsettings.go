@@ -1,8 +1,10 @@
 package appfw
 
 type Appfwlearningsettings struct {
+	Contenttypeautodeploygraceperiod        int    `json:"contenttypeautodeploygraceperiod,omitempty"`
 	Contenttypeminthreshold                 int    `json:"contenttypeminthreshold,omitempty"`
 	Contenttypepercentthreshold             int    `json:"contenttypepercentthreshold,omitempty"`
+	Cookieconsistencyautodeploygraceperiod  int    `json:"cookieconsistencyautodeploygraceperiod,omitempty"`
 	Cookieconsistencyminthreshold           int    `json:"cookieconsistencyminthreshold,omitempty"`
 	Cookieconsistencypercentthreshold       int    `json:"cookieconsistencypercentthreshold,omitempty"`
 	Creditcardnumberminthreshold            int    `json:"creditcardnumberminthreshold,omitempty"`
@@ -10,8 +12,10 @@ type Appfwlearningsettings struct {
 	Crosssitescriptingautodeploygraceperiod int    `json:"crosssitescriptingautodeploygraceperiod,omitempty"`
 	Crosssitescriptingminthreshold          int    `json:"crosssitescriptingminthreshold,omitempty"`
 	Crosssitescriptingpercentthreshold      int    `json:"crosssitescriptingpercentthreshold,omitempty"`
+	Csrftagautodeploygraceperiod            int    `json:"csrftagautodeploygraceperiod,omitempty"`
 	Csrftagminthreshold                     int    `json:"csrftagminthreshold,omitempty"`
 	Csrftagpercentthreshold                 int    `json:"csrftagpercentthreshold,omitempty"`
+	Fieldconsistencyautodeploygraceperiod   int    `json:"fieldconsistencyautodeploygraceperiod,omitempty"`
 	Fieldconsistencyminthreshold            int    `json:"fieldconsistencyminthreshold,omitempty"`
 	Fieldconsistencypercentthreshold        int    `json:"fieldconsistencypercentthreshold,omitempty"`
 	Fieldformatautodeploygraceperiod        int    `json:"fieldformatautodeploygraceperiod,omitempty"`

@@ -21,6 +21,7 @@ type Policyevaluation struct {
 	Pitoffseterrorresult       string      `json:"pitoffseterrorresult,omitempty"`
 	Pitoffsetevaltime          int         `json:"pitoffsetevaltime,omitempty"`
 	Pitoffsetlengtharray       interface{} `json:"pitoffsetlengtharray,omitempty"`
+	Pitoffsetnewlengtharray    interface{} `json:"pitoffsetnewlengtharray,omitempty"`
 	Pitoffsetresult            int         `json:"pitoffsetresult,omitempty"`
 	Pitoffsetresultlen         int         `json:"pitoffsetresultlen,omitempty"`
 	Pitoldoffsetarray          interface{} `json:"pitoldoffsetarray,omitempty"`

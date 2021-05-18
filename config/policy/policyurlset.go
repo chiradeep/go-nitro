@@ -6,6 +6,7 @@ type Policyurlset struct {
 	Delimiter           string `json:"delimiter,omitempty"`
 	Imported            bool   `json:"imported,omitempty"`
 	Interval            int    `json:"interval,omitempty"`
+	Matchedid           int    `json:"matchedid,omitempty"`
 	Name                string `json:"name,omitempty"`
 	Overwrite           bool   `json:"overwrite,omitempty"`
 	Patterncount        int    `json:"patterncount,omitempty"`

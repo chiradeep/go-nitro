@@ -38,6 +38,7 @@ type Servicegroup struct {
 	Monstatparam2              int    `json:"monstatparam2,omitempty"`
 	Monstatparam3              int    `json:"monstatparam3,omitempty"`
 	Monthreshold               int    `json:"monthreshold,omitempty"`
+	Monuserstatusmesg          string `json:"monuserstatusmesg,omitempty"`
 	Nameserver                 string `json:"nameserver,omitempty"`
 	Netprofile                 string `json:"netprofile,omitempty"`
 	Newname                    string `json:"newname,omitempty"`
@@ -46,8 +47,6 @@ type Servicegroup struct {
 	Pathmonitor                string `json:"pathmonitor,omitempty"`
 	Pathmonitorindv            string `json:"pathmonitorindv,omitempty"`
 	Port                       int    `json:"port,omitempty"`
-	Riseapbrstatsmsgcode       int    `json:"riseapbrstatsmsgcode,omitempty"`
-	Riseapbrstatsmsgcode2      int    `json:"riseapbrstatsmsgcode2,omitempty"`
 	Rtspsessionidremap         string `json:"rtspsessionidremap,omitempty"`
 	Sc                         string `json:"sc,omitempty"`
 	Serverid                   int    `json:"serverid,omitempty"`

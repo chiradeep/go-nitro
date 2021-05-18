@@ -7,5 +7,6 @@ type Appfwprofilecsrftagbinding struct {
 	Csrftag           string `json:"csrftag,omitempty"`
 	Isautodeployed    string `json:"isautodeployed,omitempty"`
 	Name              string `json:"name,omitempty"`
+	Resourceid        string `json:"resourceid,omitempty"`
 	State             string `json:"state,omitempty"`
 }

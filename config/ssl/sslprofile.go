@@ -1,6 +1,8 @@
 package ssl
 
 type Sslprofile struct {
+	Allowextendedmastersecret         string      `json:"allowextendedmastersecret,omitempty"`
+	Alpnprotocol                      string      `json:"alpnprotocol,omitempty"`
 	Builtin                           interface{} `json:"builtin,omitempty"`
 	Ciphername                        string      `json:"ciphername,omitempty"`
 	Cipherpriority                    int         `json:"cipherpriority,omitempty"`

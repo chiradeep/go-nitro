@@ -21,6 +21,7 @@ type Authenticationldapaction struct {
 	Attributes                 string `json:"attributes,omitempty"`
 	Authentication             string `json:"authentication,omitempty"`
 	Authtimeout                int    `json:"authtimeout,omitempty"`
+	Cloudattributes            string `json:"cloudattributes,omitempty"`
 	Defaultauthenticationgroup string `json:"defaultauthenticationgroup,omitempty"`
 	Email                      string `json:"email,omitempty"`
 	Failure                    int    `json:"failure,omitempty"`

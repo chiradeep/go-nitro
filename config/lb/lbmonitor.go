@@ -47,6 +47,8 @@ type Lbmonitor struct {
 	Metricthreshold                  int         `json:"metricthreshold,omitempty"`
 	Metricweight                     int         `json:"metricweight,omitempty"`
 	Monitorname                      string      `json:"monitorname,omitempty"`
+	Mqttclientidentifier             string      `json:"mqttclientidentifier,omitempty"`
+	Mqttversion                      int         `json:"mqttversion,omitempty"`
 	Mssqlprotocolversion             string      `json:"mssqlprotocolversion,omitempty"`
 	Multimetrictable                 interface{} `json:"multimetrictable,omitempty"`
 	Netprofile                       string      `json:"netprofile,omitempty"`

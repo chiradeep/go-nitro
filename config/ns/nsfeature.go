@@ -3,6 +3,7 @@ package ns
 type Nsfeature struct {
 	Aaa                bool        `json:"aaa,omitempty"`
 	Adaptivetcp        bool        `json:"adaptivetcp,omitempty"`
+	Apigateway         bool        `json:"apigateway,omitempty"`
 	Appflow            bool        `json:"appflow,omitempty"`
 	Appfw              bool        `json:"appfw,omitempty"`
 	Appqoe             bool        `json:"appqoe,omitempty"`
@@ -36,7 +37,6 @@ type Nsfeature struct {
 	Responder          bool        `json:"responder,omitempty"`
 	Rewrite            bool        `json:"rewrite,omitempty"`
 	Rip                bool        `json:"rip,omitempty"`
-	Rise               bool        `json:"rise,omitempty"`
 	Sc                 bool        `json:"sc,omitempty"`
 	Sp                 bool        `json:"sp,omitempty"`
 	Ssl                bool        `json:"ssl,omitempty"`

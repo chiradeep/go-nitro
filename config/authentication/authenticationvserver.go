@@ -33,6 +33,7 @@ type Authenticationvserver struct {
 	Range                int    `json:"range,omitempty"`
 	Redirect             string `json:"redirect,omitempty"`
 	Redirecturl          string `json:"redirecturl,omitempty"`
+	Samesite             string `json:"samesite,omitempty"`
 	Secondary            bool   `json:"secondary,omitempty"`
 	Servicename          string `json:"servicename,omitempty"`
 	Servicetype          string `json:"servicetype,omitempty"`

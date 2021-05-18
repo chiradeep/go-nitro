@@ -7,5 +7,6 @@ type Appfwprofilelogexpressionbinding struct {
 	Isautodeployed  string `json:"isautodeployed,omitempty"`
 	Logexpression   string `json:"logexpression,omitempty"`
 	Name            string `json:"name,omitempty"`
+	Resourceid      string `json:"resourceid,omitempty"`
 	State           string `json:"state,omitempty"`
 }

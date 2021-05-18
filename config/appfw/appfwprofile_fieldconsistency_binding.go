@@ -8,5 +8,6 @@ type Appfwprofilefieldconsistencybinding struct {
 	Isautodeployed   string `json:"isautodeployed,omitempty"`
 	Isregexffc       string `json:"isregex_ffc,omitempty"`
 	Name             string `json:"name,omitempty"`
+	Resourceid       string `json:"resourceid,omitempty"`
 	State            string `json:"state,omitempty"`
 }

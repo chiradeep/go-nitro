@@ -7,5 +7,6 @@ type Appfwprofilecookieconsistencybinding struct {
 	Isautodeployed    string `json:"isautodeployed,omitempty"`
 	Isregex           string `json:"isregex,omitempty"`
 	Name              string `json:"name,omitempty"`
+	Resourceid        string `json:"resourceid,omitempty"`
 	State             string `json:"state,omitempty"`
 }

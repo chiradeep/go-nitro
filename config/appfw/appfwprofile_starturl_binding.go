@@ -5,6 +5,7 @@ type Appfwprofilestarturlbinding struct {
 	Comment        string `json:"comment,omitempty"`
 	Isautodeployed string `json:"isautodeployed,omitempty"`
 	Name           string `json:"name,omitempty"`
+	Resourceid     string `json:"resourceid,omitempty"`
 	Starturl       string `json:"starturl,omitempty"`
 	State          string `json:"state,omitempty"`
 }

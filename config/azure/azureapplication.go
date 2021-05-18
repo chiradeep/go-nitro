@@ -6,4 +6,5 @@ type Azureapplication struct {
 	Name          string `json:"name,omitempty"`
 	Tenantid      string `json:"tenantid,omitempty"`
 	Tokenendpoint string `json:"tokenendpoint,omitempty"`
+	Vaultresource string `json:"vaultresource,omitempty"`
 }

@@ -62,6 +62,7 @@ type Vpnparameter struct {
 	Proxylocalbypass           string      `json:"proxylocalbypass,omitempty"`
 	Rdpclientprofilename       string      `json:"rdpclientprofilename,omitempty"`
 	Rfc1918                    string      `json:"rfc1918,omitempty"`
+	Samesite                   string      `json:"samesite,omitempty"`
 	Securebrowse               string      `json:"securebrowse,omitempty"`
 	Sesstimeout                int         `json:"sesstimeout,omitempty"`
 	Smartgroup                 string      `json:"smartgroup,omitempty"`

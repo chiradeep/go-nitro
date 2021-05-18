@@ -18,5 +18,6 @@ type Appfwprofilejsondosurlbinding struct {
 	Jsonmaxstringlength         int    `json:"jsonmaxstringlength,omitempty"`
 	Jsonmaxstringlengthcheck    string `json:"jsonmaxstringlengthcheck,omitempty"`
 	Name                        string `json:"name,omitempty"`
+	Resourceid                  string `json:"resourceid,omitempty"`
 	State                       string `json:"state,omitempty"`
 }

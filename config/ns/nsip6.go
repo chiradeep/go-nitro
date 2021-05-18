@@ -15,8 +15,11 @@ type Nsip6 struct {
 	Map                         string      `json:"map,omitempty"`
 	Metric                      int         `json:"metric,omitempty"`
 	Mgmtaccess                  string      `json:"mgmtaccess,omitempty"`
+	Mptcpadvertise              string      `json:"mptcpadvertise,omitempty"`
 	Nd                          string      `json:"nd,omitempty"`
+	Ndowner                     int         `json:"ndowner,omitempty"`
 	Networkroute                string      `json:"networkroute,omitempty"`
+	Operationalndowner          int         `json:"operationalndowner,omitempty"`
 	Ospf6lsatype                string      `json:"ospf6lsatype,omitempty"`
 	Ospfarea                    int         `json:"ospfarea,omitempty"`
 	Ownerdownresponse           string      `json:"ownerdownresponse,omitempty"`

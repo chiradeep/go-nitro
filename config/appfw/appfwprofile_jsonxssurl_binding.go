@@ -6,5 +6,6 @@ type Appfwprofilejsonxssurlbinding struct {
 	Isautodeployed string `json:"isautodeployed,omitempty"`
 	Jsonxssurl     string `json:"jsonxssurl,omitempty"`
 	Name           string `json:"name,omitempty"`
+	Resourceid     string `json:"resourceid,omitempty"`
 	State          string `json:"state,omitempty"`
 }

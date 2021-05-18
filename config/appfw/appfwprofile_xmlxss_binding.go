@@ -7,6 +7,7 @@ type Appfwprofilexmlxssbinding struct {
 	Isautodeployed       string `json:"isautodeployed,omitempty"`
 	Isregexxmlxss        string `json:"isregex_xmlxss,omitempty"`
 	Name                 string `json:"name,omitempty"`
+	Resourceid           string `json:"resourceid,omitempty"`
 	State                string `json:"state,omitempty"`
 	Xmlxss               string `json:"xmlxss,omitempty"`
 }

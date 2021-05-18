@@ -9,5 +9,6 @@ type Appfwprofilefileuploadtypebinding struct {
 	Isautodeployed            string      `json:"isautodeployed,omitempty"`
 	Isregexfileuploadtypesurl string      `json:"isregex_fileuploadtypes_url,omitempty"`
 	Name                      string      `json:"name,omitempty"`
+	Resourceid                string      `json:"resourceid,omitempty"`
 	State                     string      `json:"state,omitempty"`
 }

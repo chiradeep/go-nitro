@@ -41,6 +41,7 @@ type Service struct {
 	Monstatparam2                int    `json:"monstatparam2,omitempty"`
 	Monstatparam3                int    `json:"monstatparam3,omitempty"`
 	Monthreshold                 int    `json:"monthreshold,omitempty"`
+	Monuserstatusmesg            string `json:"monuserstatusmesg,omitempty"`
 	Name                         string `json:"name,omitempty"`
 	Netprofile                   string `json:"netprofile,omitempty"`
 	Newname                      string `json:"newname,omitempty"`
@@ -55,8 +56,6 @@ type Service struct {
 	Publicip                     string `json:"publicip,omitempty"`
 	Publicport                   int    `json:"publicport,omitempty"`
 	Responsetime                 int    `json:"responsetime,omitempty"`
-	Riseapbrstatsmsgcode         int    `json:"riseapbrstatsmsgcode,omitempty"`
-	Riseapbrstatsmsgcode2        int    `json:"riseapbrstatsmsgcode2,omitempty"`
 	Rtspsessionidremap           string `json:"rtspsessionidremap,omitempty"`
 	Sc                           string `json:"sc,omitempty"`
 	Serverid                     int    `json:"serverid,omitempty"`

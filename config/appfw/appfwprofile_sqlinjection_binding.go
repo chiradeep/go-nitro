@@ -11,6 +11,7 @@ type Appfwprofilesqlinjectionbinding struct {
 	Isregexsql        string `json:"isregex_sql,omitempty"`
 	Isvalueregexsql   string `json:"isvalueregex_sql,omitempty"`
 	Name              string `json:"name,omitempty"`
+	Resourceid        string `json:"resourceid,omitempty"`
 	Sqlinjection      string `json:"sqlinjection,omitempty"`
 	State             string `json:"state,omitempty"`
 }

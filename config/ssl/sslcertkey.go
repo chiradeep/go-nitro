@@ -29,6 +29,8 @@ type Sslcertkey struct {
 	Priority            int         `json:"priority,omitempty"`
 	Publickey           string      `json:"publickey,omitempty"`
 	Publickeysize       int         `json:"publickeysize,omitempty"`
+	Sandns              string      `json:"sandns,omitempty"`
+	Sanipadd            string      `json:"sanipadd,omitempty"`
 	Serial              string      `json:"serial,omitempty"`
 	Servicename         string      `json:"servicename,omitempty"`
 	Signaturealg        string      `json:"signaturealg,omitempty"`

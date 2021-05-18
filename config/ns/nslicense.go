@@ -4,6 +4,7 @@ type Nslicense struct {
 	Aaa                     bool   `json:"aaa,omitempty"`
 	Adaptivetcp             bool   `json:"adaptivetcp,omitempty"`
 	Agee                    bool   `json:"agee,omitempty"`
+	Apigateway              bool   `json:"apigateway,omitempty"`
 	Appflow                 bool   `json:"appflow,omitempty"`
 	Appflowica              bool   `json:"appflowica,omitempty"`
 	Appfw                   bool   `json:"appfw,omitempty"`
@@ -15,6 +16,7 @@ type Nslicense struct {
 	Cloudbridge             bool   `json:"cloudbridge,omitempty"`
 	Cloudbridgeappliance    bool   `json:"cloudbridgeappliance,omitempty"`
 	Cloudextenderappliance  bool   `json:"cloudextenderappliance,omitempty"`
+	Cloudsubscriptionimage  string `json:"cloudsubscriptionimage,omitempty"`
 	Cluster                 bool   `json:"cluster,omitempty"`
 	Cmp                     bool   `json:"cmp,omitempty"`
 	Contentaccelerator      bool   `json:"contentaccelerator,omitempty"`
@@ -53,7 +55,6 @@ type Nslicense struct {
 	Responder               bool   `json:"responder,omitempty"`
 	Rewrite                 bool   `json:"rewrite,omitempty"`
 	Rip                     bool   `json:"rip,omitempty"`
-	Rise                    bool   `json:"rise,omitempty"`
 	Routing                 bool   `json:"routing,omitempty"`
 	Sc                      bool   `json:"sc,omitempty"`
 	Sp                      bool   `json:"sp,omitempty"`

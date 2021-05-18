@@ -6,5 +6,6 @@ type Appfwprofilejsonsqlurlbinding struct {
 	Isautodeployed string `json:"isautodeployed,omitempty"`
 	Jsonsqlurl     string `json:"jsonsqlurl,omitempty"`
 	Name           string `json:"name,omitempty"`
+	Resourceid     string `json:"resourceid,omitempty"`
 	State          string `json:"state,omitempty"`
 }

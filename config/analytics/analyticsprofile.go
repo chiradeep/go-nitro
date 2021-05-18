@@ -1,6 +1,7 @@
 package analytics
 
 type Analyticsprofile struct {
+	Allhttpheaders             string `json:"allhttpheaders,omitempty"`
 	Auditlogs                  string `json:"auditlogs,omitempty"`
 	Collectors                 string `json:"collectors,omitempty"`
 	Cqareporting               string `json:"cqareporting,omitempty"`

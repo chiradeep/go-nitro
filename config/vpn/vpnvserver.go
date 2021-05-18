@@ -2,7 +2,6 @@ package vpn
 
 type Vpnvserver struct {
 	Advancedepa              string `json:"advancedepa,omitempty"`
-	Analyticsprofile         string `json:"analyticsprofile,omitempty"`
 	Appflowlog               string `json:"appflowlog,omitempty"`
 	Authentication           string `json:"authentication,omitempty"`
 	Authnprofile             string `json:"authnprofile,omitempty"`
@@ -60,6 +59,7 @@ type Vpnvserver struct {
 	Response                 string `json:"response,omitempty"`
 	Rhistate                 string `json:"rhistate,omitempty"`
 	Rule                     string `json:"rule,omitempty"`
+	Samesite                 string `json:"samesite,omitempty"`
 	Secondary                bool   `json:"secondary,omitempty"`
 	Servicename              string `json:"servicename,omitempty"`
 	Servicetype              string `json:"servicetype,omitempty"`

@@ -5,4 +5,5 @@ type Policypatset struct {
 	Description string `json:"description,omitempty"`
 	Indextype   string `json:"indextype,omitempty"`
 	Name        string `json:"name,omitempty"`
+	Patsetfile  string `json:"patsetfile,omitempty"`
 }

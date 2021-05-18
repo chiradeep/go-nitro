@@ -32,6 +32,7 @@ type Nstcpprofile struct {
 	Maxcwnd                     int         `json:"maxcwnd,omitempty"`
 	Maxpktpermss                int         `json:"maxpktpermss,omitempty"`
 	Minrto                      int         `json:"minrto,omitempty"`
+	Mpcapablecbit               string      `json:"mpcapablecbit,omitempty"`
 	Mptcp                       string      `json:"mptcp,omitempty"`
 	Mptcpdropdataonpreestsf     string      `json:"mptcpdropdataonpreestsf,omitempty"`
 	Mptcpfastopen               string      `json:"mptcpfastopen,omitempty"`

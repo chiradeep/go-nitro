@@ -10,6 +10,8 @@ type Gslbparameter struct {
 	Ldnsentrytimeout      int         `json:"ldnsentrytimeout,omitempty"`
 	Ldnsmask              string      `json:"ldnsmask,omitempty"`
 	Ldnsprobeorder        interface{} `json:"ldnsprobeorder,omitempty"`
+	Mepkeepalivetimeout   int         `json:"mepkeepalivetimeout,omitempty"`
 	Rtttolerance          int         `json:"rtttolerance,omitempty"`
+	Svcstatelearningtime  int         `json:"svcstatelearningtime,omitempty"`
 	V6ldnsmasklen         int         `json:"v6ldnsmasklen,omitempty"`
 }

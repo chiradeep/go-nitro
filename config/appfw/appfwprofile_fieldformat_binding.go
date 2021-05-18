@@ -11,5 +11,6 @@ type Appfwprofilefieldformatbinding struct {
 	Isautodeployed       string `json:"isautodeployed,omitempty"`
 	Isregexff            string `json:"isregex_ff,omitempty"`
 	Name                 string `json:"name,omitempty"`
+	Resourceid           string `json:"resourceid,omitempty"`
 	State                string `json:"state,omitempty"`
 }

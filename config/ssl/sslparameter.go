@@ -14,6 +14,7 @@ type Sslparameter struct {
 	Montls1112disable        string      `json:"montls1112disable,omitempty"`
 	Ndcppcompliancecertcheck string      `json:"ndcppcompliancecertcheck,omitempty"`
 	Ocspcachesize            int         `json:"ocspcachesize,omitempty"`
+	Operationqueuelimit      int         `json:"operationqueuelimit,omitempty"`
 	Pushenctriggertimeout    int         `json:"pushenctriggertimeout,omitempty"`
 	Pushflag                 int         `json:"pushflag,omitempty"`
 	Quantumsize              string      `json:"quantumsize,omitempty"`

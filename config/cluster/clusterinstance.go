@@ -26,5 +26,6 @@ type Clusterinstance struct {
 	Retainconnectionsoncluster string `json:"retainconnectionsoncluster,omitempty"`
 	Rsskeymismatch             bool   `json:"rsskeymismatch,omitempty"`
 	Status                     string `json:"status,omitempty"`
+	Syncstatusstrictmode       string `json:"syncstatusstrictmode,omitempty"`
 	Validmtu                   int    `json:"validmtu,omitempty"`
 }

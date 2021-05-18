@@ -12,5 +12,6 @@ type Appfwprofilecrosssitescriptingbinding struct {
 	Isregexxss         string `json:"isregex_xss,omitempty"`
 	Isvalueregexxss    string `json:"isvalueregex_xss,omitempty"`
 	Name               string `json:"name,omitempty"`
+	Resourceid         string `json:"resourceid,omitempty"`
 	State              string `json:"state,omitempty"`
 }

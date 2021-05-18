@@ -5,6 +5,7 @@ type Nsacl struct {
 	Aclassociate   interface{} `json:"aclassociate,omitempty"`
 	Aclname        string      `json:"aclname,omitempty"`
 	Destip         bool        `json:"destip,omitempty"`
+	Destipdataset  string      `json:"destipdataset,omitempty"`
 	Destipop       string      `json:"destipop,omitempty"`
 	Destipval      string      `json:"destipval,omitempty"`
 	Destport       bool        `json:"destport,omitempty"`
@@ -24,6 +25,7 @@ type Nsacl struct {
 	Protocolnumber int         `json:"protocolnumber,omitempty"`
 	Ratelimit      int         `json:"ratelimit,omitempty"`
 	Srcip          bool        `json:"srcip,omitempty"`
+	Srcipdataset   string      `json:"srcipdataset,omitempty"`
 	Srcipop        string      `json:"srcipop,omitempty"`
 	Srcipval       string      `json:"srcipval,omitempty"`
 	Srcmac         string      `json:"srcmac,omitempty"`

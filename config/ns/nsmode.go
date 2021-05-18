@@ -14,8 +14,6 @@ type Nsmode struct {
 	Mediaclassification bool        `json:"mediaclassification,omitempty"`
 	Mode                interface{} `json:"mode,omitempty"`
 	Pmtud               bool        `json:"pmtud,omitempty"`
-	Riseapbr            bool        `json:"rise_apbr,omitempty"`
-	Riserhi             bool        `json:"rise_rhi,omitempty"`
 	Sradv               bool        `json:"sradv,omitempty"`
 	Sradv6              bool        `json:"sradv6,omitempty"`
 	Tcpb                bool        `json:"tcpb,omitempty"`

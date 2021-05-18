@@ -1,6 +1,7 @@
 package network
 
 type Inat struct {
+	Connfailover string `json:"connfailover,omitempty"`
 	Flags        int    `json:"flags,omitempty"`
 	Ftp          string `json:"ftp,omitempty"`
 	Mode         string `json:"mode,omitempty"`

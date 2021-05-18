@@ -29,6 +29,7 @@ type Csvserver struct {
 	Domain                    string `json:"domain,omitempty"`
 	Domainname                string `json:"domainname,omitempty"`
 	Downstateflush            string `json:"downstateflush,omitempty"`
+	Dtls                      string `json:"dtls,omitempty"`
 	Gt2gb                     string `json:"gt2gb,omitempty"`
 	Homepage                  string `json:"homepage,omitempty"`
 	Httpprofilename           string `json:"httpprofilename,omitempty"`
@@ -60,6 +61,9 @@ type Csvserver struct {
 	Persistmask               string `json:"persistmask,omitempty"`
 	Port                      int    `json:"port,omitempty"`
 	Precedence                string `json:"precedence,omitempty"`
+	Probeport                 int    `json:"probeport,omitempty"`
+	Probeprotocol             string `json:"probeprotocol,omitempty"`
+	Probesuccessresponsecode  string `json:"probesuccessresponsecode,omitempty"`
 	Push                      string `json:"push,omitempty"`
 	Pushlabel                 string `json:"pushlabel,omitempty"`
 	Pushmulticlients          string `json:"pushmulticlients,omitempty"`
@@ -88,6 +92,7 @@ type Csvserver struct {
 	Targetlbvserver           string `json:"targetlbvserver,omitempty"`
 	Targettype                string `json:"targettype,omitempty"`
 	Targetvserver             string `json:"targetvserver,omitempty"`
+	Tcpprobeport              int    `json:"tcpprobeport,omitempty"`
 	Tcpprofilename            string `json:"tcpprofilename,omitempty"`
 	Td                        int    `json:"td,omitempty"`
 	Tickssincelaststatechange int    `json:"tickssincelaststatechange,omitempty"`

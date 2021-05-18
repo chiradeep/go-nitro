@@ -8,6 +8,7 @@ type Appfwprofilesafeobjectbinding struct {
 	Isautodeployed string      `json:"isautodeployed,omitempty"`
 	Maxmatchlength int         `json:"maxmatchlength,omitempty"`
 	Name           string      `json:"name,omitempty"`
+	Resourceid     string      `json:"resourceid,omitempty"`
 	Safeobject     string      `json:"safeobject,omitempty"`
 	State          string      `json:"state,omitempty"`
 }

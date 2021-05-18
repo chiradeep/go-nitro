@@ -10,5 +10,6 @@ type Appfwsignatures struct {
 	Response           string `json:"response,omitempty"`
 	Sha1               string `json:"sha1,omitempty"`
 	Src                string `json:"src,omitempty"`
+	Vendortype         string `json:"vendortype,omitempty"`
 	Xslt               string `json:"xslt,omitempty"`
 }

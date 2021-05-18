@@ -2,6 +2,7 @@ package appflow
 
 type Appflowparam struct {
 	Aaausername                         string      `json:"aaausername,omitempty"`
+	Analyticsauthtoken                  string      `json:"analyticsauthtoken,omitempty"`
 	Appnamerefresh                      int         `json:"appnamerefresh,omitempty"`
 	Auditlogs                           string      `json:"auditlogs,omitempty"`
 	Builtin                             interface{} `json:"builtin,omitempty"`
@@ -49,8 +50,10 @@ type Appflowparam struct {
 	Tcpburstreporting                   string      `json:"tcpburstreporting,omitempty"`
 	Tcpburstreportingthreshold          int         `json:"tcpburstreportingthreshold,omitempty"`
 	Templaterefresh                     int         `json:"templaterefresh,omitempty"`
+	Timeseriesovernsip                  string      `json:"timeseriesovernsip,omitempty"`
 	Udppmtu                             int         `json:"udppmtu,omitempty"`
 	Urlcategory                         string      `json:"urlcategory,omitempty"`
 	Usagerecordinterval                 int         `json:"usagerecordinterval,omitempty"`
 	Videoinsight                        string      `json:"videoinsight,omitempty"`
+	Websaasappusagereporting            string      `json:"websaasappusagereporting,omitempty"`
 }

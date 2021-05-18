@@ -6,5 +6,6 @@ type Appfwprofileexcluderescontenttypebinding struct {
 	Excluderescontenttype string `json:"excluderescontenttype,omitempty"`
 	Isautodeployed        string `json:"isautodeployed,omitempty"`
 	Name                  string `json:"name,omitempty"`
+	Resourceid            string `json:"resourceid,omitempty"`
 	State                 string `json:"state,omitempty"`
 }

@@ -21,6 +21,7 @@ type Nsip struct {
 	Iptype                      interface{} `json:"iptype,omitempty"`
 	Metric                      int         `json:"metric,omitempty"`
 	Mgmtaccess                  string      `json:"mgmtaccess,omitempty"`
+	Mptcpadvertise              string      `json:"mptcpadvertise,omitempty"`
 	Netmask                     string      `json:"netmask,omitempty"`
 	Networkroute                string      `json:"networkroute,omitempty"`
 	Operationalarpowner         int         `json:"operationalarpowner,omitempty"`
@@ -32,7 +33,6 @@ type Nsip struct {
 	Ownernode                   int         `json:"ownernode,omitempty"`
 	Restrictaccess              string      `json:"restrictaccess,omitempty"`
 	Rip                         string      `json:"rip,omitempty"`
-	Riserhimsgcode              int         `json:"riserhimsgcode,omitempty"`
 	Snmp                        string      `json:"snmp,omitempty"`
 	Ssh                         string      `json:"ssh,omitempty"`
 	State                       string      `json:"state,omitempty"`
@@ -48,5 +48,4 @@ type Nsip struct {
 	Vrid                        int         `json:"vrid,omitempty"`
 	Vserver                     string      `json:"vserver,omitempty"`
 	Vserverrhilevel             string      `json:"vserverrhilevel,omitempty"`
-	Vserverrhimode              string      `json:"vserverrhimode,omitempty"`
 }

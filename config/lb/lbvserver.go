@@ -85,11 +85,15 @@ type Lbvserver struct {
 	Port                               int         `json:"port,omitempty"`
 	Pq                                 string      `json:"pq,omitempty"`
 	Precedence                         string      `json:"precedence,omitempty"`
+	Probeport                          int         `json:"probeport,omitempty"`
+	Probeprotocol                      string      `json:"probeprotocol,omitempty"`
+	Probesuccessresponsecode           string      `json:"probesuccessresponsecode,omitempty"`
 	Processlocal                       string      `json:"processlocal,omitempty"`
 	Push                               string      `json:"push,omitempty"`
 	Pushlabel                          string      `json:"pushlabel,omitempty"`
 	Pushmulticlients                   string      `json:"pushmulticlients,omitempty"`
 	Pushvserver                        string      `json:"pushvserver,omitempty"`
+	Quicbridgeprofilename              string      `json:"quicbridgeprofilename,omitempty"`
 	Range                              int         `json:"range,omitempty"`
 	Recursionavailable                 string      `json:"recursionavailable,omitempty"`
 	Redirect                           string      `json:"redirect,omitempty"`
@@ -118,6 +122,7 @@ type Lbvserver struct {
 	Statechangetimesec                 string      `json:"statechangetimesec,omitempty"`
 	Statechangetimeseconds             int         `json:"statechangetimeseconds,omitempty"`
 	Status                             int         `json:"status,omitempty"`
+	Tcpprobeport                       int         `json:"tcpprobeport,omitempty"`
 	Tcpprofilename                     string      `json:"tcpprofilename,omitempty"`
 	Td                                 int         `json:"td,omitempty"`
 	Thresholdvalue                     int         `json:"thresholdvalue,omitempty"`

@@ -10,9 +10,12 @@ type Appqoeaction struct {
 	Hits              int    `json:"hits,omitempty"`
 	Maxconn           int    `json:"maxconn,omitempty"`
 	Name              string `json:"name,omitempty"`
+	Numretries        int    `json:"numretries,omitempty"`
 	Polqdepth         int    `json:"polqdepth,omitempty"`
 	Priority          string `json:"priority,omitempty"`
 	Priqdepth         int    `json:"priqdepth,omitempty"`
 	Respondwith       string `json:"respondwith,omitempty"`
+	Retryonreset      string `json:"retryonreset,omitempty"`
+	Retryontimeout    int    `json:"retryontimeout,omitempty"`
 	Tcpprofile        string `json:"tcpprofile,omitempty"`
 }

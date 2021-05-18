@@ -5,6 +5,7 @@ type Appfwprofilexmlattachmenturlbinding struct {
 	Comment                       string `json:"comment,omitempty"`
 	Isautodeployed                string `json:"isautodeployed,omitempty"`
 	Name                          string `json:"name,omitempty"`
+	Resourceid                    string `json:"resourceid,omitempty"`
 	State                         string `json:"state,omitempty"`
 	Xmlattachmentcontenttype      string `json:"xmlattachmentcontenttype,omitempty"`
 	Xmlattachmentcontenttypecheck string `json:"xmlattachmentcontenttypecheck,omitempty"`

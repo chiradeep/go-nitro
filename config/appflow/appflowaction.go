@@ -2,6 +2,7 @@ package appflow
 
 type Appflowaction struct {
 	Botinsight             string      `json:"botinsight,omitempty"`
+	Ciinsight              string      `json:"ciinsight,omitempty"`
 	Clientsidemeasurements string      `json:"clientsidemeasurements,omitempty"`
 	Collectors             interface{} `json:"collectors,omitempty"`
 	Comment                string      `json:"comment,omitempty"`
