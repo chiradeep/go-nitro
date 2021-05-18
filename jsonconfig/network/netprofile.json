@@ -16,6 +16,10 @@
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
     },
+    "proxyprotocolaftertlshandshake" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
+    },
     "proxyprotocoltxversion" : {
       "type" : "string",
       "enum" : [ "V1", "V2" ]

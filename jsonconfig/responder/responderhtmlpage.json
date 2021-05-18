@@ -1,6 +1,9 @@
 {
   "type" : "object",
   "properties" : {
+    "cacertfile" : {
+      "type" : "string"
+    },
     "comment" : {
       "type" : "string"
     },

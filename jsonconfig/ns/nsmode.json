@@ -53,14 +53,6 @@
       "type" : "boolean",
       "readonly" : true
     },
-    "rise_apbr" : {
-      "type" : "boolean",
-      "readonly" : true
-    },
-    "rise_rhi" : {
-      "type" : "boolean",
-      "readonly" : true
-    },
     "sradv" : {
       "type" : "boolean",
       "readonly" : true

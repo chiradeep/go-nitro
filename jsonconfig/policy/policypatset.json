@@ -14,6 +14,9 @@
     },
     "name" : {
       "type" : "string"
+    },
+    "patsetfile" : {
+      "type" : "string"
     }
   },
   "$schema" : "http://json-schema.org/draft-04/schema#",

@@ -4,6 +4,9 @@
     "all" : {
       "type" : "boolean"
     },
+    "changedpassword" : {
+      "type" : "boolean"
+    },
     "cip" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]

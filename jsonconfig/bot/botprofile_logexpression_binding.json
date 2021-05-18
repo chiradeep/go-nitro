@@ -1,0 +1,30 @@
+{
+  "type" : "object",
+  "properties" : {
+    "bot_bind_comment" : {
+      "type" : "string"
+    },
+    "bot_log_expression_enabled" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ]
+    },
+    "bot_log_expression_name" : {
+      "type" : "string"
+    },
+    "expression" : {
+      "type" : "string"
+    },
+    "logexpression" : {
+      "type" : "boolean"
+    },
+    "logmessage" : {
+      "type" : "string"
+    },
+    "name" : {
+      "type" : "string"
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "botprofile_logexpression_binding",
+  "title" : "botprofile_logexpression_binding"
+}

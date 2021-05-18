@@ -16,6 +16,9 @@
     "interval" : {
       "type" : "integer"
     },
+    "matchedid" : {
+      "type" : "integer"
+    },
     "name" : {
       "type" : "string"
     },

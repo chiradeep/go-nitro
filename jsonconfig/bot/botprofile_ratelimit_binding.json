@@ -1,0 +1,44 @@
+{
+  "type" : "object",
+  "properties" : {
+    "bot_bind_comment" : {
+      "type" : "string"
+    },
+    "bot_rate_limit_action" : {
+      "type" : "object",
+      "enum" : [ "NONE", "LOG", "DROP", "REDIRECT", "RESET" ]
+    },
+    "bot_rate_limit_enabled" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ]
+    },
+    "bot_rate_limit_type" : {
+      "type" : "string",
+      "enum" : [ "SESSION", "SOURCE_IP", "URL" ]
+    },
+    "bot_rate_limit_url" : {
+      "type" : "string"
+    },
+    "bot_ratelimit" : {
+      "type" : "boolean"
+    },
+    "cookiename" : {
+      "type" : "string"
+    },
+    "logmessage" : {
+      "type" : "string"
+    },
+    "name" : {
+      "type" : "string"
+    },
+    "rate" : {
+      "type" : "integer"
+    },
+    "timeslice" : {
+      "type" : "integer"
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "botprofile_ratelimit_binding",
+  "title" : "botprofile_ratelimit_binding"
+}

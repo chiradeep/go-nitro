@@ -8,9 +8,8 @@
     "archivename" : {
       "type" : "string"
     },
-    "autodeployrule" : {
-      "type" : "boolean",
-      "readonly" : true
+    "augment" : {
+      "type" : "boolean"
     },
     "bufferoverflowaction" : {
       "type" : "object",
@@ -20,6 +19,12 @@
       "type" : "integer"
     },
     "bufferoverflowmaxheaderlength" : {
+      "type" : "integer"
+    },
+    "bufferoverflowmaxquerylength" : {
+      "type" : "integer"
+    },
+    "bufferoverflowmaxtotalheaderlength" : {
       "type" : "integer"
     },
     "bufferoverflowmaxurllength" : {
@@ -37,6 +42,14 @@
       "type" : "string",
       "enum" : [ "ON", "OFF" ]
     },
+    "cmdinjectionaction" : {
+      "type" : "object",
+      "enum" : [ "none", "block", "log", "stats" ]
+    },
+    "cmdinjectiontype" : {
+      "type" : "string",
+      "enum" : [ "CMDSplChar", "CMDKeyword", "CMDSplCharORKeyword", "CMDSplCharANDKeyword" ]
+    },
     "comment" : {
       "type" : "string"
     },
@@ -52,9 +65,17 @@
       "type" : "string",
       "enum" : [ "none", "decryptOnly", "encryptSessionOnly", "encryptAll" ]
     },
+    "cookiehijackingaction" : {
+      "type" : "object",
+      "enum" : [ "none", "block", "log", "stats" ]
+    },
     "cookieproxying" : {
       "type" : "string",
       "enum" : [ "none", "sessionOnly" ]
+    },
+    "cookiesamesiteattribute" : {
+      "type" : "string",
+      "enum" : [ "None", "LAX", "STRICT" ]
     },
     "cookietransforms" : {
       "type" : "string",
@@ -124,7 +145,7 @@
     },
     "dynamiclearning" : {
       "type" : "object",
-      "enum" : [ "none", "SQLInjection", "CrossSiteScripting", "fieldFormat", "startURL" ]
+      "enum" : [ "none", "SQLInjection", "CrossSiteScripting", "fieldFormat", "startURL", "cookieConsistency", "fieldConsistency", "CSRFtag", "ContentType" ]
     },
     "enableformtagging" : {
       "type" : "string",
@@ -159,13 +180,42 @@
     "htmlerrorobject" : {
       "type" : "string"
     },
+    "htmlerrorstatuscode" : {
+      "type" : "integer"
+    },
+    "htmlerrorstatusmessage" : {
+      "type" : "string"
+    },
+    "importprofilename" : {
+      "type" : "string"
+    },
+    "infercontenttypexmlpayloadaction" : {
+      "type" : "object",
+      "enum" : [ "block", "log", "stats", "none" ]
+    },
+    "insertcookiesamesiteattribute" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ]
+    },
     "inspectcontenttypes" : {
       "type" : "object",
       "enum" : [ "none", "application/x-www-form-urlencoded", "multipart/form-data", "text/x-gwt-rpc" ]
     },
+    "inspectquerycontenttypes" : {
+      "type" : "object",
+      "enum" : [ "HTML", "XML", "JSON", "OTHER" ]
+    },
     "invalidpercenthandling" : {
       "type" : "string",
       "enum" : [ "apache_mode", "asp_mode", "secure_mode" ]
+    },
+    "jsoncmdinjectionaction" : {
+      "type" : "object",
+      "enum" : [ "none", "block", "log", "stats" ]
+    },
+    "jsoncmdinjectiontype" : {
+      "type" : "string",
+      "enum" : [ "CMDSplChar", "CMDKeyword", "CMDSplCharORKeyword", "CMDSplCharANDKeyword" ]
     },
     "jsondosaction" : {
       "type" : "object",
@@ -174,21 +224,39 @@
     "jsonerrorobject" : {
       "type" : "string"
     },
+    "jsonerrorstatuscode" : {
+      "type" : "integer"
+    },
+    "jsonerrorstatusmessage" : {
+      "type" : "string"
+    },
     "jsonsqlinjectionaction" : {
       "type" : "object",
       "enum" : [ "none", "block", "log", "stats" ]
     },
+    "jsonsqlinjectiongrammar" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ]
+    },
     "jsonsqlinjectiontype" : {
       "type" : "string",
-      "enum" : [ "SQLSplChar", "SQLKeyword", "SQLSplCharORKeyword", "SQLSplCharANDKeyword" ]
+      "enum" : [ "SQLSplChar", "SQLKeyword", "SQLSplCharORKeyword", "SQLSplCharANDKeyword", "None" ]
     },
     "jsonxssaction" : {
       "type" : "object",
       "enum" : [ "none", "block", "log", "stats" ]
     },
+    "learning" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ],
+      "readonly" : true
+    },
     "logeverypolicyhit" : {
       "type" : "string",
       "enum" : [ "ON", "OFF" ]
+    },
+    "matchurlstring" : {
+      "type" : "string"
     },
     "multipleheaderaction" : {
       "type" : "object",
@@ -201,6 +269,9 @@
       "type" : "string",
       "enum" : [ "ON", "OFF" ]
     },
+    "overwrite" : {
+      "type" : "boolean"
+    },
     "percentdecoderecursively" : {
       "type" : "string",
       "enum" : [ "ON", "OFF" ]
@@ -208,12 +279,22 @@
     "postbodylimit" : {
       "type" : "integer"
     },
+    "postbodylimitaction" : {
+      "type" : "object",
+      "enum" : [ "block", "log", "stats" ]
+    },
     "postbodylimitsignature" : {
       "type" : "integer"
     },
     "refererheadercheck" : {
       "type" : "string",
       "enum" : [ "OFF", "if_present", "AlwaysExceptStartURLs", "AlwaysExceptFirstRequest" ]
+    },
+    "relaxationrules" : {
+      "type" : "boolean"
+    },
+    "replaceurlstring" : {
+      "type" : "string"
     },
     "requestcontenttype" : {
       "type" : "string"
@@ -247,6 +328,10 @@
       "type" : "string",
       "enum" : [ "ON", "OFF" ]
     },
+    "sqlinjectiongrammar" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ]
+    },
     "sqlinjectiononlycheckfieldswithsqlchars" : {
       "type" : "string",
       "enum" : [ "ON", "OFF" ]
@@ -261,7 +346,7 @@
     },
     "sqlinjectiontype" : {
       "type" : "string",
-      "enum" : [ "SQLSplChar", "SQLKeyword", "SQLSplCharORKeyword", "SQLSplCharANDKeyword" ]
+      "enum" : [ "SQLSplChar", "SQLKeyword", "SQLSplCharORKeyword", "SQLSplCharANDKeyword", "None" ]
     },
     "starturlaction" : {
       "type" : "object",
@@ -323,6 +408,12 @@
     "xmlerrorobject" : {
       "type" : "string"
     },
+    "xmlerrorstatuscode" : {
+      "type" : "integer"
+    },
+    "xmlerrorstatusmessage" : {
+      "type" : "string"
+    },
     "xmlformataction" : {
       "type" : "object",
       "enum" : [ "none", "block", "log", "stats" ]
@@ -349,7 +440,7 @@
     },
     "xmlsqlinjectiontype" : {
       "type" : "string",
-      "enum" : [ "SQLSplChar", "SQLKeyword", "SQLSplCharORKeyword", "SQLSplCharANDKeyword" ]
+      "enum" : [ "SQLSplChar", "SQLKeyword", "SQLSplCharORKeyword", "SQLSplCharANDKeyword", "None" ]
     },
     "xmlvalidationaction" : {
       "type" : "object",

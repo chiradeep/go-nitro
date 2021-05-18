@@ -1,0 +1,46 @@
+{
+  "type" : "object",
+  "properties" : {
+    "bot_bind_comment" : {
+      "type" : "string"
+    },
+    "bot_captcha_action" : {
+      "type" : "object",
+      "enum" : [ "NONE", "LOG", "DROP", "REDIRECT", "RESET" ]
+    },
+    "bot_captcha_enabled" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ]
+    },
+    "bot_captcha_url" : {
+      "type" : "string"
+    },
+    "captcharesource" : {
+      "type" : "boolean"
+    },
+    "graceperiod" : {
+      "type" : "integer"
+    },
+    "logmessage" : {
+      "type" : "string"
+    },
+    "muteperiod" : {
+      "type" : "integer"
+    },
+    "name" : {
+      "type" : "string"
+    },
+    "requestsizelimit" : {
+      "type" : "integer"
+    },
+    "retryattempts" : {
+      "type" : "integer"
+    },
+    "waittime" : {
+      "type" : "integer"
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "botprofile_captcha_binding",
+  "title" : "botprofile_captcha_binding"
+}

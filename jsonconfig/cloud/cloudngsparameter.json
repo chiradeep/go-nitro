@@ -1,0 +1,12 @@
+{
+  "type" : "object",
+  "properties" : {
+    "blockonallowedngstktprof" : {
+      "type" : "string",
+      "enum" : [ "YES", "NO" ]
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "cloudngsparameter",
+  "title" : "cloudngsparameter"
+}

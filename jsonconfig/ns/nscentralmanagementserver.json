@@ -1,6 +1,36 @@
 {
   "type" : "object",
   "properties" : {
+    "activationcode" : {
+      "type" : "string"
+    },
+    "adcpassword" : {
+      "type" : "string"
+    },
+    "adcusername" : {
+      "type" : "string"
+    },
+    "admserviceconnectionstatus" : {
+      "type" : "string",
+      "enum" : [ "CONNECTED", "DISCONNECTED" ],
+      "readonly" : true
+    },
+    "admserviceenvironment" : {
+      "type" : "string",
+      "enum" : [ "PRODUCTION", "STAGING", "DEV" ],
+      "readonly" : true
+    },
+    "customerid" : {
+      "type" : "string",
+      "readonly" : true
+    },
+    "deviceprofilename" : {
+      "type" : "string"
+    },
+    "instanceid" : {
+      "type" : "string",
+      "readonly" : true
+    },
     "ipaddress" : {
       "type" : "string"
     },
@@ -16,6 +46,10 @@
     },
     "username" : {
       "type" : "string"
+    },
+    "validatecert" : {
+      "type" : "string",
+      "enum" : [ "YES", "NO" ]
     }
   },
   "$schema" : "http://json-schema.org/draft-04/schema#",

@@ -29,6 +29,9 @@
     "name" : {
       "type" : "string"
     },
+    "resourceid" : {
+      "type" : "string"
+    },
     "state" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]

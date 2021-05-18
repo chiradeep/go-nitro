@@ -1,6 +1,13 @@
 {
   "type" : "object",
   "properties" : {
+    "adccookieattributewarningmsg" : {
+      "type" : "string",
+      "readonly" : true
+    },
+    "computedadccookieattribute" : {
+      "type" : "string"
+    },
     "cookiepassphrase" : {
       "type" : "string"
     },
@@ -15,9 +22,16 @@
     "lbprofilename" : {
       "type" : "string"
     },
+    "literaladccookieattribute" : {
+      "type" : "string"
+    },
     "processlocal" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
+    },
+    "storemqttclientidandusername" : {
+      "type" : "string",
+      "enum" : [ "YES", "NO" ]
     },
     "useencryptedpersistencecookie" : {
       "type" : "string",

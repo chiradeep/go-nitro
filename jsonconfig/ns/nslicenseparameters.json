@@ -1,0 +1,14 @@
+{
+  "type" : "object",
+  "properties" : {
+    "alert1gracetimeout" : {
+      "type" : "integer"
+    },
+    "alert2gracetimeout" : {
+      "type" : "integer"
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "nslicenseparameters",
+  "title" : "nslicenseparameters"
+}

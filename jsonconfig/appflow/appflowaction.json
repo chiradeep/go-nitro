@@ -5,6 +5,10 @@
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
     },
+    "ciinsight" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
+    },
     "clientsidemeasurements" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]

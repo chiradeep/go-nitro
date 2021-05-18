@@ -162,7 +162,7 @@
     },
     "httpreqver" : {
       "type" : "string",
-      "enum" : [ "HTTP_1_0", "HTTP_1_1", "HTTP_0_9", "RTSP_1_0", "SIP_2_0", "VPN_ICA_SOCKS", "VPN_ICA_CGP", "HTTP_2_0" ],
+      "enum" : [ "HTTP_1_0", "HTTP_1_1", "HTTP_0_9", "RTSP_1_0", "SIP_2_0", "VPN_ICA_SOCKS", "VPN_ICA_CGP", "HTTP_2_0", "HTTP_2_0_DIRECT" ],
       "readonly" : true
     },
     "httprspcode" : {
@@ -291,7 +291,7 @@
     },
     "linkservicetype" : {
       "type" : "string",
-      "enum" : [ "HTTP", "FTP", "TCP", "UDP", "SSL", "SSL_BRIDGE", "SSL_TCP", "NNTP", "RPCSVR", "DNS", "ADNS", "SNMP", "RTSP", "DHCPRA", "ANY", "SIP_UDP", "SIP_TCP", "SIP_SSL", "DNS_TCP", "ADNS_TCP", "HTTPSVR", "HTTPCLIENT", "NAT", "HA", "AAA", "SINCTCP", "VPN AFTP", "MONITORS", "SSLVPN UDP", "SINCUDP", "RIP", "UDP CLNT", "SASP", "RPCCLNTS", "ROUTE", "AUDIT", "STA HTTP", "STA SSL", "DNS RESOLVE", "RDP", "MYSQL", "MSSQL", "DIAMETER", "SSL_DIAMETER", "TFTP", "ORACLE", "ICA", "RADIUS", "RADIUSListener", "SMPP", "PPTP", "GRE", "SYSLOGTCP", "SYSLOGUDP", "FIX", "SSL_FIX", "QUIC", "TFTP_DATA", "USER_TCP", "USER_SSL_TCP" ],
+      "enum" : [ "HTTP", "FTP", "TCP", "UDP", "SSL", "SSL_BRIDGE", "SSL_TCP", "NNTP", "RPCSVR", "DNS", "ADNS", "SNMP", "RTSP", "DHCPRA", "ANY", "SIP_UDP", "SIP_TCP", "SIP_SSL", "DNS_TCP", "ADNS_TCP", "HTTPSVR", "HTTPCLIENT", "NAT", "HA", "AAA", "SINCTCP", "VPN AFTP", "MONITORS", "SSLVPN UDP", "SINCUDP", "RIP", "UDP CLNT", "SASP", "RPCCLNTS", "ROUTE", "AUDIT", "STA HTTP", "STA SSL", "DNS RESOLVE", "RDP", "MYSQL", "MSSQL", "DIAMETER", "SSL_DIAMETER", "TFTP", "ORACLE", "ICA", "RADIUS", "RADIUSListener", "SMPP", "PPTP", "GRE", "SYSLOGTCP", "SYSLOGUDP", "FIX", "SSL_FIX", "QUIC", "TFTP_DATA", "USER_TCP", "USER_SSL_TCP", "MONGO", "MONGO_TLS", "MQTT", "MQTT_TLS", "QUIC_BRIDGE" ],
       "readonly" : true
     },
     "linksndbuf" : {
@@ -479,7 +479,7 @@
     },
     "svctype" : {
       "type" : "string",
-      "enum" : [ "HTTP", "FTP", "TCP", "UDP", "SSL", "SSL_BRIDGE", "SSL_TCP", "NNTP", "RPCSVR", "DNS", "ADNS", "SNMP", "RTSP", "DHCPRA", "ANY", "SIP_UDP", "SIP_TCP", "SIP_SSL", "DNS_TCP", "ADNS_TCP", "HTTPSVR", "HTTPCLIENT", "NAT", "HA", "AAA", "SINCTCP", "VPN AFTP", "MONITORS", "SSLVPN UDP", "SINCUDP", "RIP", "UDP CLNT", "SASP", "RPCCLNTS", "ROUTE", "AUDIT", "STA HTTP", "STA SSL", "DNS RESOLVE", "RDP", "MYSQL", "MSSQL", "DIAMETER", "SSL_DIAMETER", "TFTP", "ORACLE", "ICA", "RADIUS", "RADIUSListener", "SMPP", "PPTP", "GRE", "SYSLOGTCP", "SYSLOGUDP", "FIX", "SSL_FIX", "QUIC", "TFTP_DATA", "USER_TCP", "USER_SSL_TCP" ],
+      "enum" : [ "HTTP", "FTP", "TCP", "UDP", "SSL", "SSL_BRIDGE", "SSL_TCP", "NNTP", "RPCSVR", "DNS", "ADNS", "SNMP", "RTSP", "DHCPRA", "ANY", "SIP_UDP", "SIP_TCP", "SIP_SSL", "DNS_TCP", "ADNS_TCP", "HTTPSVR", "HTTPCLIENT", "NAT", "HA", "AAA", "SINCTCP", "VPN AFTP", "MONITORS", "SSLVPN UDP", "SINCUDP", "RIP", "UDP CLNT", "SASP", "RPCCLNTS", "ROUTE", "AUDIT", "STA HTTP", "STA SSL", "DNS RESOLVE", "RDP", "MYSQL", "MSSQL", "DIAMETER", "SSL_DIAMETER", "TFTP", "ORACLE", "ICA", "RADIUS", "RADIUSListener", "SMPP", "PPTP", "GRE", "SYSLOGTCP", "SYSLOGUDP", "FIX", "SSL_FIX", "QUIC", "TFTP_DATA", "USER_TCP", "USER_SSL_TCP", "MONGO", "MONGO_TLS", "MQTT", "MQTT_TLS", "QUIC_BRIDGE" ],
       "readonly" : true
     },
     "targetnodeidnnm" : {

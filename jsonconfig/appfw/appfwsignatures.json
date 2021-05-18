@@ -29,6 +29,10 @@
     "src" : {
       "type" : "string"
     },
+    "vendortype" : {
+      "type" : "string",
+      "enum" : [ "Snort" ]
+    },
     "xslt" : {
       "type" : "string"
     }

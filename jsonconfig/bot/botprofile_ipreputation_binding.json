@@ -1,0 +1,32 @@
+{
+  "type" : "object",
+  "properties" : {
+    "bot_bind_comment" : {
+      "type" : "string"
+    },
+    "bot_iprep_action" : {
+      "type" : "object",
+      "enum" : [ "NONE", "LOG", "DROP", "REDIRECT", "RESET", "MITIGATION" ]
+    },
+    "bot_iprep_enabled" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ]
+    },
+    "bot_ipreputation" : {
+      "type" : "boolean"
+    },
+    "category" : {
+      "type" : "string",
+      "enum" : [ "IP", "BOTNETS", "SPAM_SOURCES", "SCANNERS", "DOS", "REPUTATION", "PHISHING", "PROXY", "NETWORK", "MOBILE_THREATS" ]
+    },
+    "logmessage" : {
+      "type" : "string"
+    },
+    "name" : {
+      "type" : "string"
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "botprofile_ipreputation_binding",
+  "title" : "botprofile_ipreputation_binding"
+}

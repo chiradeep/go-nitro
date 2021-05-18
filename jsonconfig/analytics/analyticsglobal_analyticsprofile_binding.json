@@ -1,0 +1,11 @@
+{
+  "type" : "object",
+  "properties" : {
+    "analyticsprofile" : {
+      "type" : "string"
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "analyticsglobal_analyticsprofile_binding",
+  "title" : "analyticsglobal_analyticsprofile_binding"
+}

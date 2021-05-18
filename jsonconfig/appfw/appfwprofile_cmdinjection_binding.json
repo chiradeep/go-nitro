@@ -1,0 +1,54 @@
+{
+  "type" : "object",
+  "properties" : {
+    "alertonly" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ]
+    },
+    "as_scan_location_cmd" : {
+      "type" : "string",
+      "enum" : [ "FORMFIELD", "HEADER", "COOKIE" ]
+    },
+    "as_value_expr_cmd" : {
+      "type" : "string"
+    },
+    "as_value_type_cmd" : {
+      "type" : "string",
+      "enum" : [ "Keyword", "SpecialString" ]
+    },
+    "cmdinjection" : {
+      "type" : "string"
+    },
+    "comment" : {
+      "type" : "string"
+    },
+    "formactionurl_cmd" : {
+      "type" : "string"
+    },
+    "isautodeployed" : {
+      "type" : "string",
+      "enum" : [ "AUTODEPLOYED", "NOTAUTODEPLOYED" ]
+    },
+    "isregex_cmd" : {
+      "type" : "string",
+      "enum" : [ "REGEX", "NOTREGEX" ]
+    },
+    "isvalueregex_cmd" : {
+      "type" : "string",
+      "enum" : [ "REGEX", "NOTREGEX" ]
+    },
+    "name" : {
+      "type" : "string"
+    },
+    "resourceid" : {
+      "type" : "string"
+    },
+    "state" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "appfwprofile_cmdinjection_binding",
+  "title" : "appfwprofile_cmdinjection_binding"
+}

@@ -132,7 +132,7 @@
     },
     "intftype" : {
       "type" : "string",
-      "enum" : [ "BROADCOM 5700/5701", "TIGON1/TIGON2", "INTEL 82546", "INTEL 8255X(PRO)", "Link Aggregate", "Loopback", "Intel 82541/47", "Broadcom 5704", "Chelsio 1G", "Intel 8247X", "Intel 82576 VF", "Xen Virtual", "Intel 10G", "Intel 82599 VF", "Mellanox 100G", "Mellanox 50G", "Mellanox 25G", "Intel FVL 40G", "Intel FVL 25G", "Intel FVL 10G", "Intel FVL 40G VF", "Mellanox VF", "Hyper v", "Cluster LAG", "Intel 8247X SFP", "XEN Interface", "Chelsio 10G", "KVM Virtio", "VMXNET3" ],
+      "enum" : [ "BROADCOM 5700/5701", "TIGON1/TIGON2", "INTEL 82546", "INTEL 8255X(PRO)", "Link Aggregate", "Loopback", "Intel 82541/47", "Broadcom 5704", "Chelsio 1G", "Intel 8247X", "Intel 82576 VF", "Xen Virtual", "Intel 10G", "Intel 82599 VF", "Mellanox 100G", "Mellanox 50G", "Mellanox 25G", "Intel FVL 40G", "Intel FVL 25G", "Intel FVL 10G", "Intel FVL 40G VF", "Mellanox VF", "CX4 VF SMART NIC", "CX3 VF", "CX3 VF SMART NIC", "Hyper v", "Cluster LAG", "Intel 8247X SFP", "XEN Interface", "Chelsio 10G", "KVM Virtio", "VMXNET3" ],
       "readonly" : true
     },
     "lacpactoraggregation" : {

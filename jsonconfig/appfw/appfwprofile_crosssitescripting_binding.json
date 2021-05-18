@@ -7,7 +7,7 @@
     },
     "as_scan_location_xss" : {
       "type" : "string",
-      "enum" : [ "FORMFIELD", "HEADER", "COOKIE" ]
+      "enum" : [ "FORMFIELD", "HEADER", "COOKIE", "URL" ]
     },
     "as_value_expr_xss" : {
       "type" : "string"
@@ -38,6 +38,9 @@
       "enum" : [ "REGEX", "NOTREGEX" ]
     },
     "name" : {
+      "type" : "string"
+    },
+    "resourceid" : {
       "type" : "string"
     },
     "state" : {

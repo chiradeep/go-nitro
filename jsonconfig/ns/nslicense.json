@@ -13,6 +13,10 @@
       "type" : "boolean",
       "readonly" : true
     },
+    "apigateway" : {
+      "type" : "boolean",
+      "readonly" : true
+    },
     "appflow" : {
       "type" : "boolean",
       "readonly" : true
@@ -55,6 +59,11 @@
     },
     "cloudextenderappliance" : {
       "type" : "boolean",
+      "readonly" : true
+    },
+    "cloudsubscriptionimage" : {
+      "type" : "string",
+      "enum" : [ "YES", "NO" ],
       "readonly" : true
     },
     "cluster" : {
@@ -207,10 +216,6 @@
       "readonly" : true
     },
     "rip" : {
-      "type" : "boolean",
-      "readonly" : true
-    },
-    "rise" : {
       "type" : "boolean",
       "readonly" : true
     },

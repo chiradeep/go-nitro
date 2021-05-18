@@ -103,6 +103,10 @@
       "enum" : [ "DOWN", "UP", "PARTIAL-UP", "UNKNOWN" ],
       "readonly" : true
     },
+    "syncstatusstrictmode" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
+    },
     "validmtu" : {
       "type" : "integer",
       "readonly" : true

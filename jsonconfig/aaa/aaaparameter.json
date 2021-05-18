@@ -12,6 +12,10 @@
       "type" : "string",
       "enum" : [ "EMERGENCY", "ALERT", "CRITICAL", "ERROR", "WARNING", "NOTICE", "INFORMATIONAL", "DEBUG" ]
     },
+    "apitokencache" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
+    },
     "builtin" : {
       "type" : "object",
       "enum" : [ "MODIFIABLE", "DELETABLE", "IMMUTABLE", "PARTITION_ALL" ],
@@ -20,6 +24,10 @@
     "defaultauthtype" : {
       "type" : "string",
       "enum" : [ "LOCAL", "LDAP", "RADIUS", "TACACS", "CERT" ]
+    },
+    "defaultcspheader" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
     },
     "dynaddr" : {
       "type" : "string",
@@ -42,12 +50,16 @@
     },
     "feature" : {
       "type" : "string",
-      "enum" : [ "WL", "WebLogging", "SP", "SurgeProtection", "LB", "LoadBalancing", "CS", "ContentSwitching", "CR", "CacheRedirection", "SC", "SureConnect", "CMP", "CMPcntl", "CompressionControl", "PQ", "PriorityQueuing", "HDOSP", "HttpDoSProtection", "SSLVPN", "AAA", "GSLB", "GlobalServerLoadBalancing", "SSL", "SSLOffload", "SSLOffloading", "CF", "ContentFiltering", "IC", "IntegratedCaching", "OSPF", "OSPFRouting", "RIP", "RIPRouting", "BGP", "BGPRouting", "REWRITE", "IPv6PT", "IPv6protocoltranslation", "AppFw", "ApplicationFirewall", "RESPONDER", "HTMLInjection", "push", "NSPush", "NetScalerPush", "AppFlow", "CloudBridge", "ISIS", "ISISRouting", "CH", "CallHome", "AppQoE", "ContentAccelerator", "SYSTEM", "RISE", "FEO", "LSN", "LargeScaleNAT", "RDPProxy", "Rep", "Reputation", "URLFiltering", "VideoOptimization", "ForwardProxy", "SSLInterception", "AdaptiveTCP", "CQA", "CI", "ContentInspection", "Bot" ],
+      "enum" : [ "WL", "WebLogging", "SP", "SurgeProtection", "LB", "LoadBalancing", "CS", "ContentSwitching", "CR", "CacheRedirection", "SC", "SureConnect", "CMP", "CMPcntl", "CompressionControl", "PQ", "PriorityQueuing", "HDOSP", "HttpDoSProtection", "SSLVPN", "AAA", "GSLB", "GlobalServerLoadBalancing", "SSL", "SSLOffload", "SSLOffloading", "CF", "ContentFiltering", "IC", "IntegratedCaching", "OSPF", "OSPFRouting", "RIP", "RIPRouting", "BGP", "BGPRouting", "REWRITE", "IPv6PT", "IPv6protocoltranslation", "AppFw", "ApplicationFirewall", "RESPONDER", "HTMLInjection", "push", "NSPush", "NetScalerPush", "AppFlow", "CloudBridge", "ISIS", "ISISRouting", "CH", "CallHome", "AppQoE", "ContentAccelerator", "SYSTEM", "RISE", "FEO", "LSN", "LargeScaleNAT", "RDPProxy", "Rep", "Reputation", "URLFiltering", "VideoOptimization", "ForwardProxy", "SSLInterception", "AdaptiveTCP", "CQA", "CI", "ContentInspection", "Bot", "APIGateway" ],
       "readonly" : true
     },
     "ftmode" : {
       "type" : "string",
       "enum" : [ "ON", "HA", "OFF" ]
+    },
+    "loginencryption" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
     },
     "maxaaausers" : {
       "type" : "integer"
@@ -66,6 +78,13 @@
       "enum" : [ "ENABLED", "DISABLED" ]
     },
     "pwdexpirynotificationdays" : {
+      "type" : "integer"
+    },
+    "samesite" : {
+      "type" : "string",
+      "enum" : [ "None", "LAX", "STRICT" ]
+    },
+    "tokenintrospectioninterval" : {
       "type" : "integer"
     }
   },

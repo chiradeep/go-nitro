@@ -25,6 +25,9 @@
     "name" : {
       "type" : "string"
     },
+    "resourceid" : {
+      "type" : "string"
+    },
     "safeobject" : {
       "type" : "string"
     },

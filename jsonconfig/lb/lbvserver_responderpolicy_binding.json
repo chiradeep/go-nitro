@@ -3,7 +3,7 @@
   "properties" : {
     "bindpoint" : {
       "type" : "string",
-      "enum" : [ "REQUEST", "RESPONSE" ]
+      "enum" : [ "REQUEST", "RESPONSE", "MQTT_JUMBO_REQ" ]
     },
     "gotopriorityexpression" : {
       "type" : "string"

@@ -1,6 +1,10 @@
 {
   "type" : "object",
   "properties" : {
+    "connfailover" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
+    },
     "flags" : {
       "type" : "integer",
       "readonly" : true

@@ -1,0 +1,35 @@
+{
+  "type" : "object",
+  "properties" : {
+    "bot_bind_comment" : {
+      "type" : "string"
+    },
+    "bot_blacklist" : {
+      "type" : "boolean"
+    },
+    "bot_blacklist_action" : {
+      "type" : "object",
+      "enum" : [ "NONE", "LOG", "DROP", "RESET", "REDIRECT" ]
+    },
+    "bot_blacklist_enabled" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ]
+    },
+    "bot_blacklist_type" : {
+      "type" : "string",
+      "enum" : [ "IPv4", "SUBNET", "EXPRESSION" ]
+    },
+    "bot_blacklist_value" : {
+      "type" : "string"
+    },
+    "logmessage" : {
+      "type" : "string"
+    },
+    "name" : {
+      "type" : "string"
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "botprofile_blacklist_binding",
+  "title" : "botprofile_blacklist_binding"
+}

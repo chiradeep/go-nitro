@@ -33,7 +33,7 @@
     },
     "policylabeltype" : {
       "type" : "string",
-      "enum" : [ "HTTP", "OTHERTCP", "SIP_UDP", "SIP_TCP", "MYSQL", "MSSQL", "NAT", "DIAMETER", "RADIUS", "DNS" ]
+      "enum" : [ "HTTP", "OTHERTCP", "SIP_UDP", "SIP_TCP", "MYSQL", "MSSQL", "NAT", "DIAMETER", "RADIUS", "DNS", "MQTT", "MQTT_JUMBO", "QUIC_BRIDGE" ]
     },
     "priority" : {
       "type" : "integer",

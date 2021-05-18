@@ -1,6 +1,9 @@
 {
   "type" : "object",
   "properties" : {
+    "a" : {
+      "type" : "boolean"
+    },
     "enhancedupgrade" : {
       "type" : "boolean"
     },

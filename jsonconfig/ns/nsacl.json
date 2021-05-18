@@ -19,6 +19,9 @@
     "destip" : {
       "type" : "boolean"
     },
+    "destipdataset" : {
+      "type" : "string"
+    },
     "destipop" : {
       "type" : "string",
       "enum" : [ "=", "!=", "EQ", "NEQ" ]
@@ -80,6 +83,9 @@
     },
     "srcip" : {
       "type" : "boolean"
+    },
+    "srcipdataset" : {
+      "type" : "string"
     },
     "srcipop" : {
       "type" : "string",

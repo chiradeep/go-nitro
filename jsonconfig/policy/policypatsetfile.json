@@ -1,0 +1,50 @@
+{
+  "type" : "object",
+  "properties" : {
+    "bindstatus" : {
+      "type" : "string",
+      "readonly" : true
+    },
+    "bindstatuscode" : {
+      "type" : "integer",
+      "readonly" : true
+    },
+    "boundpatterns" : {
+      "type" : "integer",
+      "readonly" : true
+    },
+    "charset" : {
+      "type" : "string",
+      "enum" : [ "ASCII", "UTF_8" ]
+    },
+    "comment" : {
+      "type" : "string"
+    },
+    "delimiter" : {
+      "type" : "string"
+    },
+    "imported" : {
+      "type" : "boolean"
+    },
+    "name" : {
+      "type" : "string"
+    },
+    "overwrite" : {
+      "type" : "boolean"
+    },
+    "patsetname" : {
+      "type" : "string",
+      "readonly" : true
+    },
+    "src" : {
+      "type" : "string"
+    },
+    "totalpatterns" : {
+      "type" : "integer",
+      "readonly" : true
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "policypatsetfile",
+  "title" : "policypatsetfile"
+}

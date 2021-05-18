@@ -1,6 +1,10 @@
 {
   "type" : "object",
   "properties" : {
+    "allowedalgorithms" : {
+      "type" : "object",
+      "enum" : [ "HS256", "RS256", "RS512" ]
+    },
     "attribute1" : {
       "type" : "string"
     },
@@ -87,7 +91,13 @@
     "idtokendecryptendpoint" : {
       "type" : "string"
     },
+    "introspecturl" : {
+      "type" : "string"
+    },
     "issuer" : {
+      "type" : "string"
+    },
+    "metadataurl" : {
       "type" : "string"
     },
     "name" : {
@@ -102,8 +112,15 @@
       "type" : "string",
       "enum" : [ "GENERIC", "INTUNE", "ATHENA" ]
     },
+    "pkce" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
+    },
     "refreshinterval" : {
       "type" : "integer"
+    },
+    "resourceuri" : {
+      "type" : "string"
     },
     "skewtime" : {
       "type" : "integer"
@@ -113,6 +130,10 @@
     },
     "tokenendpoint" : {
       "type" : "string"
+    },
+    "tokenendpointauthmethod" : {
+      "type" : "string",
+      "enum" : [ "client_secret_post", "client_secret_jwt", "private_key_jwt" ]
     },
     "userinfourl" : {
       "type" : "string"

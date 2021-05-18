@@ -20,7 +20,7 @@
     },
     "hashmethod" : {
       "type" : "string",
-      "enum" : [ "SHA1", "SHA512" ],
+      "enum" : [ "SHA1", "SHA512", "PBKDF2" ],
       "readonly" : true
     },
     "logging" : {

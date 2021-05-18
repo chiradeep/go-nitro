@@ -1,10 +1,16 @@
 {
   "type" : "object",
   "properties" : {
+    "contenttypeautodeploygraceperiod" : {
+      "type" : "integer"
+    },
     "contenttypeminthreshold" : {
       "type" : "integer"
     },
     "contenttypepercentthreshold" : {
+      "type" : "integer"
+    },
+    "cookieconsistencyautodeploygraceperiod" : {
       "type" : "integer"
     },
     "cookieconsistencyminthreshold" : {
@@ -28,10 +34,16 @@
     "crosssitescriptingpercentthreshold" : {
       "type" : "integer"
     },
+    "csrftagautodeploygraceperiod" : {
+      "type" : "integer"
+    },
     "csrftagminthreshold" : {
       "type" : "integer"
     },
     "csrftagpercentthreshold" : {
+      "type" : "integer"
+    },
+    "fieldconsistencyautodeploygraceperiod" : {
       "type" : "integer"
     },
     "fieldconsistencyminthreshold" : {

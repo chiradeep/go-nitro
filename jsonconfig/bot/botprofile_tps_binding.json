@@ -1,0 +1,34 @@
+{
+  "type" : "object",
+  "properties" : {
+    "bot_bind_comment" : {
+      "type" : "string"
+    },
+    "bot_tps" : {
+      "type" : "boolean"
+    },
+    "bot_tps_action" : {
+      "type" : "object",
+      "enum" : [ "NONE", "LOG", "DROP", "REDIRECT", "RESET", "MITIGATION" ]
+    },
+    "bot_tps_type" : {
+      "type" : "string",
+      "enum" : [ "SOURCE_IP", "GEOLOCATION", "REQUEST_URL", "Host" ]
+    },
+    "logmessage" : {
+      "type" : "string"
+    },
+    "name" : {
+      "type" : "string"
+    },
+    "percentage" : {
+      "type" : "integer"
+    },
+    "threshold" : {
+      "type" : "integer"
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "botprofile_tps_binding",
+  "title" : "botprofile_tps_binding"
+}

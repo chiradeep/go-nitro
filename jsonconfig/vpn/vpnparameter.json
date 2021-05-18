@@ -3,7 +3,7 @@
   "properties" : {
     "advancedclientlessvpnmode" : {
       "type" : "string",
-      "enum" : [ "ENABLED", "DISABLED" ]
+      "enum" : [ "ENABLED", "DISABLED", "STRICT" ]
     },
     "allowedlogingroups" : {
       "type" : "string"
@@ -211,6 +211,10 @@
     "rfc1918" : {
       "type" : "string",
       "enum" : [ "ON", "OFF" ]
+    },
+    "samesite" : {
+      "type" : "string",
+      "enum" : [ "None", "LAX", "STRICT" ]
     },
     "securebrowse" : {
       "type" : "string",

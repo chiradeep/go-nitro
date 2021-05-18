@@ -45,7 +45,7 @@
     },
     "bindpoint" : {
       "type" : "string",
-      "enum" : [ "REQUEST", "RESPONSE" ],
+      "enum" : [ "REQUEST", "RESPONSE", "MQTT_JUMBO_REQ" ],
       "readonly" : true
     },
     "bypassaaaa" : {
@@ -307,6 +307,16 @@
       "enum" : [ "RULE", "URL" ],
       "readonly" : true
     },
+    "probeport" : {
+      "type" : "integer"
+    },
+    "probeprotocol" : {
+      "type" : "string",
+      "enum" : [ "TCP", "HTTP" ]
+    },
+    "probesuccessresponsecode" : {
+      "type" : "string"
+    },
     "processlocal" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
@@ -323,6 +333,9 @@
       "enum" : [ "YES", "NO" ]
     },
     "pushvserver" : {
+      "type" : "string"
+    },
+    "quicbridgeprofilename" : {
       "type" : "string"
     },
     "range" : {
@@ -381,7 +394,7 @@
     },
     "servicetype" : {
       "type" : "string",
-      "enum" : [ "HTTP", "FTP", "TCP", "UDP", "SSL", "SSL_BRIDGE", "SSL_TCP", "DTLS", "NNTP", "DNS", "DHCPRA", "ANY", "SIP_UDP", "SIP_TCP", "SIP_SSL", "DNS_TCP", "RTSP", "PUSH", "SSL_PUSH", "RADIUS", "RDP", "MYSQL", "MSSQL", "DIAMETER", "SSL_DIAMETER", "TFTP", "ORACLE", "SMPP", "SYSLOGTCP", "SYSLOGUDP", "FIX", "SSL_FIX", "PROXY", "USER_TCP", "USER_SSL_TCP", "QUIC", "IPFIX", "LOGSTREAM" ]
+      "enum" : [ "HTTP", "FTP", "TCP", "UDP", "SSL", "SSL_BRIDGE", "SSL_TCP", "DTLS", "NNTP", "DNS", "DHCPRA", "ANY", "SIP_UDP", "SIP_TCP", "SIP_SSL", "DNS_TCP", "RTSP", "PUSH", "SSL_PUSH", "RADIUS", "RDP", "MYSQL", "MSSQL", "DIAMETER", "SSL_DIAMETER", "TFTP", "ORACLE", "SMPP", "SYSLOGTCP", "SYSLOGUDP", "FIX", "SSL_FIX", "PROXY", "USER_TCP", "USER_SSL_TCP", "QUIC", "IPFIX", "LOGSTREAM", "MONGO", "MONGO_TLS", "MQTT", "MQTT_TLS", "QUIC_BRIDGE" ]
     },
     "sessionless" : {
       "type" : "string",
@@ -428,6 +441,9 @@
     "status" : {
       "type" : "integer",
       "readonly" : true
+    },
+    "tcpprobeport" : {
+      "type" : "integer"
     },
     "tcpprofilename" : {
       "type" : "string"

@@ -50,6 +50,9 @@
     "ocspcachesize" : {
       "type" : "integer"
     },
+    "operationqueuelimit" : {
+      "type" : "integer"
+    },
     "pushenctriggertimeout" : {
       "type" : "integer"
     },

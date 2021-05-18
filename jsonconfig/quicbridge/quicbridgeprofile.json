@@ -1,0 +1,22 @@
+{
+  "type" : "object",
+  "properties" : {
+    "name" : {
+      "type" : "string"
+    },
+    "refcnt" : {
+      "type" : "integer",
+      "readonly" : true
+    },
+    "routingalgorithm" : {
+      "type" : "string",
+      "enum" : [ "PLAINTEXT" ]
+    },
+    "serveridlength" : {
+      "type" : "integer"
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "quicbridgeprofile",
+  "title" : "quicbridgeprofile"
+}

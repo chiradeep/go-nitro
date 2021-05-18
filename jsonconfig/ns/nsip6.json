@@ -55,13 +55,24 @@
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
     },
+    "mptcpadvertise" : {
+      "type" : "string",
+      "enum" : [ "YES", "NO" ]
+    },
     "nd" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
     },
+    "ndowner" : {
+      "type" : "integer"
+    },
     "networkroute" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
+    },
+    "operationalndowner" : {
+      "type" : "integer",
+      "readonly" : true
     },
     "ospf6lsatype" : {
       "type" : "string",

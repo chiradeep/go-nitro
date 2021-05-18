@@ -37,6 +37,9 @@
     "name" : {
       "type" : "string"
     },
+    "resourceid" : {
+      "type" : "string"
+    },
     "sqlinjection" : {
       "type" : "string"
     },

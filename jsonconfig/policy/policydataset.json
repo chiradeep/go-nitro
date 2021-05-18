@@ -15,6 +15,9 @@
     "name" : {
       "type" : "string"
     },
+    "patsetfile" : {
+      "type" : "string"
+    },
     "type" : {
       "type" : "string",
       "enum" : [ "ipv4", "number", "ipv6", "ulong", "double", "mac" ]

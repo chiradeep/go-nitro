@@ -1,6 +1,10 @@
 {
   "type" : "object",
   "properties" : {
+    "adccookieattributewarningmsg" : {
+      "type" : "string",
+      "readonly" : true
+    },
     "allowboundsvcremoval" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
@@ -9,6 +13,9 @@
       "type" : "object",
       "enum" : [ "MODIFIABLE", "DELETABLE", "IMMUTABLE", "PARTITION_ALL" ],
       "readonly" : true
+    },
+    "computedadccookieattribute" : {
+      "type" : "string"
     },
     "consolidatedlconn" : {
       "type" : "string",
@@ -20,14 +27,21 @@
     "dbsttl" : {
       "type" : "integer"
     },
+    "dropmqttjumbomessage" : {
+      "type" : "string",
+      "enum" : [ "YES", "NO" ]
+    },
     "feature" : {
       "type" : "string",
-      "enum" : [ "WL", "WebLogging", "SP", "SurgeProtection", "LB", "LoadBalancing", "CS", "ContentSwitching", "CR", "CacheRedirection", "SC", "SureConnect", "CMP", "CMPcntl", "CompressionControl", "PQ", "PriorityQueuing", "HDOSP", "HttpDoSProtection", "SSLVPN", "AAA", "GSLB", "GlobalServerLoadBalancing", "SSL", "SSLOffload", "SSLOffloading", "CF", "ContentFiltering", "IC", "IntegratedCaching", "OSPF", "OSPFRouting", "RIP", "RIPRouting", "BGP", "BGPRouting", "REWRITE", "IPv6PT", "IPv6protocoltranslation", "AppFw", "ApplicationFirewall", "RESPONDER", "HTMLInjection", "push", "NSPush", "NetScalerPush", "AppFlow", "CloudBridge", "ISIS", "ISISRouting", "CH", "CallHome", "AppQoE", "ContentAccelerator", "SYSTEM", "RISE", "FEO", "LSN", "LargeScaleNAT", "RDPProxy", "Rep", "Reputation", "URLFiltering", "VideoOptimization", "ForwardProxy", "SSLInterception", "AdaptiveTCP", "CQA", "CI", "ContentInspection", "Bot" ],
+      "enum" : [ "WL", "WebLogging", "SP", "SurgeProtection", "LB", "LoadBalancing", "CS", "ContentSwitching", "CR", "CacheRedirection", "SC", "SureConnect", "CMP", "CMPcntl", "CompressionControl", "PQ", "PriorityQueuing", "HDOSP", "HttpDoSProtection", "SSLVPN", "AAA", "GSLB", "GlobalServerLoadBalancing", "SSL", "SSLOffload", "SSLOffloading", "CF", "ContentFiltering", "IC", "IntegratedCaching", "OSPF", "OSPFRouting", "RIP", "RIPRouting", "BGP", "BGPRouting", "REWRITE", "IPv6PT", "IPv6protocoltranslation", "AppFw", "ApplicationFirewall", "RESPONDER", "HTMLInjection", "push", "NSPush", "NetScalerPush", "AppFlow", "CloudBridge", "ISIS", "ISISRouting", "CH", "CallHome", "AppQoE", "ContentAccelerator", "SYSTEM", "RISE", "FEO", "LSN", "LargeScaleNAT", "RDPProxy", "Rep", "Reputation", "URLFiltering", "VideoOptimization", "ForwardProxy", "SSLInterception", "AdaptiveTCP", "CQA", "CI", "ContentInspection", "Bot", "APIGateway" ],
       "readonly" : true
     },
     "httponlycookieflag" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
+    },
+    "literaladccookieattribute" : {
+      "type" : "string"
     },
     "maxpipelinenat" : {
       "type" : "integer"
@@ -54,6 +68,10 @@
     },
     "startuprrfactor" : {
       "type" : "integer"
+    },
+    "storemqttclientidandusername" : {
+      "type" : "string",
+      "enum" : [ "YES", "NO" ]
     },
     "useencryptedpersistencecookie" : {
       "type" : "string",

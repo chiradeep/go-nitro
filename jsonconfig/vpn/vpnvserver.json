@@ -5,10 +5,6 @@
       "type" : "string",
       "enum" : [ "ON", "OFF" ]
     },
-    "analyticsprofile" : {
-      "type" : "string",
-      "readonly" : true
-    },
     "appflowlog" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
@@ -26,7 +22,7 @@
     },
     "bindpoint" : {
       "type" : "string",
-      "enum" : [ "REQUEST", "RESPONSE", "ICA_REQUEST", "OTHERTCP_REQUEST" ],
+      "enum" : [ "REQUEST", "RESPONSE", "ICA_REQUEST", "OTHERTCP_REQUEST", "AAA_REQUEST", "AAA_RESPONSE" ],
       "readonly" : true
     },
     "cachetype" : {
@@ -227,6 +223,10 @@
       "type" : "string",
       "readonly" : true
     },
+    "samesite" : {
+      "type" : "string",
+      "enum" : [ "None", "LAX", "STRICT" ]
+    },
     "secondary" : {
       "type" : "boolean",
       "readonly" : true
@@ -237,7 +237,7 @@
     },
     "servicetype" : {
       "type" : "string",
-      "enum" : [ "SSL" ]
+      "enum" : [ "SSL", "DTLS" ]
     },
     "somethod" : {
       "type" : "string",

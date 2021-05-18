@@ -170,6 +170,16 @@
       "type" : "integer",
       "readonly" : true
     },
+    "probeport" : {
+      "type" : "integer"
+    },
+    "probeprotocol" : {
+      "type" : "string",
+      "enum" : [ "TCP", "HTTP" ]
+    },
+    "probesuccessresponsecode" : {
+      "type" : "string"
+    },
     "range" : {
       "type" : "integer"
     },
@@ -235,6 +245,9 @@
     "targetvserver" : {
       "type" : "string",
       "readonly" : true
+    },
+    "tcpprobeport" : {
+      "type" : "integer"
     },
     "tcpprofilename" : {
       "type" : "string"

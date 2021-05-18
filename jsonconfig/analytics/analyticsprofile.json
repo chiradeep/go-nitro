@@ -1,6 +1,10 @@
 {
   "type" : "object",
   "properties" : {
+    "allhttpheaders" : {
+      "type" : "string",
+      "enum" : [ "ENABLED", "DISABLED" ]
+    },
     "auditlogs" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
@@ -113,7 +117,7 @@
     },
     "type" : {
       "type" : "string",
-      "enum" : [ "global", "webinsight", "tcpinsight", "securityinsight", "videoinsight", "hdxinsight", "gatewayinsight", "timeseries", "lsninsight", "botinsight" ]
+      "enum" : [ "global", "webinsight", "tcpinsight", "securityinsight", "videoinsight", "hdxinsight", "gatewayinsight", "timeseries", "lsninsight", "botinsight", "CIinsight" ]
     },
     "urlcategory" : {
       "type" : "string",

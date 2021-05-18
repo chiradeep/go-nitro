@@ -13,6 +13,10 @@
     },
     "srcip" : {
       "type" : "string"
+    },
+    "validatecert" : {
+      "type" : "string",
+      "enum" : [ "YES", "NO" ]
     }
   },
   "$schema" : "http://json-schema.org/draft-04/schema#",

@@ -78,6 +78,10 @@
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
     },
+    "mptcpadvertise" : {
+      "type" : "string",
+      "enum" : [ "YES", "NO" ]
+    },
     "netmask" : {
       "type" : "string"
     },
@@ -118,10 +122,6 @@
     "rip" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
-    },
-    "riserhimsgcode" : {
-      "type" : "integer",
-      "readonly" : true
     },
     "snmp" : {
       "type" : "string",
@@ -179,10 +179,6 @@
     "vserverrhilevel" : {
       "type" : "string",
       "enum" : [ "ONE_VSERVER", "ALL_VSERVERS", "NONE", "VSVR_CNTRLD" ]
-    },
-    "vserverrhimode" : {
-      "type" : "string",
-      "enum" : [ "DYNAMIC_ROUTING", "RISE" ]
     }
   },
   "$schema" : "http://json-schema.org/draft-04/schema#",

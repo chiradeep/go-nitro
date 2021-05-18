@@ -9,6 +9,10 @@
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
     },
+    "autoscaleoption" : {
+      "type" : "integer",
+      "readonly" : true
+    },
     "cip" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]

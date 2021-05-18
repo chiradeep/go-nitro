@@ -15,7 +15,7 @@
     },
     "type" : {
       "type" : "string",
-      "enum" : [ "REQUEST", "RESPONSE" ]
+      "enum" : [ "REQUEST", "RESPONSE", "MQTT_JUMBO_REQ" ]
     }
   },
   "$schema" : "http://json-schema.org/draft-04/schema#",

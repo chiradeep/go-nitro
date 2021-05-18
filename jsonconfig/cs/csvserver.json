@@ -33,7 +33,7 @@
     },
     "bindpoint" : {
       "type" : "string",
-      "enum" : [ "REQUEST", "RESPONSE", "ICA_REQUEST", "OTHERTCP_REQUEST" ],
+      "enum" : [ "REQUEST", "RESPONSE", "ICA_REQUEST", "OTHERTCP_REQUEST", "MQTT_JUMBO_REQ" ],
       "readonly" : true
     },
     "cacheable" : {
@@ -101,6 +101,10 @@
     "downstateflush" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
+    },
+    "dtls" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ]
     },
     "gt2gb" : {
       "type" : "string",
@@ -211,6 +215,16 @@
       "type" : "string",
       "enum" : [ "RULE", "URL" ]
     },
+    "probeport" : {
+      "type" : "integer"
+    },
+    "probeprotocol" : {
+      "type" : "string",
+      "enum" : [ "TCP", "HTTP" ]
+    },
+    "probesuccessresponsecode" : {
+      "type" : "string"
+    },
     "push" : {
       "type" : "string",
       "enum" : [ "ENABLED", "DISABLED" ]
@@ -263,7 +277,7 @@
     },
     "servicetype" : {
       "type" : "string",
-      "enum" : [ "HTTP", "SSL", "TCP", "FTP", "RTSP", "SSL_TCP", "UDP", "DNS", "SIP_UDP", "SIP_TCP", "SIP_SSL", "ANY", "RADIUS", "RDP", "MYSQL", "MSSQL", "DIAMETER", "SSL_DIAMETER", "DNS_TCP", "ORACLE", "SMPP", "PROXY" ]
+      "enum" : [ "HTTP", "SSL", "TCP", "FTP", "RTSP", "SSL_TCP", "UDP", "DNS", "SIP_UDP", "SIP_TCP", "SIP_SSL", "ANY", "RADIUS", "RDP", "MYSQL", "MSSQL", "DIAMETER", "SSL_DIAMETER", "DNS_TCP", "ORACLE", "SMPP", "PROXY", "MONGO", "MONGO_TLS", "MQTT", "MQTT_TLS" ]
     },
     "sitedomainttl" : {
       "type" : "integer"
@@ -317,6 +331,9 @@
     "targetvserver" : {
       "type" : "string",
       "readonly" : true
+    },
+    "tcpprobeport" : {
+      "type" : "integer"
     },
     "tcpprofilename" : {
       "type" : "string"

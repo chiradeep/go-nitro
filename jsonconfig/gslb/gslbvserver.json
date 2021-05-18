@@ -203,7 +203,7 @@
     },
     "type" : {
       "type" : "string",
-      "enum" : [ "REQUEST", "RESPONSE" ],
+      "enum" : [ "REQUEST", "RESPONSE", "MQTT_JUMBO_REQ" ],
       "readonly" : true
     },
     "v6netmasklen" : {

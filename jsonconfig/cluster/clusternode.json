@@ -94,7 +94,7 @@
     },
     "operationalsyncstate" : {
       "type" : "string",
-      "enum" : [ "ENABLED", "SUCCESS", "IN PROGRESS", "FAILED", "INCREMENTAL SYNC DISABLED", "DISABLED", "UNKNOWN" ],
+      "enum" : [ "ENABLED", "SUCCESS", "IN PROGRESS", "PARTIAL SUCCESS", "FAILED", "INCREMENTAL SYNC DISABLED", "DISABLED", "UNKNOWN" ],
       "readonly" : true
     },
     "partialfailifaces" : {
@@ -111,6 +111,11 @@
     "state" : {
       "type" : "string",
       "enum" : [ "ACTIVE", "SPARE", "PASSIVE" ]
+    },
+    "syncfailurereason" : {
+      "type" : "string",
+      "enum" : [ "Refer the files clus_sync_batch_status.log", " sync_route_status.log and sync_clusdiff_status.log in /var/nssynclog directory for list of commands failed" ],
+      "readonly" : true
     },
     "syncstate" : {
       "type" : "string",

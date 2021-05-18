@@ -30,6 +30,9 @@
     "name" : {
       "type" : "string"
     },
+    "numretries" : {
+      "type" : "integer"
+    },
     "polqdepth" : {
       "type" : "integer"
     },
@@ -43,6 +46,13 @@
     "respondwith" : {
       "type" : "string",
       "enum" : [ "ACS", "NS" ]
+    },
+    "retryonreset" : {
+      "type" : "string",
+      "enum" : [ "YES", "NO" ]
+    },
+    "retryontimeout" : {
+      "type" : "integer"
     },
     "tcpprofile" : {
       "type" : "string"

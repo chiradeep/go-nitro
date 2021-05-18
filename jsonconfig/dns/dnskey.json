@@ -3,7 +3,7 @@
   "properties" : {
     "algorithm" : {
       "type" : "string",
-      "enum" : [ "RSASHA1" ]
+      "enum" : [ "RSASHA1", "RSASHA256", "RSASHA512" ]
     },
     "expires" : {
       "type" : "integer"

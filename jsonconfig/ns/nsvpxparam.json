@@ -1,6 +1,10 @@
 {
   "type" : "object",
   "properties" : {
+    "cloudproductcode" : {
+      "type" : "string",
+      "readonly" : true
+    },
     "cpuyield" : {
       "type" : "string",
       "enum" : [ "DEFAULT", "YES", "NO" ]
@@ -9,8 +13,26 @@
       "type" : "string",
       "enum" : [ "YES", "NO" ]
     },
+    "memorystatus" : {
+      "type" : "string",
+      "enum" : [ "Sufficent", "Insufficent" ],
+      "readonly" : true
+    },
     "ownernode" : {
       "type" : "integer"
+    },
+    "technicalsupportpin" : {
+      "type" : "string",
+      "readonly" : true
+    },
+    "vpxenvironment" : {
+      "type" : "string",
+      "enum" : [ "VPX", "AWSCLOUD", "OPENSTACKCLOUD", "AZURECLOUD", "GOOGLECLOUD" ],
+      "readonly" : true
+    },
+    "vpxoemcode" : {
+      "type" : "integer",
+      "readonly" : true
     }
   },
   "$schema" : "http://json-schema.org/draft-04/schema#",

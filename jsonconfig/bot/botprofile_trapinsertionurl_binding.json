@@ -1,0 +1,27 @@
+{
+  "type" : "object",
+  "properties" : {
+    "bot_bind_comment" : {
+      "type" : "string"
+    },
+    "bot_trap_url" : {
+      "type" : "string"
+    },
+    "bot_trap_url_insertion_enabled" : {
+      "type" : "string",
+      "enum" : [ "ON", "OFF" ]
+    },
+    "logmessage" : {
+      "type" : "string"
+    },
+    "name" : {
+      "type" : "string"
+    },
+    "trapinsertionurl" : {
+      "type" : "boolean"
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "id" : "botprofile_trapinsertionurl_binding",
+  "title" : "botprofile_trapinsertionurl_binding"
+}
