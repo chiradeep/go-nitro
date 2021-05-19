@@ -20,23 +20,25 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"strconv"
 	"strings"
 	"sync"
-	"io/ioutil"
+
+	"github.com/hashicorp/go-hclog"
 )
 
 //NitroParams encapsulates options to create a NitroClient
 type NitroParams struct {
-	Url       string
-	Username  string
-	Password  string
-	ProxiedNs string
-	SslVerify bool
-	Timeout   int
+	Url        string
+	Username   string
+	Password   string
+	ProxiedNs  string
+	SslVerify  bool
+	Timeout    int
 	RootCAPath string
 	ServerName string
 	Headers    map[string]string
@@ -55,6 +57,7 @@ type NitroClient struct {
 	sessionid    string
 	timeout      int
 	headers      map[string]string
+	logger       hclog.Logger
 }
 
 //NewNitroClient returns a usable NitroClient. Does not check validity of supplied parameters
@@ -91,10 +94,10 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 	c.sessionid = ""
 	c.timeout = params.Timeout
 	if params.SslVerify {
-		if( len(params.RootCAPath) > 0 ){
+		if len(params.RootCAPath) > 0 {
 			caCert, err := ioutil.ReadFile(params.RootCAPath)
 			if err != nil {
-			    return nil, fmt.Errorf("Unable to read certificate file: %v", err)
+				return nil, fmt.Errorf("Unable to read certificate file: %v", err)
 			}
 			caCertPool := x509.NewCertPool()
 			if ok := caCertPool.AppendCertsFromPEM(caCert); !ok {
@@ -102,7 +105,7 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 			}
 			tr := &http.Transport{
 				TLSClientConfig: &tls.Config{
-					RootCAs: caCertPool,
+					RootCAs:    caCertPool,
 					ServerName: params.ServerName,
 				},
 			}
@@ -116,6 +119,11 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 		}
 		c.client = &http.Client{Transport: tr}
 	}
+	//c.logger = hclog.Default()
+	c.logger = hclog.New(&hclog.LoggerOptions{
+		Name:  "go-nitro",
+		Level: hclog.LevelFromString("TRACE"),
+	})
 	return c, nil
 }
 
