@@ -619,7 +619,7 @@ func (c *NitroClient) FindAllResources(resourceType string) ([]map[string]interf
 	var data map[string]interface{}
 	result, err := c.listResource(resourceType, "")
 	if err != nil {
-		c.logger.Info(" FindAllResources: No objects found", "resourceType", resourceType)
+		c.logger.Trace(" FindAllResources: No objects found", "resourceType", resourceType)
 		return make([]map[string]interface{}, 0, 0), nil
 	}
 	if err = json.Unmarshal(result, &data); err != nil {
@@ -628,7 +628,7 @@ func (c *NitroClient) FindAllResources(resourceType string) ([]map[string]interf
 	}
 	rsrcs, ok := data[resourceType]
 	if !ok || rsrcs == nil {
-		c.logger.Info(" FindAllResources: resource not found", "resourceType", resourceType)
+		c.logger.Trace(" FindAllResources: resource not found", "resourceType", resourceType)
 		return make([]map[string]interface{}, 0, 0), nil
 	}
 	resources := data[resourceType].([]interface{})
@@ -645,7 +645,7 @@ func (c *NitroClient) FindAllResources(resourceType string) ([]map[string]interf
 func (c *NitroClient) ResourceBindingExists(resourceType string, resourceName string, boundResourceType string, boundResourceFilterName string, boundResourceFilterValue string) bool {
 	result, err := c.listBoundResources(resourceName, resourceType, boundResourceType, boundResourceFilterName, boundResourceFilterValue)
 	if err != nil {
-		c.logger.Info("ResourceBindingExists: No bound resource to found", "resourceType", resourceType, "name", resourceName, "boundResourceType", boundResourceType, "boundResourceFilterValue", boundResourceFilterValue)
+		c.logger.Trace("ResourceBindingExists: No bound resource to found", "resourceType", resourceType, "name", resourceName, "boundResourceType", boundResourceType, "boundResourceFilterValue", boundResourceFilterValue)
 		return false
 	}
 
@@ -660,7 +660,7 @@ func (c *NitroClient) ResourceBindingExists(resourceType string, resourceName st
 		return false
 	}
 
-	c.logger.Info("ResourceBindingExists: of type   is bound to  type and name ", "resourceType", resourceType, "resourceName", resourceName, "boundResourceType", boundResourceType, "boundResourceFilterValue", boundResourceFilterValue)
+	c.logger.Trace("ResourceBindingExists: of type   is bound to  type and name ", "resourceType", resourceType, "resourceName", resourceName, "boundResourceType", boundResourceType, "boundResourceFilterValue", boundResourceFilterValue)
 	return true
 }
 
