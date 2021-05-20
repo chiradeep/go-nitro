@@ -1,5 +1,5 @@
 SDK_ONLY_PKGS=$(shell go list ./... | grep -v "/vendor/" | grep -v "/example")
-SDK_TEST_ONLY_PKGS=$(shell go list ./... | grep -v "/vendor/" | grep -v "/config" | grep -v "/example")
+SDK_TEST_ONLY_PKGS=$(shell go list ./... | grep -v "/vendor/" | grep -v "/config" | grep -v "/example" | grep -v "/stats")
 
 all: build unit
 

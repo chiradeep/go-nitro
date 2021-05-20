@@ -56,7 +56,7 @@ func init() {
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
 	}
-	client.SetLogLevel("TRACE")
+	client.SetLogLevel("INFO")
 
 }
 
@@ -89,7 +89,7 @@ func TestAdd(t *testing.T) {
 	_, err := client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Could not add Lbvserver: ", err)
-		log.Println("Not continuing test")
+		t.Log("Not continuing test")
 		return
 	}
 
@@ -148,7 +148,7 @@ func TestApply(t *testing.T) {
 	_, err := client.AddResource(Nsacl.Type(), aclName, &acl1)
 	if err != nil {
 		t.Error("Could not add resource Nsacl", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
@@ -161,7 +161,7 @@ func TestApply(t *testing.T) {
 	}
 	if err == nil {
 		acl2 := readAcls[0]
-		log.Println("Found acl, kernelstate= ", acl2["kernelstate"])
+		t.Log("Found acl, kernelstate= ", acl2["kernelstate"])
 		if acl2["kernelstate"].(string) != "APPLIED" {
 			t.Error("ACL created but not APPLIED ", Nsacl.Type(), ":", aclName)
 		}
@@ -182,7 +182,7 @@ func TestUpdate(t *testing.T) {
 	_, err := client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Could not create LB", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
@@ -193,13 +193,13 @@ func TestUpdate(t *testing.T) {
 	_, err = client.UpdateResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Could not update LB")
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	rsrc, err := client.FindResource(Lbvserver.Type(), lbName)
 	if err != nil {
 		t.Error("Did not find resource of type ", Lbvserver.Type(), ":", lbName, err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	val, ok := rsrc["lbmethod"]
@@ -229,7 +229,7 @@ func TestBindUnBind(t *testing.T) {
 	_, err := client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Could not create LB", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	service1 := basic.Service{
@@ -242,7 +242,7 @@ func TestBindUnBind(t *testing.T) {
 	_, err = client.AddResource(Service.Type(), svcName, &service1)
 	if err != nil {
 		t.Error("Could not create service", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
@@ -254,19 +254,19 @@ func TestBindUnBind(t *testing.T) {
 	err = client.BindResource(Lbvserver.Type(), lbName, Service.Type(), svcName, &binding)
 	if err != nil {
 		t.Error("Could not bind LB to svc", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	exists := client.ResourceBindingExists(Lbvserver.Type(), lbName, Service.Type(), "servicename", svcName)
 	if !exists {
 		t.Error("Failed to bind service to lb vserver")
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	err = client.UnbindResource(Lbvserver.Type(), lbName, Service.Type(), svcName, "servicename")
 	if err != nil {
 		t.Error("Could not unbind LB to svc", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	exists = client.ResourceBindingExists(Lbvserver.Type(), lbName, Service.Type(), "servicename", svcName)
@@ -288,7 +288,7 @@ func TestFindBoundResource(t *testing.T) {
 	_, err := client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", "sample_lb_1", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	svcName := "test_svc_" + randomString(5)
@@ -302,7 +302,7 @@ func TestFindBoundResource(t *testing.T) {
 	_, err = client.AddResource(Service.Type(), svcName, &service1)
 	if err != nil {
 		t.Error("Failed to add resource of type ", Service.Type(), ":", svcName, err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 
 	}
@@ -313,18 +313,18 @@ func TestFindBoundResource(t *testing.T) {
 	err = client.BindResource(Lbvserver.Type(), lbName, Service.Type(), svcName, &binding)
 	if err != nil {
 		t.Error("Failed to bind resource of type ", Service.Type(), ":", svcName)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 
 	}
 	result, err := client.FindBoundResource(Lbvserver.Type(), lbName, Service.Type(), "servicename", svcName)
 	if err != nil {
 		t.Error("Failed to find bound resource of type ", Service.Type(), ":", svcName)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 
 	}
-	//log.Println("Found bound resource ", result)
+	//t.Log("Found bound resource ", result)
 	if result["servicename"] != svcName {
 		t.Error("Failed to find bound resource of type ", Service.Type(), ":", svcName)
 	}
@@ -345,14 +345,14 @@ func TestDelete(t *testing.T) {
 	_, err := client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Could not create LB", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
 	err = client.DeleteResource(Lbvserver.Type(), lbName)
 	if err != nil {
 		t.Error("Could not delete LB", lbName, err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	if client.ResourceExists(Lbvserver.Type(), lbName) {
@@ -373,7 +373,7 @@ func TestDeleteWithArgs(t *testing.T) {
 	_, err := client.AddResource(Lbmonitor.Type(), monitorName, &lbmonitor)
 	if err != nil {
 		t.Error("Could not create monitor", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
@@ -381,7 +381,7 @@ func TestDeleteWithArgs(t *testing.T) {
 	err = client.DeleteResourceWithArgsMap(Lbmonitor.Type(), monitorName, args)
 	if err != nil {
 		t.Error("Could not delete monitor", monitorName, err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 }
@@ -391,13 +391,13 @@ func TestEnableFeatures(t *testing.T) {
 	err := client.EnableFeatures(features)
 	if err != nil {
 		t.Error("Failed to enable features", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	result, err := client.ListEnabledFeatures()
 	if err != nil {
 		t.Error("Failed to retrieve features", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	found := 0
@@ -418,13 +418,13 @@ func TestEnableModes(t *testing.T) {
 	err := client.EnableModes(modes)
 	if err != nil {
 		t.Error("Failed to enable modes", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	result, err := client.ListEnabledModes()
 	if err != nil {
 		t.Error("Failed to retrieve modes", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	found := 0
@@ -467,13 +467,13 @@ func TestFindAllResources(t *testing.T) {
 	_, err := client.AddResource(Lbvserver.Type(), lbName1, &lb1)
 	if err != nil {
 		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", lbName1)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	_, err = client.AddResource(Lbvserver.Type(), lbName2, &lb2)
 	if err != nil {
 		t.Error("Failed to add resource of type ", Lbvserver.Type(), ":", lbName2)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	rsrcs, err := client.FindAllResources(Lbvserver.Type())
@@ -528,13 +528,13 @@ func TestFindAllBoundResources(t *testing.T) {
 	_, err = client.AddResource(Service.Type(), svcName1, &service1)
 	if err != nil {
 		t.Error("Could not create service service1", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	_, err = client.AddResource(Service.Type(), svcName2, &service2)
 	if err != nil {
 		t.Error("Could not create service service2", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
@@ -550,14 +550,14 @@ func TestFindAllBoundResources(t *testing.T) {
 	err = client.BindResource(Lbvserver.Type(), lbName1, Service.Type(), svcName1, &binding1)
 	if err != nil {
 		t.Error("Could not bind service service1")
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
 	err = client.BindResource(Lbvserver.Type(), lbName1, Service.Type(), svcName2, &binding2)
 	if err != nil {
 		t.Error("Could not bind service service2")
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	rsrcs, err := client.FindAllBoundResources(Lbvserver.Type(), lbName1, Service.Type())
@@ -566,7 +566,7 @@ func TestFindAllBoundResources(t *testing.T) {
 	}
 	if len(rsrcs) < 2 {
 		t.Error("Found only ", len(rsrcs), " resources of type ", Service.Type(), " expected at least 2")
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
@@ -593,7 +593,7 @@ func TestAction(t *testing.T) {
 	_, err := client.AddResource(Servicegroup.Type(), svcGrpName, &sg1)
 	if err != nil {
 		t.Error("Could not add resource service group", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	createServer := basic.Server{
@@ -604,7 +604,7 @@ func TestAction(t *testing.T) {
 	_, err = client.AddResource(Server.Type(), "test-server", &createServer)
 	if err != nil {
 		t.Error("Could not add resource server", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
@@ -617,7 +617,7 @@ func TestAction(t *testing.T) {
 	_, err = client.AddResource(Servicegroup_servicegroupmember_binding.Type(), "test-svcgroup", &bindSvcGrpToServer)
 	if err != nil {
 		t.Error("Could not bind resource server", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
@@ -630,7 +630,7 @@ func TestAction(t *testing.T) {
 	_, err = client.AddResource(Servicegroup_servicegroupmember_binding.Type(), "test-svcgroup", &bindSvcGrpToServer2)
 	if err != nil {
 		t.Error("Could not bind resource server", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	sg2 := basic.Servicegroup{
@@ -645,7 +645,7 @@ func TestAction(t *testing.T) {
 
 	if err != nil {
 		t.Error("Could not disable server", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	sg3 := basic.Servicegroup{
@@ -658,7 +658,7 @@ func TestAction(t *testing.T) {
 
 	if err != nil {
 		t.Error("Could not enable server", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
@@ -671,13 +671,16 @@ func TestAction(t *testing.T) {
 
 	if err != nil {
 		t.Error("Could not rename servicegroup", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
 }
 
 func TestUpdateUnnamedResource(t *testing.T) {
+	if os.Getenv("ADC_PLATFORM") == "CPX" {
+		t.Skip("Skipping test not supported by CPX")
+	}
 	rnat := network.Rnat{
 		Natip:   "172.17.0.2",
 		Netmask: "255.255.240.0",
@@ -687,12 +690,15 @@ func TestUpdateUnnamedResource(t *testing.T) {
 	err := client.UpdateUnnamedResource(Rnat.Type(), &rnat)
 	if err != nil {
 		t.Error("Could not add Rnat", err)
-		log.Println("Cannot continue")
+		//t.Log("Cannot continue")
 		return
 	}
 }
 
 func TestFindFilteredResource(t *testing.T) {
+	if os.Getenv("ADC_PLATFORM") == "CPX" {
+		t.Skip("Skipping test not supported by CPX")
+	}
 	rnat := network.Rnat{
 		Natip:   "172.17.0.2",
 		Netmask: "255.255.240.0",
@@ -702,13 +708,13 @@ func TestFindFilteredResource(t *testing.T) {
 	err := client.UpdateUnnamedResource(Rnat.Type(), &rnat)
 	if err != nil {
 		t.Error("Could not add Rnat", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	d, err := client.FindFilteredResourceArray(Rnat.Type(), map[string]string{"network": "192.168.16.0", "netmask": "255.255.240.0", "natip": "172.17.0.2"})
 	if err != nil {
 		t.Error("Could not find Rnat", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	if len(d) != 1 {
@@ -736,7 +742,7 @@ func TestDesiredStateServicegroupAPI(t *testing.T) {
 	_, err := client.AddResource(Servicegroup.Type(), svcGrpName, &sg1)
 	if err != nil {
 		t.Error("Could not add resource autoscale service group", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
@@ -763,13 +769,16 @@ func TestDesiredStateServicegroupAPI(t *testing.T) {
 	_, err = client.AddResource(Servicegroup_servicegroupmemberlist_binding.Type(), "test-svcgroup", &bindSvcGrpToServer)
 	if err != nil {
 		t.Error("Could not bind resource server", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
 }
 
 func TestNullAction(t *testing.T) {
+	if os.Getenv("ADC_PLATFORM") == "CPX" {
+		t.Skip("Skipping test not supported by CPX")
+	}
 	reboot := ns.Reboot{
 		Warm: true,
 	}
@@ -777,7 +786,7 @@ func TestNullAction(t *testing.T) {
 	err := client.ActOnResource("reboot", &reboot, "")
 	if err != nil {
 		t.Error("Could not make null action reboot", err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 
@@ -805,7 +814,7 @@ func TestTokenBasedAuth(t *testing.T) {
 	_, err = client.AddResource(Lbvserver.Type(), lbName, &lb1)
 	if err != nil {
 		t.Error("Could not add Lbvserver: ", err)
-		log.Println("Not continuing test")
+		t.Log("Not continuing test")
 		return
 	}
 
@@ -813,12 +822,12 @@ func TestTokenBasedAuth(t *testing.T) {
 	if err != nil {
 		t.Error("Did not find resource of type ", err, Lbvserver.Type(), ":", lbName)
 	} else {
-		log.Println("LB-METHOD: ", rsrc["lbmethod"])
+		t.Log("LB-METHOD: ", rsrc["lbmethod"])
 	}
 	err = client.DeleteResource(Lbvserver.Type(), lbName)
 	if err != nil {
 		t.Error("Could not delete LB", lbName, err)
-		log.Println("Cannot continue")
+		t.Log("Cannot continue")
 		return
 	}
 	err = client.Logout()
@@ -837,7 +846,7 @@ func TestTokenBasedAuth(t *testing.T) {
 			t.Error("Sessionid not cleared")
 			return
 		}
-		log.Println("sessionid cleared because of session-expiry")
+		t.Log("sessionid cleared because of session-expiry")
 	} else {
 		t.Error("Adding lbvserver should have failed because of session-expiry")
 	}
