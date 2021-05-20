@@ -34,15 +34,17 @@ import (
 
 //NitroParams encapsulates options to create a NitroClient
 type NitroParams struct {
-	Url        string
-	Username   string
-	Password   string
-	ProxiedNs  string
-	SslVerify  bool
-	Timeout    int
-	RootCAPath string
-	ServerName string
-	Headers    map[string]string
+	Url           string
+	Username      string
+	Password      string
+	ProxiedNs     string
+	SslVerify     bool
+	Timeout       int
+	RootCAPath    string
+	ServerName    string
+	Headers       map[string]string
+	LogLevel      string
+	JSONLogFormat bool
 }
 
 //NitroClient has methods to configure the NetScaler
@@ -120,14 +122,17 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 		}
 		c.client = &http.Client{Transport: tr}
 	}
-	logLevel, ok := os.LookupEnv("NITRO_LOG")
-	level := hclog.LevelFromString("OFF")
+	level := hclog.LevelFromString(params.LogLevel)
+	if level == hclog.NoLevel {
+		level = hclog.Off
+	}
+	logLevel, ok := os.LookupEnv("NS_LOG")
 	if ok {
 		lvl := hclog.LevelFromString(logLevel)
 		if lvl != hclog.NoLevel {
 			level = lvl
 		} else {
-			log.Printf("go-nitro: NITRO_LOG not set to a valid log level (%s), defaulting to OFF", logLevel)
+			log.Printf("go-nitro: NS_LOG not set to a valid log level (%s), defaulting to %d", logLevel, level)
 		}
 	}
 	//c.logger = hclog.Default()
@@ -135,6 +140,7 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 		Name:            "go-nitro",
 		Level:           level,
 		Color:           hclog.AutoColor,
+		JSONFormat:      params.JSONLogFormat,
 		IncludeLocation: true,
 	})
 	return c, nil
@@ -148,7 +154,7 @@ func NewNitroClientFromEnv() (*NitroClient, error) {
 	username := os.Getenv("NS_LOGIN")
 	password := os.Getenv("NS_PASSWORD")
 	if url == "" || username == "" || password == "" {
-		return nil, fmt.Errorf("Could not completely determine login parameters from env: NS_URL, NS_LOGIN, NS_PASSWORD")
+		return nil, fmt.Errorf("could not completely determine login parameters from env: NS_URL, NS_LOGIN, NS_PASSWORD")
 	}
 	proxiedNs := os.Getenv("_MPS_API_PROXY_MANAGED_INSTANCE_IP")
 	sslverifyStr := os.Getenv("NS_SSLVERIFY")
@@ -157,7 +163,7 @@ func NewNitroClientFromEnv() (*NitroClient, error) {
 		var err error
 		sslVerify, err = strconv.ParseBool(sslverifyStr)
 		if err != nil {
-			return nil, fmt.Errorf("Could not parse env variable NS_SSLVERIFY: valid values are true and false")
+			return nil, fmt.Errorf("could not parse env variable NS_SSLVERIFY: valid values are true and false")
 		}
 	}
 	timeoutStr := os.Getenv("NS_TIMEOUT")
@@ -166,16 +172,17 @@ func NewNitroClientFromEnv() (*NitroClient, error) {
 		var err error
 		timeout, err = strconv.Atoi(timeoutStr)
 		if err != nil {
-			return nil, fmt.Errorf("Could not parse env variable NS_TIMEOUT: integer value is expected")
+			return nil, fmt.Errorf("could not parse env variable NS_TIMEOUT: integer value is expected")
 		}
 	}
 	nitroParams := NitroParams{
-		Url:       url,
-		Username:  username,
-		Password:  password,
-		ProxiedNs: proxiedNs,
-		SslVerify: sslVerify,
-		Timeout:   timeout,
+		Url:           url,
+		Username:      username,
+		Password:      password,
+		ProxiedNs:     proxiedNs,
+		SslVerify:     sslVerify,
+		Timeout:       timeout,
+		JSONLogFormat: false,
 	}
 	return NewNitroClientFromParams(nitroParams)
 }
