@@ -21,6 +21,7 @@ import (
 	"crypto/x509"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -119,10 +120,20 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 		}
 		c.client = &http.Client{Transport: tr}
 	}
+	logLevel, ok := os.LookupEnv("NITRO_LOG")
+	level := hclog.LevelFromString("OFF")
+	if ok {
+		lvl := hclog.LevelFromString(logLevel)
+		if lvl != hclog.NoLevel {
+			level = lvl
+		} else {
+			log.Printf("go-nitro: NITRO_LOG not set to a valid log level (%s), defaulting to OFF", logLevel)
+		}
+	}
 	//c.logger = hclog.Default()
 	c.logger = hclog.New(&hclog.LoggerOptions{
 		Name:            "go-nitro",
-		Level:           hclog.LevelFromString("OFF"),
+		Level:           level,
 		Color:           hclog.AutoColor,
 		IncludeLocation: true,
 	})

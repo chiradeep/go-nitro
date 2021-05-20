@@ -53,10 +53,14 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 	var err error
 	client, err = NewNitroClientFromEnv()
+
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
 	}
-	client.SetLogLevel("INFO")
+	_, ok := os.LookupEnv("NITRO_LOG") //if NITRO_LOG has been set then let the client get it from the environment
+	if !ok {
+		client.SetLogLevel("INFO")
+	}
 
 }
 
