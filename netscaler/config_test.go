@@ -56,7 +56,7 @@ func init() {
 	if err != nil {
 		log.Fatal("Could not create a client: ", err)
 	}
-	client.SetLogLevel("DEBUG")
+	client.SetLogLevel("TRACE")
 
 }
 

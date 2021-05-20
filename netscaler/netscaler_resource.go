@@ -100,7 +100,7 @@ func readResponseHandler(resp *http.Response, logger hclog.Logger) ([]byte, erro
 		return body, nil
 	case "404 Not Found":
 		body, _ := ioutil.ReadAll(resp.Body)
-		logger.Debug("read: 404 not found")
+		logger.Debug("readResponseHandler: 404 not found")
 		return body, errors.New("read: 404 not found: ")
 	case "400 Bad Request", "401 Unauthorized", "403 Forbidden",
 		"405 Method Not Allowed", "406 Not Acceptable",
@@ -233,7 +233,7 @@ func (c *NitroClient) actOnResource(resourceType string, resourceJSON []byte, ac
 	} else {
 		url = c.url + fmt.Sprintf("%s?action=%s", resourceType, action)
 	}
-	c.logger.Trace("url is ", "url", url)
+	c.logger.Trace("actOnResource ", "url", url)
 
 	return c.doHTTPRequest("POST", url, bytes.NewBuffer(resourceJSON), createResponseHandler)
 
@@ -243,7 +243,7 @@ func (c *NitroClient) changeResource(resourceType string, resourceName string, r
 	c.logger.Trace("changing resource", "resourceType", resourceType)
 
 	url := c.url + resourceType + "/" + resourceName + "?action=update"
-	c.logger.Trace("url is ", "url", url)
+	c.logger.Trace("changeResource", "url", url)
 
 	return c.doHTTPRequest("POST", url, bytes.NewBuffer(resourceJSON), createResponseHandler)
 
@@ -253,7 +253,7 @@ func (c *NitroClient) updateResource(resourceType string, resourceName string, r
 	c.logger.Trace("Updating resource ", "resourceType", resourceType)
 
 	url := c.url + resourceType + "/" + resourceName
-	c.logger.Trace("url is ", "url", url)
+	c.logger.Trace("updateResource ", "url", url)
 
 	return c.doHTTPRequest("PUT", url, bytes.NewBuffer(resourceJSON), createResponseHandler)
 
@@ -263,7 +263,7 @@ func (c *NitroClient) updateUnnamedResource(resourceType string, resourceJSON []
 	c.logger.Trace("Updating unnamed resource", "resourceType", resourceType)
 
 	url := c.url + resourceType
-	c.logger.Trace("url is ", "url", url)
+	c.logger.Trace("updateUnnamedResource", "url", url)
 
 	return c.doHTTPRequest("PUT", url, bytes.NewBuffer(resourceJSON), createResponseHandler)
 
@@ -277,7 +277,7 @@ func (c *NitroClient) deleteResource(resourceType string, resourceName string) (
 	} else {
 		url = c.url + fmt.Sprintf("%s", resourceType)
 	}
-	c.logger.Trace("url is ", url)
+	c.logger.Trace("deleteResource", "url", url)
 
 	return c.doHTTPRequest("DELETE", url, bytes.NewBuffer([]byte{}), deleteResponseHandler)
 
@@ -292,7 +292,7 @@ func (c *NitroClient) deleteResourceWithArgs(resourceType string, resourceName s
 		url = c.url + fmt.Sprintf("%s?args=", resourceType)
 	}
 	url = url + strings.Join(args, ",")
-	c.logger.Trace("url is ", url)
+	c.logger.Trace("deleteResourceWithArgs ", "url", url)
 
 	return c.doHTTPRequest("DELETE", url, bytes.NewBuffer([]byte{}), deleteResponseHandler)
 
@@ -355,7 +355,7 @@ func (c *NitroClient) listResource(resourceType string, resourceName string) ([]
 	if resourceName != "" {
 		url = c.url + fmt.Sprintf("%s/%s", resourceType, resourceName)
 	}
-	c.logger.Trace("url is ", "url", url)
+	c.logger.Trace("listResource", "url", url)
 
 	return c.doHTTPRequest("GET", url, bytes.NewBuffer([]byte{}), readResponseHandler)
 
@@ -372,12 +372,13 @@ func (c *NitroClient) listResourceWithArgs(resourceType string, resourceName str
 	}
 	strArgs := strings.Join(args, ",")
 	url2 := url + "?args=" + strArgs
-	c.logger.Trace("url is ", "url", url)
+	c.logger.Trace("listResourceWithArgs", "url", url)
 
 	data, err := c.doHTTPRequest("GET", url2, bytes.NewBuffer([]byte{}), readResponseHandler)
 	if err != nil {
-		c.logger.Trace("error listing with args, trying filter")
+		c.logger.Trace("listResourceWithArgs: error listing with args, trying filter", "error", err)
 		url2 = url + "?filter=" + strArgs
+		c.logger.Trace("listResourceWithArgs", "url2", url2)
 		return c.doHTTPRequest("GET", url2, bytes.NewBuffer([]byte{}), readResponseHandler)
 	}
 	return data, err
@@ -459,7 +460,7 @@ func (c *NitroClient) listStat(resourceType, resourceName string) ([]byte, error
 	if resourceName != "" {
 		url = c.statsURL + fmt.Sprintf("%s/%s", resourceType, resourceName)
 	}
-	c.logger.Trace("url is ", url)
+	c.logger.Trace("listStat", "url", url)
 
 	return c.doHTTPRequest("GET", url, bytes.NewBuffer([]byte{}), readResponseHandler)
 
@@ -476,7 +477,7 @@ func (c *NitroClient) listStatWithArgs(resourceType string, resourceName string,
 	}
 	strArgs := strings.Join(args, ",")
 	url = url + "?args=" + strArgs
-	c.logger.Trace("url is ", "url", url)
+	c.logger.Trace("listStatWithArgs", "url", url)
 
 	return c.doHTTPRequest("GET", url, bytes.NewBuffer([]byte{}), readResponseHandler)
 }

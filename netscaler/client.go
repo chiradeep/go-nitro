@@ -121,8 +121,10 @@ func NewNitroClientFromParams(params NitroParams) (*NitroClient, error) {
 	}
 	//c.logger = hclog.Default()
 	c.logger = hclog.New(&hclog.LoggerOptions{
-		Name:  "go-nitro",
-		Level: hclog.LevelFromString("TRACE"),
+		Name:            "go-nitro",
+		Level:           hclog.LevelFromString("OFF"),
+		Color:           hclog.AutoColor,
+		IncludeLocation: true,
 	})
 	return c, nil
 }

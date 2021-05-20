@@ -266,7 +266,7 @@ func (c *NitroClient) UpdateResource(resourceType string, name string, resourceS
 		nsResource[resourceType] = resourceStruct
 		resourceJSON, err := JSONMarshal(nsResource)
 
-		c.logger.Debug("UpdateResource: Resourcejson is " + string(resourceJSON))
+		c.logger.Debug("UpdateResource", "resourceJSON", string(resourceJSON))
 
 		body, err := c.updateResource(resourceType, name, resourceJSON)
 		if err != nil {
@@ -285,7 +285,7 @@ func (c *NitroClient) UpdateUnnamedResource(resourceType string, resourceStruct 
 	nsResource[resourceType] = resourceStruct
 	resourceJSON, err := JSONMarshal(nsResource)
 
-	c.logger.Debug("UpdateResource: Resourcejson is " + string(resourceJSON))
+	c.logger.Trace("UpdateResource", "resourcejson", string(resourceJSON))
 
 	body, err := c.updateUnnamedResource(resourceType, resourceJSON)
 	if err != nil {
@@ -304,7 +304,7 @@ func (c *NitroClient) ChangeResource(resourceType string, name string, resourceS
 		nsResource[resourceType] = resourceStruct
 		resourceJSON, err := json.Marshal(nsResource)
 
-		c.logger.Debug("ChangeResource: Resourcejson is " + string(resourceJSON))
+		c.logger.Trace("ChangeResource:", "resourcejson", string(resourceJSON))
 
 		body, err := c.changeResource(resourceType, name, resourceJSON)
 		if err != nil {
@@ -321,14 +321,14 @@ func (c *NitroClient) DeleteResource(resourceType string, resourceName string) e
 
 	_, err := c.listResource(resourceType, resourceName)
 	if err == nil { // resource exists
-		c.logger.Debug("DeleteResource Found resource of type %s: %s", resourceType, resourceName)
+		c.logger.Trace("DeleteResource Found resource ", "resourceType", resourceType, "resourceName", resourceName)
 		_, err = c.deleteResource(resourceType, resourceName)
 		if err != nil {
-			c.logger.Debug("[ERROR] go-nitro: Failed to delete resourceType %s: %s, err=%s", resourceType, resourceName, err)
+			c.logger.Warn("Failed to delete resource", "resourceType", resourceType, "resourceName", resourceName, "error", err)
 			return err
 		}
 	} else {
-		c.logger.Info(" DeleteResource: Resource %s already deleted ", resourceName)
+		c.logger.Info("DeleteResource: Resource already deleted ", "resourceType", resourceType, "resourceName", resourceName)
 	}
 	return nil
 }
@@ -339,14 +339,14 @@ func (c *NitroClient) DeleteResourceWithArgs(resourceType string, resourceName s
 
 	_, err := c.listResourceWithArgs(resourceType, resourceName, args)
 	if err == nil { // resource exists
-		c.logger.Info(" DeleteResource found resource of type %s: %s", resourceType, resourceName)
+		c.logger.Trace("DeleteResource Found resource ", "resourceType", resourceType, "resourceName", resourceName)
 		_, err = c.deleteResourceWithArgs(resourceType, resourceName, args)
 		if err != nil {
-			c.logger.Error("Failed to delete resourceType %s: %s, err=%s", resourceType, resourceName, err)
+			c.logger.Warn("Failed to delete resource", "resourceType", resourceType, "resourceName", resourceName, "error", err)
 			return err
 		}
 	} else {
-		c.logger.Info(" Resource %s already deleted ", resourceName)
+		c.logger.Info("DeleteResource: Resource already deleted ", "resourceType", resourceType, "resourceName", resourceName)
 	}
 	return nil
 }
@@ -356,14 +356,16 @@ func (c *NitroClient) DeleteResourceWithArgsMap(resourceType string, resourceNam
 
 	_, err := c.listResourceWithArgsMap(resourceType, resourceName, args)
 	if err == nil { // resource exists
-		c.logger.Info(" DeleteResource found resource of type %s: %s", resourceType, resourceName)
+		c.logger.Trace("DeleteResource Found resource ", "resourceType", resourceType, "resourceName", resourceName)
+
 		_, err = c.deleteResourceWithArgsMap(resourceType, resourceName, args)
 		if err != nil {
-			c.logger.Error("Failed to delete resourceType %s: %s, err=%s", resourceType, resourceName, err)
+			c.logger.Warn("Failed to delete resource", "resourceType", resourceType, "resourceName", resourceName, "error", err)
+
 			return err
 		}
 	} else {
-		c.logger.Info(" Resource %s already deleted ", resourceName)
+		c.logger.Info(" Resource already deleted ", "resourceType", resourceType, "resourceName", resourceName)
 	}
 	return nil
 }
@@ -395,12 +397,12 @@ func (c *NitroClient) BindResource(bindToResourceType string, bindToResourceName
 func (c *NitroClient) UnbindResource(boundToResourceType string, boundToResourceName string, boundResourceType string, boundResourceName string, bindingFilterName string) error {
 
 	if !c.ResourceExists(boundToResourceType, boundToResourceName) {
-		c.logger.Info(" Unbind: BoundTo Resource  does not exist", boundToResourceType, boundToResourceName)
+		c.logger.Info(" Unbind: BoundTo Resource  does not exist", "boundToResourceType", boundToResourceType, "boundToResourceName", boundToResourceName)
 		return nil
 	}
 
 	if !c.ResourceExists(boundResourceType, boundResourceName) {
-		c.logger.Info(" Unbind: Bound Resource  does not exist", boundResourceType, boundResourceName)
+		c.logger.Info(" Unbind: Bound Resource  does not exist", "boundResourceType", boundResourceType, "boundResourceName", boundResourceName)
 		return nil
 	}
 
@@ -416,10 +418,10 @@ func (c *NitroClient) UnbindResource(boundToResourceType string, boundToResource
 func (c *NitroClient) ResourceExists(resourceType string, resourceName string) bool {
 	_, err := c.listResource(resourceType, resourceName)
 	if err != nil {
-		c.logger.Info(" No resource found", "resourceType", resourceType, "resourceName", resourceName)
+		c.logger.Debug("ResourceExists: No resource found", "resourceType", resourceType, "resourceName", resourceName)
 		return false
 	}
-	c.logger.Info(" resource is already present", resourceType, resourceName)
+	c.logger.Debug("ResourceExists: resource is already present", "resourceType", resourceType, "resourceName", resourceName)
 	return true
 }
 
@@ -428,16 +430,16 @@ func (c *NitroClient) FindResourceArray(resourceType string, resourceName string
 	var data map[string]interface{}
 	result, err := c.listResource(resourceType, resourceName)
 	if err != nil {
-		c.logger.Warn("FindResourceArray: No resources found", resourceType, resourceName)
+		c.logger.Warn("FindResourceArray: No resources found", "resourceType", resourceType, "resourceName", resourceName)
 		return nil, fmt.Errorf("[INFO] go-nitro: FindResourceArray: No resource %s of type %s found", resourceName, resourceType)
 	}
 	if err = json.Unmarshal(result, &data); err != nil {
-		c.logger.Error("FindResourceArray: Failed to unmarshal Netscaler Response!", resourceType, resourceName)
+		c.logger.Error("FindResourceArray: Failed to unmarshal Netscaler Response!", "resourceType", resourceType, "resourceName", resourceName)
 		return nil, fmt.Errorf("[ERROR] go-nitro: FindResourceArray: Failed to unmarshal Netscaler Response:resource %s of type %s", resourceName, resourceType)
 	}
 	rsrcs, ok := data[resourceType]
 	if !ok || rsrcs == nil {
-		c.logger.Warn("FindResourceArray No resource found", resourceType, resourceName)
+		c.logger.Warn("FindResourceArray No resource found", "resourceType", resourceType, "resourceName", resourceName)
 		return nil, fmt.Errorf("[INFO] go-nitro: FindResourceArray: No resource %s of type %s found", resourceName, resourceType)
 	}
 	resources := data[resourceType].([]interface{})
@@ -478,7 +480,7 @@ func (c *NitroClient) FindResource(resourceType string, resourceName string) (ma
 	var data map[string]interface{}
 	result, err := c.listResource(resourceType, resourceName)
 	if err != nil {
-		c.logger.Warn("FindResource: No %s %s found", resourceType, resourceName)
+		c.logger.Warn("FindResource: No resource found", "resourceType", resourceType, "resourceName", resourceName)
 		return nil, fmt.Errorf("[INFO] go-nitro: FindResource: No resource %s of type %s found", resourceName, resourceType)
 	}
 	if err = json.Unmarshal(result, &data); err != nil {
@@ -487,7 +489,7 @@ func (c *NitroClient) FindResource(resourceType string, resourceName string) (ma
 	}
 	rsrc, ok := data[resourceType]
 	if !ok || rsrc == nil {
-		c.logger.Warn("FindResource No resource found", resourceType, resourceName)
+		c.logger.Warn("FindResource No resource found", "resourceType", resourceType, "resourceName", resourceName)
 		return nil, fmt.Errorf("[INFO] go-nitro: FindResource: No resource %s of type %s found", resourceName, resourceType)
 	}
 
@@ -672,7 +674,7 @@ func (c *NitroClient) FindBoundResource(resourceType string, resourceName string
 
 	var data map[string]interface{}
 	if err := json.Unmarshal(result, &data); err != nil {
-		c.logger.Error("FindBoundResource: Failed to unmarshal Netscaler Response!")
+		c.logger.Error("FindBoundResource: Failed to unmarshal Netscaler Response!", "error", err)
 		return nil, fmt.Errorf("[ERROR] go-nitro: FindBoundResource: Failed to unmarshal Netscaler Response!, err=%s", err)
 	}
 	bindingType := fmt.Sprintf("%s_%s_binding", resourceType, boundResourceType)
@@ -690,13 +692,13 @@ func (c *NitroClient) FindBoundResource(resourceType string, resourceName string
 func (c *NitroClient) FindAllBoundResources(resourceType string, resourceName string, boundResourceType string) ([]map[string]interface{}, error) {
 	result, err := c.listBoundResources(resourceName, resourceType, boundResourceType, "", "")
 	if err != nil {
-		c.logger.Info(" FindAllBoundResources: No %s %s to %s  binding found", resourceType, resourceName, boundResourceType)
+		c.logger.Info("FindAllBoundResources: No binding found", "resourceType", resourceType, "resourceName", "resourceName", resourceName, "boundResourceType", boundResourceType)
 		return nil, fmt.Errorf("[ERROR] go-nitro: No %s %s to %s binding found, err=%s", resourceType, resourceName, boundResourceType, err)
 	}
 
 	var data map[string]interface{}
 	if err := json.Unmarshal(result, &data); err != nil {
-		c.logger.Error("FindAllBoundResources: Failed to unmarshal Netscaler Response!")
+		c.logger.Error("FindAllBoundResources: Failed to unmarshal Netscaler Response!", "error", err)
 		return nil, fmt.Errorf("[ERROR] go-nitro: FindAllBoundResources: Failed to unmarshal Netscaler Response!, err=%s", err)
 	}
 	bindingType := fmt.Sprintf("%s_%s_binding", resourceType, boundResourceType)
@@ -730,7 +732,7 @@ func (c *NitroClient) EnableFeatures(featureNames []string) error {
 
 	featureJSON, err := JSONMarshal(featureStruct)
 	if err != nil {
-		c.logger.Error("EnableFeatures: Failed to marshal features to JSON")
+		c.logger.Error("EnableFeatures: Failed to marshal features to JSON", "error", err)
 		return fmt.Errorf("[ERROR] go-nitro: Failed to marshal features to JSON")
 	}
 
@@ -756,7 +758,7 @@ func (c *NitroClient) DisableFeatures(featureNames []string) error {
 
 	featureJSON, err := JSONMarshal(featureStruct)
 	if err != nil {
-		c.logger.Error("DisableFeatures: Failed to marshal features to JSON")
+		c.logger.Error("DisableFeatures: Failed to marshal features to JSON", "error", err)
 		return fmt.Errorf("[ERROR] go-nitro: Failed to marshal features to JSON")
 	}
 
@@ -776,12 +778,12 @@ func (c *NitroClient) ListEnabledFeatures() ([]string, error) {
 	}
 	var data map[string]interface{}
 	if err = json.Unmarshal(bytes, &data); err != nil {
-		c.logger.Error("FindAllBoundResources: Failed to unmarshal Netscaler Response!")
+		c.logger.Error("ListEnabledFeatures: Failed to unmarshal Netscaler Response!", "error", err)
 		return []string{}, fmt.Errorf("[ERROR] go-nitro: Failed to unmarshal Netscaler Response to list Features")
 	}
 	feat, ok := data["nsfeature"]
 	if !ok || feat == nil {
-		c.logger.Error("No features found")
+		c.logger.Error("ListEnabledFeatures: No features found")
 		return []string{}, fmt.Errorf("[ERROR] go-nitro: No features found")
 	}
 
@@ -815,7 +817,7 @@ func (c *NitroClient) EnableModes(modeNames []string) error {
 
 	modeJSON, err := JSONMarshal(modeStruct)
 	if err != nil {
-		c.logger.Error("EnableModes: Failed to marshal modes to JSON")
+		c.logger.Error("EnableModes: Failed to marshal modes to JSON", "error", err)
 		return fmt.Errorf("[ERROR] go-nitro: Failed to marshal modes to JSON")
 	}
 
@@ -835,12 +837,12 @@ func (c *NitroClient) ListEnabledModes() ([]string, error) {
 	}
 	var data map[string]interface{}
 	if err = json.Unmarshal(bytes, &data); err != nil {
-		c.logger.Error("ListEnabledModes: Failed to unmarshal Netscaler Response!")
+		c.logger.Error("ListEnabledModes: Failed to unmarshal Netscaler Response!", "error", err)
 		return []string{}, fmt.Errorf("[ERROR] go-nitro: Failed to unmarshal Netscaler Response to list Modes")
 	}
 	mode, ok := data["nsmode"]
 	if !ok || mode == nil {
-		c.logger.Error("No modes found")
+		c.logger.Error("ListEnabledModes: No modes found")
 		return []string{}, fmt.Errorf("[ERROR] No modes found")
 	}
 
@@ -870,10 +872,10 @@ func (c *NitroClient) SaveConfig() error {
 
 	saveJSON, err := JSONMarshal(saveStruct)
 	if err != nil {
-		c.logger.Error("SaveConfig: Failed to marshal save config to JSON")
+		c.logger.Error("SaveConfig: Failed to marshal save config to JSON", "error", err)
 		return fmt.Errorf("[ERROR] go-nitro: Failed to marshal save config to JSON")
 	}
-	c.logger.Debug("saveJSON is " + string(saveJSON))
+	c.logger.Debug("saveJSON", "json", string(saveJSON))
 
 	err = c.saveConfig(saveJSON)
 	if err != nil {
@@ -896,7 +898,7 @@ func (c *NitroClient) ClearConfig() error {
 
 	clearJSON, err := JSONMarshal(clearStruct)
 	if err != nil {
-		c.logger.Error("ClearConfig: Failed to marshal clear config to JSON")
+		c.logger.Error("ClearConfig: Failed to marshal clear config to JSON", "error", err)
 		return fmt.Errorf("[ERROR] go-nitro: Failed to marshal clear config to JSON")
 	}
 	c.logger.Trace("clearJSON is ", "text", string(clearJSON))
